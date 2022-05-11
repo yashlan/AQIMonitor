@@ -9,6 +9,7 @@ import com.c22_ce02.awmonitorapp.utils.setFullscreen
 import com.c22_ce02.awmonitorapp.utils.showToast
 import com.c22_ce02.awmonitorapp.utils.viewBinding
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
@@ -32,12 +33,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setFullscreen()
         setupSign()
-    }
-
-    override fun onBackPressed() {
-        finishAffinity()
     }
 
     private fun setupSign() {
@@ -45,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
             .createSignInIntentBuilder()
             .setIsSmartLockEnabled(false)
             .setAvailableProviders(providers)
+            .setLogo(com.firebase.ui.auth.R.drawable.mtrl_ic_error)
             .setTheme(R.style.LoginTheme)
             .setTosAndPrivacyPolicyUrls(
                 "https://example.com/terms.html",
@@ -62,11 +59,22 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
         } else {
-            if(response?.error?.errorCode == null) {
-                finishAffinity()
-                return
+            when {
+                /** handle response null ketika menekan tombol onBackPressed */
+                response == null -> {
+                    finishAffinity()
+                    return
+                }
+                response.error?.errorCode == ErrorCodes.NO_NETWORK -> {
+                    showToast("Tidak ada koneksi internet")
+                }
+                response.error?.errorCode == ErrorCodes.UNKNOWN_ERROR -> {
+                    showToast("Terjadi Kesalahan")
+                }
+                else -> {
+                    showToast("Error ${response.error?.errorCode} : " + response.error?.message.toString())
+                }
             }
-            showToast("Error ${response?.error?.errorCode} : " + response?.error?.message.toString())
         }
     }
 }
