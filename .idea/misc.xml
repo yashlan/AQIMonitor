@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_home.xml" value="0.264" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_login.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_main.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_splash.xml" value="0.21927083333333333" />
       </map>
     </option>
   </component>
