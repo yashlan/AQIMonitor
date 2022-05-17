@@ -2,4 +2,6 @@
     <string name="app_name">AW Monitor App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="yes">Ya</string>
+    <string name="msg_permission_maps">Anda harus mengizinkan izin Lokasi, Tekan Ya untuk menyetel.</string>
 </resources>
