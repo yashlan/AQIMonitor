@@ -2,4 +2,23 @@
     <string name="app_name">AW Monitor App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Get Started String -->
+    <string name="title_menu_1">Emisi Gas dan Polusi</string>
+    <string name="title_menu_2">Limbah dan Sampah</string>
+    <string name="title_menu_3">Dunia Lebih Baik</string>
+
+    <string name="desc_menu_1">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</string>
+
+    <string name="desc_menu_2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</string>
+
+    <string name="desc_menu_3">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</string>
+
+    <string name="btn_next">Next</string>
+    <string name="btn_finish">Finish</string>
+    <!-- Get Started String End -->
 </resources>
