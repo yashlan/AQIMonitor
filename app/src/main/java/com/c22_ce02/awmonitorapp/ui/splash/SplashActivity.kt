@@ -16,7 +16,7 @@ import com.c22_ce02.awmonitorapp.utils.setFullscreen
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivitySplashBinding
+    private lateinit var binding: ActivitySplashBinding
 
     private lateinit var mCheckPreferences: CheckPreference
     private lateinit var checkHelper: CheckHelper
@@ -31,17 +31,17 @@ class SplashActivity : AppCompatActivity() {
         checkHelper = mCheckPreferences.getCheck()
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (checkHelper.isLogin){
+            if (checkHelper.isLogin) {
                 startActivity(Intent(this, HomeActivity::class.java))
                 finish()
-            }else{
-                startActivity(Intent(this,GetStartedActivity::class.java))
+            } else {
+                startActivity(Intent(this, GetStartedActivity::class.java))
                 finish()
             }
-        },SPLASH_TIME_OUT)
+        }, SPLASH_TIME_OUT)
     }
 
     companion object {
-        private const val SPLASH_TIME_OUT : Long = 3000
+        private const val SPLASH_TIME_OUT: Long = 3000
     }
 }
