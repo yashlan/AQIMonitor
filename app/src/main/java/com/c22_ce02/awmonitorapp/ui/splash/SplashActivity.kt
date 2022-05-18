@@ -5,9 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import com.c22_ce02.awmonitorapp.databinding.ActivitySplashBinding
-import com.c22_ce02.awmonitorapp.preferences.CheckHelper
-import com.c22_ce02.awmonitorapp.preferences.CheckPreference
+import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
+import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.ui.activity.GetStartedActivity
 import com.c22_ce02.awmonitorapp.ui.activity.MainActivity
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
@@ -20,9 +21,6 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var mCheckPreferences: CheckPreference
     private lateinit var checkHelper: CheckHelper
 
-    // dummy sleep time
-    private val SPLASH_TIME_OUT : Long = 3000
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -32,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
         mCheckPreferences = CheckPreference(this)
         checkHelper = mCheckPreferences.getCheck()
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
 
             if (checkHelper.isLogin){
                 startActivity(Intent(this,MainActivity::class.java))
@@ -44,5 +42,9 @@ class SplashActivity : AppCompatActivity() {
 
         },SPLASH_TIME_OUT)
 
+    }
+
+    companion object {
+        private const val SPLASH_TIME_OUT : Long = 3000
     }
 }
