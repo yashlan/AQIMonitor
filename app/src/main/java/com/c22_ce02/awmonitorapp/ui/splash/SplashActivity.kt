@@ -10,7 +10,7 @@ import com.c22_ce02.awmonitorapp.databinding.ActivitySplashBinding
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.ui.activity.GetStartedActivity
-import com.c22_ce02.awmonitorapp.ui.activity.MainActivity
+import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
 
 @SuppressLint("CustomSplashScreen")
@@ -31,17 +31,14 @@ class SplashActivity : AppCompatActivity() {
         checkHelper = mCheckPreferences.getCheck()
 
         Handler(Looper.getMainLooper()).postDelayed({
-
             if (checkHelper.isLogin){
-                startActivity(Intent(this,MainActivity::class.java))
+                startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             }else{
                 startActivity(Intent(this,GetStartedActivity::class.java))
                 finish()
             }
-
         },SPLASH_TIME_OUT)
-
     }
 
     companion object {
