@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AWMonitorApp"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m">
+        tools:ignore="UnusedAttribute">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API}" />
         <activity
             android:name=".ui.activity.HomeActivity"
             android:exported="false" />
