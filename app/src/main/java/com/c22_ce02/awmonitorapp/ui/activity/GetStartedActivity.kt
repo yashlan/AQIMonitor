@@ -3,10 +3,10 @@ package com.c22_ce02.awmonitorapp.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.c22_ce02.awmonitorapp.databinding.ActivityGetStartedBinding
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
+import com.c22_ce02.awmonitorapp.utils.showToast
 import com.c22_ce02.awmonitorapp.utils.viewBinding
 
 class GetStartedActivity : AppCompatActivity() {
@@ -31,6 +31,6 @@ class GetStartedActivity : AppCompatActivity() {
         val checkPreference = CheckPreference(this)
         checkHelper.isLogin = true
         checkPreference.setCheck(checkHelper)
-        Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show()
+        showToast("Selamat Datang")
     }
 }
