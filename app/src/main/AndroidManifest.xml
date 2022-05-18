@@ -21,6 +21,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API}" />
         <activity
+            android:name=".ui.activity.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.GetStartedActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.HomeActivity"
             android:exported="false" />
         <activity
