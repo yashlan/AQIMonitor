@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AWMonitorApp">
         <activity
+            android:name=".ui.activity.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.GetStartedActivity"
             android:exported="false" />
         <activity

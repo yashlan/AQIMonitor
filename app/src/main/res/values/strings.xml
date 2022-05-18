@@ -9,16 +9,16 @@
     <string name="title_menu_2">Limbah dan Sampah</string>
     <string name="title_menu_3">Dunia Lebih Baik</string>
 
-    <string name="desc_menu_1">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</string>
+    <string name="desc_menu_1">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
 
-    <string name="desc_menu_2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</string>
+    <string name="desc_menu_2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
 
-    <string name="desc_menu_3">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</string>
+    <string name="desc_menu_3">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
 
     <string name="btn_next">Next</string>
     <string name="btn_finish">Finish</string>
+    <string name="splash_title">AWMonitor App</string>
+    <string name="logo_desc">Logo AWMonitor App</string>
+    <string name="finish">Finish</string>
     <!-- Get Started String End -->
 </resources>
