@@ -3,11 +3,10 @@ package com.c22_ce02.awmonitorapp.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.security.keystore.UserPresenceUnavailableException
 import android.widget.Toast
 import com.c22_ce02.awmonitorapp.databinding.ActivityGetStartedBinding
-import com.c22_ce02.awmonitorapp.preferences.CheckHelper
-import com.c22_ce02.awmonitorapp.preferences.CheckPreference
+import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
+import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 
 class GetStartedActivity : AppCompatActivity() {
 
