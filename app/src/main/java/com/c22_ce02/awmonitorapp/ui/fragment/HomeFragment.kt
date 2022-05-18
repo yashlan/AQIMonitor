@@ -135,6 +135,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             tvDate.text = getCurrentDate()
                             tvAQI.text = data.aqi.toString()
                             tvAQIStatus.text = getAQIStatus(data.aqi)
+                            panelInfoAirToday.root.setBackgroundResource(
+                                when (data.aqi) {
+                                    in 0..50 -> R.drawable.panel_info_air_today_baik
+                                    in 51..100 -> R.drawable.panel_info_air_today_sedang
+                                    in 101..150 -> R.drawable.panel_info_air_today_tidak_sehat
+                                    in 151..300 -> R.drawable.panel_info_air_today_sangat_tidak_sehat
+                                    else -> R.drawable.panel_info_air_today_berbahaya
+                                }
+                            )
                         }
                     }
                 },
