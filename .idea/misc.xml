@@ -3,10 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bottom_nav_ic_selector.xml" value="0.1645" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_discover_selector.xml" value="0.125" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_glossary_selector.xml" value="0.1405" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home.xml" value="0.2055" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1645" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_login.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_main.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_maps_air_quality.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_qqactivity.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_splash.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_glossary.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_home.xml" value="0.536" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_maps.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_notifications.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/panel_home.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21927083333333333" />
       </map>
     </option>
   </component>
