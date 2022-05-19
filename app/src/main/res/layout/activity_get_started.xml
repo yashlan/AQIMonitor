@@ -17,7 +17,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.3"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/titleMenu1"
@@ -57,7 +58,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.3"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/titleMenu2"
@@ -66,13 +68,13 @@
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-condensed-light"
         android:gravity="center_horizontal"
+        android:text="@string/title_menu_2"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/logoMenu2"
         app:layout_constraintStart_toStartOf="@+id/logoMenu2"
-        app:layout_constraintTop_toBottomOf="@+id/logoMenu2"
-        android:text="@string/title_menu_2" />
+        app:layout_constraintTop_toBottomOf="@+id/logoMenu2" />
 
     <TextView
         android:id="@+id/descMenu2"
@@ -135,6 +137,7 @@
         android:src="@drawable/logo_no_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription"
         tools:layout_editor_absoluteY="225dp" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
