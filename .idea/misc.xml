@@ -4,11 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bottom_nav_ic_selector.xml" value="0.1645" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/card_info_air_today_berbahaya.xml" value="0.136" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_info_air_today_sangat_tidak_sehat.xml" value="0.136" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_info_air_today_tidak_sehat.xml" value="0.136" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_circle_24.xml" value="0.169" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_discover_selector.xml" value="0.125" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_glossary_selector.xml" value="0.1405" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home.xml" value="0.2055" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1645" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_test.xml" value="0.136" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/panel_info_air_today_baik.xml" value="0.136" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_get_started.xml" value="0.1" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_login.xml" value="0.21927083333333333" />
@@ -21,6 +26,7 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_maps.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_notifications.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/panel_home.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/panel_info_air_today.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21927083333333333" />
       </map>
     </option>
