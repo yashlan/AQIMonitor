@@ -1,24 +1,17 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
-import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentConditionViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.FiveDaysOfDailyForecastViewModel
@@ -34,7 +27,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.material.color.DynamicColors
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -137,11 +129,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             tvAQIStatus.text = getAQIStatus(data.aqi)
                             panelInfoAirToday.root.setBackgroundResource(
                                 when (data.aqi) {
-                                    in 0..50 -> R.drawable.panel_info_air_today_baik
-                                    in 51..100 -> R.drawable.panel_info_air_today_sedang
-                                    in 101..150 -> R.drawable.panel_info_air_today_tidak_sehat
-                                    in 151..300 -> R.drawable.panel_info_air_today_sangat_tidak_sehat
-                                    else -> R.drawable.panel_info_air_today_berbahaya
+                                    in 0..50 -> R.drawable.card_info_air_today_baik
+                                    in 51..100 -> R.drawable.card_info_air_today_sedang
+                                    in 101..150 -> R.drawable.card_info_air_today_tidak_sehat
+                                    in 151..300 -> R.drawable.card_info_air_today_sangat_tidak_sehat
+                                    else -> R.drawable.card_info_air_today_berbahaya
                                 }
                             )
                         }
