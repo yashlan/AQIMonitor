@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "799625618567",
-    "project_id": "awmonitor-d3252",
-    "storage_bucket": "awmonitor-d3252.appspot.com"
+    "project_number": "551024428593",
+    "project_id": "apaya-b76d2",
+    "storage_bucket": "apaya-b76d2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:799625618567:android:0599e9627f9eb3d34ec422",
+        "mobilesdk_app_id": "1:551024428593:android:0986b45b1aa5b769e67710",
         "android_client_info": {
           "package_name": "com.c22_ce02.awmonitorapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "799625618567-h55fmt1mcark3cdq3vmtnoc6kefgrm2t.apps.googleusercontent.com",
+          "client_id": "551024428593-22sni7l1790fpiu2dccq4msf0fv94k44.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.c22_ce02.awmonitorapp",
-            "certificate_hash": "668c4a705d662e04817c92e71ecc0d9629da27cb"
+            "certificate_hash": "504bd1cef5f6533c870337d4bad5ee0fac572ae6"
           }
         },
         {
-          "client_id": "799625618567-f8ikfr8qaalcohkga1jcg39j3lqej3uv.apps.googleusercontent.com",
+          "client_id": "551024428593-14iv5fg9ucf0huk4s84k91r7rouafmdn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAM8plQ2khFp_7wAzGcmGtSbeHtqQxr4Rw"
+          "current_key": "AIzaSyDdEHGJVERY77j2SJreplR3wQXEzgSJX-k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "799625618567-f8ikfr8qaalcohkga1jcg39j3lqej3uv.apps.googleusercontent.com",
+              "client_id": "551024428593-14iv5fg9ucf0huk4s84k91r7rouafmdn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
