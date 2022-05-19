@@ -21,7 +21,7 @@ android {
         buildConfigField("String", "API_KEY_WEATHERBIT", '"8834c90234b24985a11fb6b492b1e934"')
         buildConfigField("String", "BASE_URL_ACCUWEATHER", '"http://dataservice.accuweather.com/"')
         buildConfigField("String", "BASE_URL_WEATHERBIT", '"https://api.weatherbit.io/v2.0/"')
-        manifestPlaceholders = [MAPS_API: "AIzaSyDdEHGJVERY77j2SJreplR3wQXEzgSJX-k"]
+        manifestPlaceholders = [MAPS_API: "AIzaSyCfWz2_9ATSzFcGvhxFPc17b4W3WQ9w3BU"]
     }
 
     buildTypes {
