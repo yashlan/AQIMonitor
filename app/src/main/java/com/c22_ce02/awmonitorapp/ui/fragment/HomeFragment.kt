@@ -2,6 +2,7 @@ package com.c22_ce02.awmonitorapp.ui.fragment
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
+import com.c22_ce02.awmonitorapp.adapter.AirQualityForecastTodayAdapter
+import com.c22_ce02.awmonitorapp.data.model.ForecastAirQualityToday
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentConditionViewModel
@@ -20,9 +23,8 @@ import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentConditionViewModelFactory
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.FiveDaysOfDailyForecastViewModelFactory
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.GeoPositionViewModelFactory
-import com.c22_ce02.awmonitorapp.utils.requestPermissionLauncher
-import com.c22_ce02.awmonitorapp.utils.showToast
-import com.c22_ce02.awmonitorapp.utils.viewBinding
+import com.c22_ce02.awmonitorapp.utils.*
+import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -51,33 +53,109 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         CurrentAirQualityViewModelFactory()
     }
 
+    private val listForecast = ArrayList<ForecastAirQualityToday>()
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         loadAllData()
     }
 
-    private fun changeBackgroundColor(aqi: Int) {
-        requireActivity().window.decorView.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                when (aqi) {
-                    in 0..50 -> R.color.warna_baik
-                    in 51..100 -> R.color.warna_sedang
-                    in 101..150 -> R.color.warna_tidak_sehat
-                    in 151..300 -> R.color.warna_sangat_tidak_sehat
-                    else -> R.color.warna_berbahaya
-                }
+    private fun initDummyForecast(todo: () -> Unit) {
+        val currentHour = SimpleDateFormat("hh", Locale("id")).format(Date()).toInt()
+        val amPmMarker = SimpleDateFormat("a", Locale("id")).format(Date()).lowercase()
+        listForecast.add(
+            ForecastAirQualityToday(
+                "${currentHour}${amPmMarker}",
+                R.drawable.ic_air_quality_item_status_baik,
+                20
             )
+        )
+        listForecast.add(
+            ForecastAirQualityToday(
+                "${currentHour + 1}${amPmMarker}",
+                R.drawable.ic_air_quality_item_status_sangat_tidak_sehat,
+                254
+            )
+        )
+        listForecast.add(
+            ForecastAirQualityToday(
+                "${currentHour + 2}${amPmMarker}",
+                R.drawable.ic_air_quality_item_status_tidak_sehat,
+                150
+            )
+        )
+        listForecast.add(
+            ForecastAirQualityToday(
+                "${currentHour + 3}${amPmMarker}",
+                R.drawable.ic_air_quality_item_status_baik,
+                20
+            )
+        )
+        listForecast.add(
+            ForecastAirQualityToday(
+                "${currentHour + 4}${amPmMarker}",
+                R.drawable.ic_air_quality_item_status_sedang,
+                60
+            )
+        )
+        listForecast.add(
+            ForecastAirQualityToday(
+                "${currentHour + 5}${amPmMarker}",
+                R.drawable.ic_air_quality_item_status_baik,
+                26
+            )
+        )
+        listForecast.add(
+            ForecastAirQualityToday(
+                "${currentHour + 6}${amPmMarker}",
+                R.drawable.ic_air_quality_item_status_berbahaya,
+                361
+            )
+        )
+
+        todo.invoke()
+    }
+
+    private fun changeWindowBackgroundResource(aqi: Int) {
+        requireActivity().window.decorView.setBackgroundResource(
+            when (aqi) {
+                in 0..50 -> R.drawable.window_bg_baik
+                in 51..100 -> R.drawable.window_bg_sedang
+                in 101..150 -> R.drawable.window_bg_tidak_sehat
+                in 151..300 -> R.drawable.window_bg_sangat_tidak_sehat
+                else -> R.drawable.window_bg_berbahaya
+            }
         )
     }
 
-    private fun getAQIStatus(aqi: Int) : String {
+    private fun getCardBgItemAirTodayResource(aqi: Int): Int {
         return when (aqi) {
-            in 0..50 -> "Baik"
-            in 51..100 -> "Sedang"
-            in 101..150 -> "Tidak Sehat"
-            in 151..300 -> "Sangat Tidak \nSehat"
-            else -> "Berbahaya"
+            in 0..50 -> R.drawable.card_info_air_today_baik
+            in 51..100 -> R.drawable.card_info_air_today_sedang
+            in 101..150 -> R.drawable.card_info_air_today_tidak_sehat
+            in 151..300 -> R.drawable.card_info_air_today_sangat_tidak_sehat
+            else -> R.drawable.card_info_air_today_berbahaya
+        }
+    }
+
+    private fun getAQILabelStatus(aqi: Int): Int {
+        return when (aqi) {
+            in 0..50 -> R.drawable.ic_label_baik
+            in 51..100 -> R.drawable.ic_label_sedang
+            in 101..150 -> R.drawable.ic_label_tidak_sehat
+            in 151..300 -> R.drawable.ic_label_sangat_tidak_sehat
+            else -> R.drawable.ic_label_berbahaya
+        }
+    }
+
+    private fun getAirStatusMessage(aqi: Int): String {
+        return when (aqi) {
+            in 0..50 -> getString(R.string.status_air_baik_msg)
+            in 51..100 -> getString(R.string.status_air_sedang_msg)
+            in 101..150 -> getString(R.string.status_air_tidak_sehat_msg)
+            in 151..300 -> getString(R.string.status_air_sangat_tidak_sehat_msg)
+            else -> getString(R.string.status_air_berbahaya_msg)
         }
     }
 
@@ -105,12 +183,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun getCurrentDate() : String {
+    private fun getCurrentDate(): String {
         val dateNumber = SimpleDateFormat("dd", Locale("id")).format(Date())
         val yearNumber = SimpleDateFormat("yyyy", Locale("id")).format(Date())
-        val dayName = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("id"))
-        val monthName = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("id"))
+        val dayName =
+            Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("id"))
+        val monthName =
+            Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("id"))
         return "$dayName, $dateNumber $monthName $yearNumber"
+    }
+
+    private fun getCurrentLocationName(lat: Double, lon: Double): String {
+        val geocoder = Geocoder(requireContext(), Locale("id"))
+        val addresses = geocoder.getFromLocation(lat, lon, 1)
+        val subLocality = addresses[0].subLocality
+        return "$subLocality, Indonesia"
     }
 
     private fun loadAllData() {
@@ -122,20 +209,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 onSuccess = {
                     if (it != null) {
                         val data = it.data[0]
-                        changeBackgroundColor(data.aqi)
+                        changeWindowBackgroundResource(data.aqi)
                         with(binding) {
+                            binding.tvLocation.text = getCurrentLocationName(lat, lon)
                             tvDate.text = getCurrentDate()
-                            tvAQI.text = data.aqi.toString()
-                            tvAQIStatus.text = getAQIStatus(data.aqi)
-                            panelInfoAirToday.root.setBackgroundResource(
-                                when (data.aqi) {
-                                    in 0..50 -> R.drawable.card_info_air_today_baik
-                                    in 51..100 -> R.drawable.card_info_air_today_sedang
-                                    in 101..150 -> R.drawable.card_info_air_today_tidak_sehat
-                                    in 151..300 -> R.drawable.card_info_air_today_sangat_tidak_sehat
-                                    else -> R.drawable.card_info_air_today_berbahaya
-                                }
+                            itemStatusAirMessage.tvAirStatusMsg.text = getAirStatusMessage(data.aqi)
+                            itemInfoAirToday.tvToday.text = getString(R.string.hari_ini)
+                            itemInfoAirToday.imgLabelAir.setImageResource(getAQILabelStatus(data.aqi))
+                            itemInfoAirToday.root.setBackgroundResource(
+                                getCardBgItemAirTodayResource(data.aqi)
                             )
+                            startIncrementTextAnimation(data.aqi, itemInfoAirToday.tvAQI)
+                        }
+
+                        initDummyForecast {
+                            setupAdapter(binding.rvListAirForecast, false, addAdapterValue = {
+                                binding.rvListAirForecast.adapter =
+                                    AirQualityForecastTodayAdapter(listForecast)
+                            })
                         }
                     }
                 },
@@ -145,6 +236,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                 }
             )
+
 
             /* geoPositionViewModel.getInformationUserByGeoPosition(
                  "${lat},${lon}",
