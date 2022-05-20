@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityHomeBinding
+import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -34,7 +35,7 @@ val Fragment.requestPermissionLauncher: ActivityResultLauncher<Array<String>>
             }
             else -> {
                 showSnackBar(
-                    ActivityHomeBinding.inflate(layoutInflater).root,
+                    FragmentHomeBinding.inflate(layoutInflater).root,
                     R.string.msg_permission_maps,
                     R.string.yes,
                     onClickOkAction = {
@@ -75,6 +76,16 @@ fun Fragment.createLocationRequest(fusedLocationClient: FusedLocationProviderCli
             if (isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) &&
                 isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
             ) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return@addOnSuccessListener
+                }
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location: Location? ->
                         if (location != null) {
