@@ -1,0 +1,20 @@
+package com.c22_ce02.awmonitorapp.utils
+
+import android.animation.ValueAnimator
+import android.widget.TextView
+
+
+object Animation {
+    fun startIncrementTextAnimation(maxValue: Int, textView: TextView) {
+        if (!textView.text.isNullOrEmpty() &&
+            textView.text.toString().toInt() == maxValue
+        ) return
+        val animator = ValueAnimator()
+        animator.setObjectValues(0, maxValue)
+        animator.addUpdateListener { animation ->
+            textView.text = animation.animatedValue.toString()
+        }
+        animator.duration = 1000
+        animator.start()
+    }
+}
