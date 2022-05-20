@@ -21,7 +21,7 @@ android {
         buildConfigField("String", "API_KEY_WEATHERBIT", '"8834c90234b24985a11fb6b492b1e934"')
         buildConfigField("String", "BASE_URL_ACCUWEATHER", '"http://dataservice.accuweather.com/"')
         buildConfigField("String", "BASE_URL_WEATHERBIT", '"https://api.weatherbit.io/v2.0/"')
-        manifestPlaceholders = [MAPS_API: "AIzaSyDdEHGJVERY77j2SJreplR3wQXEzgSJX-k"]
+        manifestPlaceholders = [MAPS_API: "AIzaSyDnqa54tGAmYn-sO9aBi6Sw5fzsXOcNego"]
     }
 
     buildTypes {
@@ -77,9 +77,10 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
 
     // constraint for motion layout animation
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'

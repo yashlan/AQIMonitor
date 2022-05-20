@@ -21,6 +21,10 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_notifications.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/panel_home.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21927083333333333" />
+        <entry key="app/src/main/res/layout/activity_discover.xml" value="0.15897435897435896" />
+        <entry key="app/src/main/res/layout/fragment_discover.xml" value="0.17051282051282052" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.15897435897435896" />
+        <entry key="app/src/main/res/menu/map_option.xml" value="0.15897435897435896" />
       </map>
     </option>
   </component>

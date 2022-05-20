@@ -1,0 +1,224 @@
+{
+  "data": [
+    {
+      "city": "Jakarta",
+      "lat": "-6.2146",
+      "lng": "106.8451",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jakarta",
+      "capital": "primary",
+      "population": "34540000",
+      "population_proper": "10154134"
+    },
+    {
+      "city": "Surabaya",
+      "lat": "-7.2458",
+      "lng": "112.7378",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jawa Timur",
+      "capital": "admin",
+      "population": "4975000",
+      "population_proper": "4975000"
+    },
+    {
+      "city": "Bandung",
+      "lat": "-6.9500",
+      "lng": "107.5667",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jawa Barat",
+      "capital": "admin",
+      "population": "2394873",
+      "population_proper": "2394873"
+    },
+    {
+      "city": "Bekasi",
+      "lat": "-6.2333",
+      "lng": "107.0000",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jawa Barat",
+      "capital": "",
+      "population": "2381053",
+      "population_proper": "2381053"
+    },
+    {
+      "city": "Tangerang",
+      "lat": "-6.1783",
+      "lng": "106.6319",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jawa Barat",
+      "capital": "",
+      "population": "2237006",
+      "population_proper": "2237006"
+    },
+    {
+      "city": "Medan",
+      "lat": "3.6667",
+      "lng": "98.6667",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Sumatera Utara",
+      "capital": "admin",
+      "population": "2210625",
+      "population_proper": "2210625"
+    },
+    {
+      "city": "Makassar",
+      "lat": "-5.1331",
+      "lng": "119.4136",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Sulawesi Selatan",
+      "capital": "admin",
+      "population": "1651146",
+      "population_proper": "1651146"
+    },
+    {
+      "city": "Semarang",
+      "lat": "-6.9667",
+      "lng": "110.4167",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jawa Tengah",
+      "capital": "admin",
+      "population": "1621384",
+      "population_proper": "1621384"
+    },
+    {
+      "city": "Palembang",
+      "lat": "-2.9833",
+      "lng": "104.7644",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Sumatera Selatan",
+      "capital": "admin",
+      "population": "1452456",
+      "population_proper": "1452456"
+    },
+    {
+      "city": "Cilacap",
+      "lat": "-7.7167",
+      "lng": "109.0170",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jawa Tengah",
+      "capital": "minor",
+      "population": "1174964",
+      "population_proper": "1174964"
+    },
+    {
+      "city": "Bandar Lampung",
+      "lat": "-5.4294",
+      "lng": "105.2625",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Lampung",
+      "capital": "admin",
+      "population": "1166761",
+      "population_proper": "1166761"
+    },
+    {
+      "city": "Padang",
+      "lat": "-0.9556",
+      "lng": "100.3606",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Sumatera Barat",
+      "capital": "admin",
+      "population": "914970",
+      "population_proper": "914970"
+    },
+    {
+      "city": "Pekanbaru",
+      "lat": "0.5333",
+      "lng": "101.4500",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Riau",
+      "capital": "admin",
+      "population": "855221",
+      "population_proper": "855221"
+    },
+    {
+      "city": "Denpasar",
+      "lat": "-8.6667",
+      "lng": "115.2167",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Bali",
+      "capital": "admin",
+      "population": "834881",
+      "population_proper": "834881"
+    },
+    {
+      "city": "Samarinda",
+      "lat": "-0.5022",
+      "lng": "117.1536",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Kalimantan Timur",
+      "capital": "admin",
+      "population": "753370",
+      "population_proper": "753370"
+    },
+    {
+      "city": "Banjarmasin",
+      "lat": "-3.3333",
+      "lng": "114.5833",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Kalimantan Selatan",
+      "capital": "admin",
+      "population": "692793",
+      "population_proper": "692793"
+    },
+    {
+      "city": "Pontianak",
+      "lat": "-0.0206",
+      "lng": "109.3414",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Kalimantan Barat",
+      "capital": "admin",
+      "population": "618388",
+      "population_proper": "618388"
+    },
+    {
+      "city": "Serang",
+      "lat": "-6.1200",
+      "lng": "106.1503",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Banten",
+      "capital": "admin",
+      "population": "613356",
+      "population_proper": "613356"
+    },
+    {
+      "city": "Jambi",
+      "lat": "-1.5900",
+      "lng": "103.6100",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Jambi",
+      "capital": "admin",
+      "population": "602187",
+      "population_proper": "602187"
+    },
+    {
+      "city": "Manado",
+      "lat": "1.4931",
+      "lng": "124.8413",
+      "country": "Indonesia",
+      "iso2": "ID",
+      "admin_name": "Sulawesi Utara",
+      "capital": "admin",
+      "population": "461636",
+      "population_proper": "461636"
+    }
+  ]
+}
