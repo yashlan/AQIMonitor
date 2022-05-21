@@ -27,4 +27,10 @@
     <string name="splash_title">AWMonitor App</string>
     <string name="logo_desc">Logo AWMonitor App</string>
     <string name="finish">Finish</string>
+    <string name="title_activity_discover">DiscoverActivity</string>
+
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
 </resources>

@@ -14,8 +14,10 @@ class GlossaryFragment : Fragment(R.layout.fragment_glossary) {
     private val binding by viewBinding<FragmentGlossaryBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         binding.tvTest.text = "Ini Fragment Glosarium"
     }
+
 
     companion object {
 

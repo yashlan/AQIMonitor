@@ -17,6 +17,7 @@ import com.c22_ce02.awmonitorapp.utils.showToast
 import com.c22_ce02.awmonitorapp.utils.viewBinding
 
 
+
 class HomeActivity : AppCompatActivity() {
 
     private var canExit = false
@@ -34,13 +35,14 @@ class HomeActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration.Builder(
             setOf(
                 R.id.navigation_home,
-                R.id.navigation_discover,
+                R.id.mapsFragment,
                 R.id.navigation_glossary,
             )
         ).build()
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
         removeItemTintColor()
+        
     }
 
     private fun removeItemTintColor() {
@@ -66,7 +68,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun onClickItemNavDiscover(item: MenuItem) {
-        navController.navigate(R.id.navigation_discover)
+        navController.navigate(R.id.mapsFragment)
         changeStateIconItem(item)
     }
 
