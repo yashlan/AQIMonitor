@@ -1,10 +1,13 @@
-package com.c22_ce02.awmonitorapp.ui.activity
+package com.c22_ce02.awmonitorapp.ui.fragment
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.asset.DummyResponseItem
-import com.c22_ce02.awmonitorapp.databinding.ActivityDiscoverBinding
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -16,30 +19,31 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-class DiscoverActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
-    private lateinit var binding: ActivityDiscoverBinding
+class MapsFragment : Fragment(){
+
     private var listLocation : ArrayList<DummyResponseItem> = ArrayList()
+    private lateinit var mMap: GoogleMap
 
+    private val callback = OnMapReadyCallback { googleMap ->
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDiscoverBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-    }
-
-
-    override fun onMapReady(googleMap: GoogleMap) {
         getListCity(googleMap)
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_maps, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
+    }
+
 
     private fun getListCity(googleMap: GoogleMap) {
         mMap = googleMap
@@ -65,7 +69,7 @@ class DiscoverActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val name = listLocation[i].city.toString()
                 mMap.addMarker(MarkerOptions().position(location).title(name))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,10f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
 
 
             }
@@ -77,7 +81,7 @@ class DiscoverActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun loadJSONFromAsset(): String? {
         val json = try {
-            val inputStream  = assets.open("city.json")
+            val inputStream = requireContext().assets.open("city.json")
             val size = inputStream.available()
             val buffer = ByteArray(size)
             inputStream.read(buffer)
@@ -89,5 +93,4 @@ class DiscoverActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         return json
     }
-
 }

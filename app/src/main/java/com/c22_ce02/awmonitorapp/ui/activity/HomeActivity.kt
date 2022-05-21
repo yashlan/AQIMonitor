@@ -35,7 +35,7 @@ class HomeActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration.Builder(
             setOf(
                 R.id.navigation_home,
-                R.id.discoverActivity,
+                R.id.mapsFragment,
                 R.id.navigation_glossary,
             )
         ).build()
@@ -68,7 +68,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun onClickItemNavDiscover(item: MenuItem) {
-        navController.navigate(R.id.discoverActivity)
+        navController.navigate(R.id.mapsFragment)
         changeStateIconItem(item)
     }
 

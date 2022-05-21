@@ -16,10 +16,10 @@
         android:name="com.c22_ce02.awmonitorapp.ui.fragment.GlossaryFragment"
         android:label="@string/title_glossary"
         tools:layout="@layout/fragment_glossary" />
-    <activity
-        android:id="@+id/discoverActivity"
-        android:name="com.c22_ce02.awmonitorapp.ui.activity.DiscoverActivity"
-        android:label="activity_discover"
-        tools:layout="@layout/activity_discover" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.c22_ce02.awmonitorapp.ui.fragment.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 
 </navigation>

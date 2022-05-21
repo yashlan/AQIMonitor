@@ -24,9 +24,6 @@
             android:value="${MAPS_API}" />
 
         <activity
-            android:name=".ui.activity.DiscoverActivity"
-            android:exported="false"/>
-        <activity
             android:name=".ui.activity.GetStartedActivity"
             android:exported="false" />
         <activity
