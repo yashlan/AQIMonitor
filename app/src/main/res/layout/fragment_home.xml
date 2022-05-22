@@ -44,41 +44,14 @@
             app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
         <include
-            android:id="@+id/card_home"
-            layout="@layout/item_panel_home_info_container"
+            android:id="@+id/itemPanelHomeInfo"
+            layout="@layout/item_panel_home_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemInfoAirToday" />
-
-        <include
-            android:id="@+id/itemStatusAirMessage"
-            layout="@layout/item_quality_status_air_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="@+id/card_home"
-            app:layout_constraintStart_toStartOf="@+id/card_home"
-            app:layout_constraintTop_toBottomOf="@+id/itemInfoAirToday" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvListAirForecast"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@+id/card_home"
-            app:layout_constraintStart_toStartOf="@+id/card_home"
-            app:layout_constraintTop_toBottomOf="@+id/itemStatusAirMessage" />
-
-        <include
-            layout="@layout/item_info_list_air_today"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/card_home"
-            app:layout_constraintEnd_toEndOf="@+id/card_home"
-            app:layout_constraintStart_toStartOf="@id/card_home"
-            app:layout_constraintTop_toBottomOf="@+id/rvListAirForecast" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
