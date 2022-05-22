@@ -80,14 +80,14 @@
             tools:ignore="UseCompoundDrawables">
 
             <TextView
-                android:id="@+id/tvLabelPM25"
+                android:id="@+id/tvLabelAQI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                tools:text="PM2.5" />
+                tools:text="AQI" />
 
         </LinearLayout>
 
