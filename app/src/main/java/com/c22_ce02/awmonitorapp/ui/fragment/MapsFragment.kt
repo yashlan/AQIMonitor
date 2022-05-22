@@ -52,7 +52,7 @@ class MapsFragment : Fragment(){
             val jsonObject = JSONObject(loadJSONFromAsset()!!)
             val locs = jsonObject.getJSONArray("data")
 
-            for (i in 0..locs.length()) {
+            for (i in 0 until locs.length() -1) {
                 val loc = locs.getJSONObject(i)
                 val data = DummyResponseItem()
 
