@@ -22,8 +22,6 @@
     <string name="splash_title">AWMonitor App</string>
     <string name="logo_desc">Logo AWMonitor App</string>
     <string name="finish">Finish</string>
-    <string name="baik">Baik</string>
-    <string name="sedang">Sedang</string>
     <string name="tidak_sehat">Tidak Sehat</string>
     <string name="sangat_tidak_sehat">Sangat Tidak \nSehat</string>
     <string name="berbahaya">Berbahaya</string>
@@ -35,5 +33,15 @@
     <string name="status_air_berbahaya_msg">Saat ini kualitas udara di tempatmu berstatus Berbahaya, Udara sangat berbahaya bagi kesehatanmu, Jangan lupa pakai masker ya kalau mau keluar rumah!</string>
     <string name="hari_ini">Hari ini</string>
     <string name="pm25">PM2.5</string>
+    <string name="now">Now</string>
+    <string name="baik">Baik</string>
+    <string name="sedang">Sedang</string>
+    <string name="buruk">Buruk</string>
+    <string name="aqi">AQI</string>
+    <string name="pm10">PM10</string>
+    <string name="so2">SO2</string>
+    <string name="co2">CO2</string>
+    <string name="no2">NO2</string>
+    <string name="o3">O3</string>
 
 </resources>
