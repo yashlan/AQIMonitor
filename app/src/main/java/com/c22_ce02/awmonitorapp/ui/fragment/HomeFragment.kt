@@ -1,33 +1,33 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
-import com.c22_ce02.awmonitorapp.adapter.AirQualityForecastTodayAdapter
-import com.c22_ce02.awmonitorapp.data.model.ForecastAirQualityToday
+import com.c22_ce02.awmonitorapp.adapter.AirQualityForecastByHourAdapter
+import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
-import com.c22_ce02.awmonitorapp.ui.view.model.CurrentConditionViewModel
-import com.c22_ce02.awmonitorapp.ui.view.model.FiveDaysOfDailyForecastViewModel
-import com.c22_ce02.awmonitorapp.ui.view.model.GeoPositionViewModel
+import com.c22_ce02.awmonitorapp.ui.view.model.CurrentWeatherConditionViewModel
+import com.c22_ce02.awmonitorapp.ui.view.model.AirQualityForecastByHourViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentAirQualityViewModelFactory
-import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentConditionViewModelFactory
-import com.c22_ce02.awmonitorapp.ui.view.modelfactory.FiveDaysOfDailyForecastViewModelFactory
-import com.c22_ce02.awmonitorapp.ui.view.modelfactory.GeoPositionViewModelFactory
+import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentWeatherConditionViewModelFactory
+import com.c22_ce02.awmonitorapp.ui.view.modelfactory.AirQualityForecastByHourViewModelFactory
 import com.c22_ce02.awmonitorapp.utils.*
 import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,86 +35,67 @@ import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
+    private var allowRefresh = false
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
-
     private val binding by viewBinding<FragmentHomeBinding>()
-    private val geoPositionViewModel: GeoPositionViewModel by viewModels {
-        GeoPositionViewModelFactory()
+    private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
+        CurrentWeatherConditionViewModelFactory()
     }
-    private val fiveDaysOfDailyForecastViewModel: FiveDaysOfDailyForecastViewModel by viewModels {
-        FiveDaysOfDailyForecastViewModelFactory()
-    }
-    private val currentConditionViewModel: CurrentConditionViewModel by viewModels {
-        CurrentConditionViewModelFactory()
+    private val airQualityForecastByHourViewModel: AirQualityForecastByHourViewModel by viewModels {
+        AirQualityForecastByHourViewModelFactory()
     }
     private val currentAirQualityViewModel: CurrentAirQualityViewModel by viewModels {
         CurrentAirQualityViewModelFactory()
     }
 
-    private val listForecast = ArrayList<ForecastAirQualityToday>()
+    private val listForecast = ArrayList<AirQualityForecastByHour>()
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                loadAllData()
+            }
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                loadAllData()
+            }
+            else -> {
+                showSnackBar(
+                    binding.root,
+                    R.string.msg_permission_maps,
+                    R.string.yes,
+                    onClickOkAction = {
+                        allowRefresh = true
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        val uri = Uri.fromParts("package", requireActivity().packageName, null)
+                        intent.data = uri
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                )
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         loadAllData()
     }
 
-    private fun initDummyForecast(todo: () -> Unit) {
-        val currentHour = SimpleDateFormat("hh", Locale("id")).format(Date()).toInt()
-        val amPmMarker = SimpleDateFormat("a", Locale("id")).format(Date()).lowercase()
-        listForecast.add(
-            ForecastAirQualityToday(
-                "${currentHour}${amPmMarker}",
-                R.drawable.ic_air_quality_item_status_baik,
-                20
-            )
-        )
-        listForecast.add(
-            ForecastAirQualityToday(
-                "${currentHour + 1}${amPmMarker}",
-                R.drawable.ic_air_quality_item_status_sangat_tidak_sehat,
-                254
-            )
-        )
-        listForecast.add(
-            ForecastAirQualityToday(
-                "${currentHour + 2}${amPmMarker}",
-                R.drawable.ic_air_quality_item_status_tidak_sehat,
-                150
-            )
-        )
-        listForecast.add(
-            ForecastAirQualityToday(
-                "${currentHour + 3}${amPmMarker}",
-                R.drawable.ic_air_quality_item_status_baik,
-                20
-            )
-        )
-        listForecast.add(
-            ForecastAirQualityToday(
-                "${currentHour + 4}${amPmMarker}",
-                R.drawable.ic_air_quality_item_status_sedang,
-                60
-            )
-        )
-        listForecast.add(
-            ForecastAirQualityToday(
-                "${currentHour + 5}${amPmMarker}",
-                R.drawable.ic_air_quality_item_status_baik,
-                26
-            )
-        )
-        listForecast.add(
-            ForecastAirQualityToday(
-                "${currentHour + 6}${amPmMarker}",
-                R.drawable.ic_air_quality_item_status_berbahaya,
-                361
-            )
-        )
-
-        todo.invoke()
+    override fun onResume() {
+        super.onResume()
+        if (isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION) &&
+            allowRefresh
+        ) {
+            loadAllData()
+            allowRefresh = false
+        } else {
+            if (allowRefresh) {
+                requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
+                allowRefresh = false
+            }
+        }
     }
 
     private fun changeWindowBackgroundResource(aqi: Int) {
@@ -139,6 +120,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    private fun getItemStatusAirMessageBgColor(aqi: Int): Int {
+        return ContextCompat.getColor(
+            requireContext(),
+            when (aqi) {
+                in 0..100 -> R.color.warna_baik
+                else -> R.color.deep_orange
+            }
+        )
+    }
+
+    private fun getStatusName(param: Int): String {
+        return when (param) {
+            in 0..50 -> getString(R.string.baik)
+            in 51..100 -> getString(R.string.sedang)
+            else -> getString(R.string.buruk)
+        }
+    }
+
     private fun getAQILabelStatus(aqi: Int): Int {
         return when (aqi) {
             in 0..50 -> R.drawable.ic_label_baik
@@ -159,27 +158,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun getLocation(onGetLocation: (Double, Double) -> Unit) {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
-        } else {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        onGetLocation(location.latitude, location.longitude)
-                    } else {
-                        showToast("lokasi null")
-                    }
-                }
-                .addOnFailureListener {
-                    showToast("Tidak dapat menemukan lokasi. Silakan Coba Lagi")
-                }
+    private fun getIconItem(param: Int): Int {
+        return when (param) {
+            in 0..50 -> R.drawable.ic_air_quality_item_status_baik
+            in 51..100 -> R.drawable.ic_air_quality_item_status_sedang
+            in 101..150 -> R.drawable.ic_air_quality_item_status_tidak_sehat
+            in 151..300 -> R.drawable.ic_air_quality_item_status_sangat_tidak_sehat
+            else -> R.drawable.ic_air_quality_item_status_berbahaya
         }
     }
 
@@ -197,11 +182,116 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val geocoder = Geocoder(requireContext(), Locale("id"))
         val addresses = geocoder.getFromLocation(lat, lon, 1)
         val subLocality = addresses[0].subLocality
-        return "$subLocality, Indonesia"
+        val adminArea = addresses[0].adminArea
+        return "${subLocality ?: adminArea}, Indonesia"
+    }
+
+    private fun getLocation(onGetLocation: (Double, Double) -> Unit) {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
+        } else {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        onGetLocation(location.latitude, location.longitude)
+                    } else {
+                        showToast("lokasi tidak diketahui")
+                    }
+                }
+                .addOnFailureListener {
+                    showToast(it.localizedMessage?.toString() ?: it.message.toString())
+                }
+        }
     }
 
     private fun loadAllData() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         getLocation(onGetLocation = { lat, lon ->
+            currentWeatherConditionViewModel.getCurrentWeatherCondition(
+                lat,
+                lon,
+                BuildConfig.API_KEY_WEATHERBIT,
+                onSuccess = {
+                    if (it != null) {
+                        val data = it[0]
+                        changeWindowBackgroundResource(data.aqi.toInt())
+                        with(binding) {
+                            binding.tvLocation.text = getCurrentLocationName(lat, lon)
+                            tvDate.text = getCurrentDate()
+                            itemPanelHomeInfo.itemStatusAirMessage.root.setCardBackgroundColor(
+                                getItemStatusAirMessageBgColor(data.aqi.toInt())
+                            )
+                            itemPanelHomeInfo.itemStatusAirMessage.tvAirStatusMsg.text =
+                                getAirStatusMessage(data.aqi.toInt())
+                            itemInfoAirToday.tvToday.text = getString(R.string.hari_ini)
+                            itemInfoAirToday.imgLabelAir.setImageResource(getAQILabelStatus(data.aqi.toInt()))
+                            itemInfoAirToday.root.setBackgroundResource(
+                                getCardBgItemAirTodayResource(data.aqi.toInt())
+                            )
+                            itemInfoAirToday.tvWindSpeed.text =
+                                convertWindSpeedToKmh(data.windSpeed.toInt())
+                            "${data.temperature.toInt()} C".also { temp ->
+                                itemInfoAirToday.tvTemperature.text = temp
+                            }
+                            "${data.humidity.toInt()}%".also { hum ->
+                                itemInfoAirToday.tvHumidity.text = hum
+                            }
+                            startIncrementTextAnimation(data.aqi.toInt(), itemInfoAirToday.tvAQI)
+                        }
+                    }
+                },
+                onFailed = { errorMsg ->
+                    if (errorMsg != null) {
+                        showToast("currentWeatherConditionError : $errorMsg")
+                    }
+                }
+            )
+
+            airQualityForecastByHourViewModel.getAirQualityForecastByHour(
+                lat,
+                lon,
+                BuildConfig.API_KEY_WEATHERBIT,
+                6,
+                onSuccess = {
+                    if (it != null) {
+                        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
+                        val formatter = SimpleDateFormat("ha", Locale("id"))
+                        it.forEach { data ->
+                            val currentHour =
+                                formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
+                            listForecast.add(
+                                AirQualityForecastByHour(
+                                    currentHour,
+                                    getIconItem(data.aqi.toInt()),
+                                    data.aqi.toInt()
+                                )
+                            )
+
+                            if (it.size == listForecast.size) {
+                                setupAdapter(
+                                    binding.itemPanelHomeInfo.rvListAirForecast,
+                                    false,
+                                    addAdapterValue = {
+                                        binding.itemPanelHomeInfo.rvListAirForecast.adapter =
+                                            AirQualityForecastByHourAdapter(listForecast)
+                                    })
+                            }
+                        }
+                    }
+                },
+                onFailed = { errorMsg ->
+                    if (errorMsg != null) {
+                        showToast(" everyHourAirQualityForecastError : $errorMsg")
+                    }
+                }
+            )
+
             currentAirQualityViewModel.getCurrentAirQuality(
                 lat,
                 lon,
@@ -209,25 +299,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 onSuccess = {
                     if (it != null) {
                         val data = it.data[0]
-                        changeWindowBackgroundResource(data.aqi)
-                        with(binding) {
-                            binding.tvLocation.text = getCurrentLocationName(lat, lon)
-                            tvDate.text = getCurrentDate()
-                            itemStatusAirMessage.tvAirStatusMsg.text = getAirStatusMessage(data.aqi)
-                            itemInfoAirToday.tvToday.text = getString(R.string.hari_ini)
-                            itemInfoAirToday.imgLabelAir.setImageResource(getAQILabelStatus(data.aqi))
-                            itemInfoAirToday.root.setBackgroundResource(
-                                getCardBgItemAirTodayResource(data.aqi)
-                            )
-                            startIncrementTextAnimation(data.aqi, itemInfoAirToday.tvAQI)
-                        }
+                        val itemListAirInfo = binding.itemPanelHomeInfo.itemInfoListAirToday
 
-                        initDummyForecast {
-                            setupAdapter(binding.rvListAirForecast, false, addAdapterValue = {
-                                binding.rvListAirForecast.adapter =
-                                    AirQualityForecastTodayAdapter(listForecast)
-                            })
-                        }
+                        itemListAirInfo.tvPm10.text = data.pm10.toInt().toString()
+                        itemListAirInfo.iconStatusPM10.setImageResource(getIconItem(data.pm10.toInt()))
+                        itemListAirInfo.tvStatusPM10.text = getStatusName(data.pm10.toInt())
+
+                        itemListAirInfo.tvPM25.text = data.pm25.toInt().toString()
+                        itemListAirInfo.iconStatusPM25.setImageResource(getIconItem(data.pm25.toInt()))
+                        itemListAirInfo.tvStatusPM25.text = getStatusName(data.pm25.toInt())
+
+                        itemListAirInfo.tvSO2.text = data.so2.toInt().toString()
+                        itemListAirInfo.iconStatusSO2.setImageResource(getIconItem(data.so2.toInt()))
+                        itemListAirInfo.tvStatusSO2.text = getStatusName(data.so2.toInt())
+
+                        itemListAirInfo.tvCO.text = data.co.toInt().toString()
+                        itemListAirInfo.iconStatusCO.setImageResource(getIconItem(data.co.toInt()))
+                        itemListAirInfo.tvStatusCO.text = getStatusName(data.co.toInt())
+
+                        itemListAirInfo.tvNO2.text = data.no2.toInt().toString()
+                        itemListAirInfo.iconStatusNO2.setImageResource(getIconItem(data.no2.toInt()))
+                        itemListAirInfo.tvStatusNO2.text = getStatusName(data.no2.toInt())
+
+                        itemListAirInfo.tvO3.text = data.o3.toInt().toString()
+                        itemListAirInfo.iconStatusO3.setImageResource(getIconItem(data.o3.toInt()))
+                        itemListAirInfo.tvStatusO3.text = getStatusName(data.o3.toInt())
                     }
                 },
                 onFailed = { errorMsg ->
@@ -236,79 +332,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                 }
             )
-
-
-            /* geoPositionViewModel.getInformationUserByGeoPosition(
-                 "${lat},${lon}",
-                 onSuccess = { r ->
-                     binding.tvMyLocation.text =
-                         "Lokasi Saya : ${r?.localizedName}, " +
-                                 "${r?.administrativeArea?.localizedName}, " +
-                                 "${r?.country?.localizedName}"
-
-                     if (r?.locationKey != null) {
-                         currentConditionViewModel.getCurrentCondition(
-                             r.locationKey,
-                             onSuccess = {
-                                 val tempC =
-                                     "${it?.get(0)?.temperature?.metric?.value}${it?.get(0)?.temperature?.metric?.unit}"
-                                 binding.tvCurrentCondition.text =
-                                     "Cuaca Saat Ini : ${it?.get(0)?.weatherText}, $tempC"
-                             },
-                             onFailed = { errorMsg ->
-                                 if (errorMsg != null) {
-                                     showToast("currentConditionError : $errorMsg")
-                                 }
-                             }
-                         )
-
-                         fiveDaysOfDailyForecastViewModel.get5DaysOfDailyForecasts(
-                             r.locationKey,
-                             onSuccess = {
-                                 val f0 =
-                                     "${it?.dailyForecasts?.get(0)?.temperature?.minimum?.value}F - ${
-                                         it?.dailyForecasts?.get(0)?.temperature?.maximum?.value
-                                     }F"
-                                 val f1 =
-                                     "${it?.dailyForecasts?.get(1)?.temperature?.minimum?.value}F - ${
-                                         it?.dailyForecasts?.get(1)?.temperature?.maximum?.value
-                                     }F"
-                                 val f2 =
-                                     "${it?.dailyForecasts?.get(2)?.temperature?.minimum?.value}F - ${
-                                         it?.dailyForecasts?.get(2)?.temperature?.maximum?.value
-                                     }F"
-                                 val f3 =
-                                     "${it?.dailyForecasts?.get(3)?.temperature?.minimum?.value}F - ${
-                                         it?.dailyForecasts?.get(3)?.temperature?.maximum?.value
-                                     }F"
-                                 val f4 =
-                                     "${it?.dailyForecasts?.get(4)?.temperature?.minimum?.value}F - ${
-                                         it?.dailyForecasts?.get(4)?.temperature?.maximum?.value
-                                     }F"
-
-                                 with(binding) {
-                                     tvForecastDay1.text = "Perkiraan Suhu : $f0"
-                                     tvForecastDay2.text = "Perkiraan Suhu : $f1"
-                                     tvForecastDay3.text = "Perkiraan Suhu : $f2"
-                                     tvForecastDay4.text = "Perkiraan Suhu : $f3"
-                                     tvForecastDay5.text = "Perkiraan Suhu : $f4"
-                                 }
-                             },
-                             onFailed = { errorMsg ->
-                                 if (errorMsg != null) {
-                                     showToast("FiveDaysForecastWeatherError : $errorMsg")
-                                 }
-                             }
-                         )
-                     }
-                 },
-                 onFailed = { errorMsg ->
-                     if (errorMsg != null) {
-                         showToast("informationByGeoPositionError : $errorMsg")
-                     }
-                 })*/
         })
     }
+
+    private fun convertWindSpeedToKmh(speedMs: Int): String = "${speedMs * 3.6} km/h"
 
     companion object {
         private val REQUIRED_PERMISSIONS_MAPS = arrayOf(
