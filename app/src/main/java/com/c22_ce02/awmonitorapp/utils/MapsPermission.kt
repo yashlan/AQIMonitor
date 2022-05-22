@@ -22,32 +22,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import java.util.concurrent.TimeUnit
 
-val Fragment.requestPermissionLauncher: ActivityResultLauncher<Array<String>>
-    get() = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                return@registerForActivityResult
-            }
-            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                return@registerForActivityResult
-            }
-            else -> {
-                showSnackBar(
-                    FragmentHomeBinding.inflate(layoutInflater).root,
-                    R.string.msg_permission_maps,
-                    R.string.yes,
-                    onClickOkAction = {
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val uri = Uri.fromParts("package", requireActivity().packageName, null)
-                        intent.data = uri
-                        startActivity(intent)
-                    }
-                )
-            }
-        }
-    }
 
 val Fragment.resolutionLauncher: ActivityResultLauncher<IntentSenderRequest>
     get() = registerForActivityResult(
@@ -67,6 +41,7 @@ private val locationRequest = LocationRequest.create().apply {
     priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 }
 
+/*
 fun Fragment.createLocationRequest(fusedLocationClient: FusedLocationProviderClient) {
     val builder = LocationSettingsRequest.Builder()
         .addLocationRequest(locationRequest)
@@ -106,4 +81,4 @@ fun Fragment.createLocationRequest(fusedLocationClient: FusedLocationProviderCli
                 )
             }
         }
-}
+}*/
