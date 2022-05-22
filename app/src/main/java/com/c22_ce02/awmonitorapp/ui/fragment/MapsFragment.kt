@@ -1,11 +1,19 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.asset.DummyResponseItem
 
@@ -13,6 +21,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import org.json.JSONException
@@ -68,7 +78,8 @@ class MapsFragment : Fragment(){
                 )
 
                 val name = listLocation[i].city.toString()
-                mMap.addMarker(MarkerOptions().position(location).title(name))
+                mMap.addMarker(MarkerOptions().position(location).title(name).snippet("PM2.5: 47, PM10: 15, AQI: 14")
+                    .icon(vectorToBitmap(R.drawable.ic_marker_green, Color.parseColor("#1592FF"))))
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
 
 
@@ -92,5 +103,23 @@ class MapsFragment : Fragment(){
             return null
         }
         return json
+    }
+
+    private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
+        val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)
+        if (vectorDrawable == null) {
+            Log.e("BitmapHelper", "Resource not found")
+            return BitmapDescriptorFactory.defaultMarker()
+        }
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+        DrawableCompat.setTint(vectorDrawable, color)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }
