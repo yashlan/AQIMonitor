@@ -17,9 +17,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY_ACCUWEATHER", '"aMfFUw7ClMRf5czHbGviXG0Qgx1ISfAw"')
         buildConfigField("String", "API_KEY_WEATHERBIT", '"4604d31a5c914fea8f23c1f095f38463"')
-        buildConfigField("String", "BASE_URL_ACCUWEATHER", '"http://dataservice.accuweather.com/"')
         buildConfigField("String", "BASE_URL_WEATHERBIT", '"https://api.weatherbit.io/v2.0/"')
 
 //        ==== Head ====
@@ -53,10 +51,6 @@ android {
 }
 
 dependencies {
-
-    // FirebaseUI for Firebase Auth
-    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.4'
 
     //maps
     implementation 'com.google.android.gms:play-services-location:19.0.1'

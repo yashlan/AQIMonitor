@@ -15,38 +15,13 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityHomeBinding
+import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import java.util.concurrent.TimeUnit
 
-val Fragment.requestPermissionLauncher: ActivityResultLauncher<Array<String>>
-    get() = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                return@registerForActivityResult
-            }
-            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                return@registerForActivityResult
-            }
-            else -> {
-                showSnackBar(
-                    ActivityHomeBinding.inflate(layoutInflater).root,
-                    R.string.msg_permission_maps,
-                    R.string.yes,
-                    onClickOkAction = {
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val uri = Uri.fromParts("package", requireActivity().packageName, null)
-                        intent.data = uri
-                        startActivity(intent)
-                    }
-                )
-            }
-        }
-    }
 
 val Fragment.resolutionLauncher: ActivityResultLauncher<IntentSenderRequest>
     get() = registerForActivityResult(
@@ -66,6 +41,7 @@ private val locationRequest = LocationRequest.create().apply {
     priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 }
 
+/*
 fun Fragment.createLocationRequest(fusedLocationClient: FusedLocationProviderClient) {
     val builder = LocationSettingsRequest.Builder()
         .addLocationRequest(locationRequest)
@@ -75,6 +51,16 @@ fun Fragment.createLocationRequest(fusedLocationClient: FusedLocationProviderCli
             if (isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) &&
                 isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
             ) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return@addOnSuccessListener
+                }
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location: Location? ->
                         if (location != null) {
@@ -95,4 +81,4 @@ fun Fragment.createLocationRequest(fusedLocationClient: FusedLocationProviderCli
                 )
             }
         }
-}
+}*/

@@ -2,13 +2,17 @@ package com.c22_ce02.awmonitorapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CurrentAirQualityResponse(
+data class AirQualityForecastByHourResponse(
     @SerializedName("data")
     val data: List<Data>
 ) {
     data class Data(
         @SerializedName("aqi")
         val aqi: Double,
+        @SerializedName("pm10")
+        val pm10: Double,
+        @SerializedName("pm25")
+        val pm25: Double,
         @SerializedName("o3")
         val o3: Double,
         @SerializedName("so2")
@@ -17,9 +21,7 @@ data class CurrentAirQualityResponse(
         val no2: Double,
         @SerializedName("co")
         val co: Double,
-        @SerializedName("pm10")
-        val pm10: Double,
-        @SerializedName("pm25")
-        val pm25: Double,
+        @SerializedName("timestamp_local")
+        val timestamp_local: String,
     )
 }
