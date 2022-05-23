@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
@@ -30,7 +28,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-class MapsFragment : Fragment() {
+class MapsFragment : Fragment(R.layout.fragment_maps) {
 
     private var listLocation: ArrayList<DummyResponseItem> = ArrayList()
     private lateinit var mMap: GoogleMap
@@ -39,20 +37,10 @@ class MapsFragment : Fragment() {
         getListCity(googleMap)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
     }
-
 
     private fun getListCity(googleMap: GoogleMap) {
         mMap = googleMap
@@ -88,8 +76,6 @@ class MapsFragment : Fragment() {
                         )
                 )
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-
-
             }
         } catch (e: JSONException) {
             e.printStackTrace()
