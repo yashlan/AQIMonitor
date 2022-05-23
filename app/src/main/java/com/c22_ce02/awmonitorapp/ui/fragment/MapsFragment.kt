@@ -30,13 +30,12 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-class MapsFragment : Fragment(){
+class MapsFragment : Fragment() {
 
-    private var listLocation : ArrayList<DummyResponseItem> = ArrayList()
+    private var listLocation: ArrayList<DummyResponseItem> = ArrayList()
     private lateinit var mMap: GoogleMap
 
     private val callback = OnMapReadyCallback { googleMap ->
-
         getListCity(googleMap)
     }
 
@@ -62,7 +61,7 @@ class MapsFragment : Fragment(){
             val jsonObject = JSONObject(loadJSONFromAsset()!!)
             val locs = jsonObject.getJSONArray("data")
 
-            for (i in 0 until locs.length() -1) {
+            for (i in 0 until locs.length() - 1) {
                 val loc = locs.getJSONObject(i)
                 val data = DummyResponseItem()
 
@@ -78,8 +77,16 @@ class MapsFragment : Fragment(){
                 )
 
                 val name = listLocation[i].city.toString()
-                mMap.addMarker(MarkerOptions().position(location).title(name).snippet("PM2.5: 47, PM10: 15, AQI: 14")
-                    .icon(vectorToBitmap(R.drawable.ic_marker_green, Color.parseColor("#1592FF"))))
+                mMap.addMarker(
+                    MarkerOptions().position(location).title(name)
+                        .snippet("PM2.5: 47, PM10: 15, AQI: 14")
+                        .icon(
+                            vectorToBitmap(
+                                R.drawable.ic_marker_green,
+                                Color.parseColor("#1592FF")
+                            )
+                        )
+                )
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
 
 
