@@ -7,6 +7,8 @@ import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,12 +21,12 @@ import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.AirQualityForecastByHourAdapter
 import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
+import com.c22_ce02.awmonitorapp.ui.view.model.AirQualityForecastByHourViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentWeatherConditionViewModel
-import com.c22_ce02.awmonitorapp.ui.view.model.AirQualityForecastByHourViewModel
+import com.c22_ce02.awmonitorapp.ui.view.modelfactory.AirQualityForecastByHourViewModelFactory
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentAirQualityViewModelFactory
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentWeatherConditionViewModelFactory
-import com.c22_ce02.awmonitorapp.ui.view.modelfactory.AirQualityForecastByHourViewModelFactory
 import com.c22_ce02.awmonitorapp.utils.*
 import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -36,6 +38,7 @@ import java.util.*
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var allowRefresh = false
+    private var currentAQI = 0
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val binding by viewBinding<FragmentHomeBinding>()
     private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
@@ -80,6 +83,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadAllData()
+        binding.swipeRefresh.setOnRefreshListener {
+            listForecast.clear()
+            refreshFragment()
+        }
     }
 
     override fun onResume() {
@@ -96,6 +103,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 allowRefresh = false
             }
         }
+    }
+
+    private fun refreshFragment() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            parentFragmentManager
+                .beginTransaction()
+                .detach(this)
+                .commitNow()
+            parentFragmentManager
+                .beginTransaction()
+                .attach(this)
+                .commitNow()
+            binding.swipeRefresh.isRefreshing = false
+        }, DELAY_REFRESH)
     }
 
     private fun changeWindowBackgroundResource(aqi: Int) {
@@ -220,19 +241,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 onSuccess = {
                     if (it != null) {
                         val data = it[0]
-                        changeWindowBackgroundResource(data.aqi.toInt())
+                        currentAQI = data.aqi.toInt()
+                        changeWindowBackgroundResource(currentAQI)
                         with(binding) {
-                            binding.tvLocation.text = getCurrentLocationName(lat, lon)
+                            tvLocation.text = getCurrentLocationName(lat, lon)
                             tvDate.text = getCurrentDate()
                             itemPanelHomeInfo.itemStatusAirMessage.root.setCardBackgroundColor(
-                                getItemStatusAirMessageBgColor(data.aqi.toInt())
+                                getItemStatusAirMessageBgColor(currentAQI)
                             )
                             itemPanelHomeInfo.itemStatusAirMessage.tvAirStatusMsg.text =
-                                getAirStatusMessage(data.aqi.toInt())
+                                getAirStatusMessage(currentAQI)
                             itemInfoAirToday.tvToday.text = getString(R.string.hari_ini)
-                            itemInfoAirToday.imgLabelAir.setImageResource(getAQILabelStatus(data.aqi.toInt()))
+                            itemInfoAirToday.imgLabelAir.setImageResource(
+                                getAQILabelStatus(
+                                    currentAQI
+                                )
+                            )
                             itemInfoAirToday.root.setBackgroundResource(
-                                getCardBgItemAirTodayResource(data.aqi.toInt())
+                                getCardBgItemAirTodayResource(currentAQI)
                             )
                             itemInfoAirToday.tvWindSpeed.text =
                                 convertWindSpeedToKmh(data.windSpeed.toInt())
@@ -242,52 +268,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             "${data.humidity.toInt()}%".also { hum ->
                                 itemInfoAirToday.tvHumidity.text = hum
                             }
-                            startIncrementTextAnimation(data.aqi.toInt(), itemInfoAirToday.tvAQI)
+                            startIncrementTextAnimation(currentAQI, itemInfoAirToday.tvAQI)
                         }
+                        getForecastData(lat, lon)
                     }
                 },
                 onFailed = { errorMsg ->
                     if (errorMsg != null) {
                         showToast("currentWeatherConditionError : $errorMsg")
-                    }
-                }
-            )
-
-            airQualityForecastByHourViewModel.getAirQualityForecastByHour(
-                lat,
-                lon,
-                BuildConfig.API_KEY_WEATHERBIT,
-                6,
-                onSuccess = {
-                    if (it != null) {
-                        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
-                        val formatter = SimpleDateFormat("ha", Locale("id"))
-                        it.forEach { data ->
-                            val currentHour =
-                                formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
-                            listForecast.add(
-                                AirQualityForecastByHour(
-                                    currentHour,
-                                    getIconItem(data.aqi.toInt()),
-                                    data.aqi.toInt()
-                                )
-                            )
-
-                            if (it.size == listForecast.size) {
-                                setupAdapter(
-                                    binding.itemPanelHomeInfo.rvListAirForecast,
-                                    false,
-                                    addAdapterValue = {
-                                        binding.itemPanelHomeInfo.rvListAirForecast.adapter =
-                                            AirQualityForecastByHourAdapter(listForecast)
-                                    })
-                            }
-                        }
-                    }
-                },
-                onFailed = { errorMsg ->
-                    if (errorMsg != null) {
-                        showToast(" everyHourAirQualityForecastError : $errorMsg")
                     }
                 }
             )
@@ -337,10 +325,65 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun convertWindSpeedToKmh(speedMs: Int): String = "${speedMs * 3.6} km/h"
 
+    private fun getForecastData(lat: Double, lon: Double) {
+        airQualityForecastByHourViewModel.getAirQualityForecastByHour(
+            lat,
+            lon,
+            BuildConfig.API_KEY_WEATHERBIT,
+            HOURS,
+            onSuccess = {
+                if (it != null) {
+                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
+                    val formatter = SimpleDateFormat("ha", Locale("id"))
+                    it.forEach { data ->
+                        val hour =
+                            formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
+                        val currentHour = formatter.format(Date())
+                        if(hour.equals(currentHour, true)) {
+                            listForecast.add(
+                                AirQualityForecastByHour(
+                                    hour,
+                                    getIconItem(currentAQI),
+                                    currentAQI
+                                )
+                            )
+                        }
+                        else {
+                            listForecast.add(
+                                AirQualityForecastByHour(
+                                    hour,
+                                    getIconItem(data.aqi.toInt()),
+                                    data.aqi.toInt()
+                                )
+                            )
+                        }
+
+                        if (it.size == listForecast.size) {
+                            setupAdapter(
+                                binding.itemPanelHomeInfo.rvListAirForecast,
+                                false,
+                                addAdapterValue = {
+                                    binding.itemPanelHomeInfo.rvListAirForecast.adapter =
+                                        AirQualityForecastByHourAdapter(listForecast)
+                                })
+                        }
+                    }
+                }
+            },
+            onFailed = { errorMsg ->
+                if (errorMsg != null) {
+                    showToast(" everyHourAirQualityForecastError : $errorMsg")
+                }
+            }
+        )
+    }
+
     companion object {
         private val REQUIRED_PERMISSIONS_MAPS = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
+        private const val DELAY_REFRESH: Long = 1000
+        private const val HOURS = 6
     }
 }
