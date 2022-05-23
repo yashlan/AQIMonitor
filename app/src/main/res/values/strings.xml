@@ -4,22 +4,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="yes">Ya</string>
     <string name="msg_permission_maps">Anda harus mengizinkan izin Lokasi, Tekan Ya untuk menyetel.</string>
-    <string name="title_activity_maps_air_quality">MapsAirQualityActivity</string>
-    <string name="title_activity_qqactivity">QQActivity</string>
     <string name="title_home">Dashboard</string>
     <string name="title_discover">Discover</string>
     <string name="title_glossary">Glosarium</string>
     <string name="exit_info">Tekan sekali lagi untuk keluar aplikasi</string>
     <string name="location">Lampung, Indonesia</string>
-    <string name="date">Senin, 35 Mei 2099</string>
     <string name="title_menu_1">Emisi Gas dan Polusi</string>
     <string name="title_menu_2">Limbah dan Sampah</string>
     <string name="title_menu_3">Dunia Lebih Baik</string>
 
     <string name="desc_menu_1">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
-
     <string name="desc_menu_2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
-
     <string name="desc_menu_3">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
 
     <string name="btn_next">Next</string>
@@ -51,8 +46,8 @@
     <string name="aqi">AQI</string>
     <string name="pm10">PM10</string>
     <string name="so2">SO2</string>
-    <string name="co2">CO2</string>
     <string name="no2">NO2</string>
     <string name="o3">O3</string>
+    <string name="co">CO</string>
 
 </resources>
