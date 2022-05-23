@@ -16,6 +16,7 @@
         android:name="com.c22_ce02.awmonitorapp.ui.fragment.GlossaryFragment"
         android:label="@string/title_glossary"
         tools:layout="@layout/fragment_glossary" />
+
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.c22_ce02.awmonitorapp.ui.fragment.MapsFragment"
