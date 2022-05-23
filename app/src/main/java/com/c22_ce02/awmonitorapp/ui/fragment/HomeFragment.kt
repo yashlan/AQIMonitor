@@ -20,6 +20,9 @@ import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.AirQualityForecastByHourAdapter
 import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHourResponse
+import com.c22_ce02.awmonitorapp.data.model.CurrentAirQualityResponse
+import com.c22_ce02.awmonitorapp.data.model.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.AirQualityForecastByHourViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
@@ -33,12 +36,21 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.properties.Delegates
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
+    private var isCurrentWeatherConditionLoaded = false
+    private var isAirQualityForecastByHourLoaded = false
+    private var isCurrentAirQualityLoaded = false
     private var allowRefresh = false
-    private var currentAQI = 0
+
+    private lateinit var dataCurrentWeather: CurrentWeatherConditionResponse.Data
+    private lateinit var dataCurrentAirQuality: CurrentAirQualityResponse.Data
+    private val listForecast = ArrayList<AirQualityForecastByHour>()
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val binding by viewBinding<FragmentHomeBinding>()
     private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
@@ -50,8 +62,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val currentAirQualityViewModel: CurrentAirQualityViewModel by viewModels {
         CurrentAirQualityViewModelFactory()
     }
-
-    private val listForecast = ArrayList<AirQualityForecastByHour>()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -82,11 +92,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        loadAllData()
-        binding.swipeRefresh.setOnRefreshListener {
-            listForecast.clear()
-            refreshFragment()
+        resetAll {
+            setDefaultWindowBackgroundResource()
+            loadAllData()
+            hideUI()
         }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            resetAll {
+                setDefaultWindowBackgroundResource()
+                hideUI()
+                refreshFragment()
+            }
+        }
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                requireActivity().runOnUiThread {
+                    if (isAllDataLoaded()) {
+                        showUI()
+                        updateUI()
+                        cancel()
+                    }
+                }
+            }
+        }, 0, PERIOD_TIMER)
     }
 
     override fun onResume() {
@@ -105,6 +135,151 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    private fun resetAll(onReset: () -> Unit) {
+        listForecast.removeAll(listForecast)
+        listForecast.clear()
+        if (listForecast.isEmpty()) {
+            onReset.invoke()
+        }
+    }
+
+    private fun updateUI() {
+
+        val currentAQI = dataCurrentWeather.aqi.toInt()
+        val itemListAirInfo = binding.itemPanelHomeInfo.itemInfoListAirToday
+
+        changeWindowBackgroundResource(currentAQI)
+        with(binding) {
+            startIncrementTextAnimation(currentAQI, itemInfoAirToday.tvAQI)
+
+            val dataW = dataCurrentWeather
+
+            getLocation(onGetLocation = { lat, lon ->
+                tvLocation.text = getCurrentLocationName(lat, lon)
+            })
+            tvDate.text = getCurrentDate()
+            itemPanelHomeInfo.itemStatusAirMessage.root.setCardBackgroundColor(
+                getItemStatusAirMessageBgColor(currentAQI)
+            )
+            itemPanelHomeInfo.itemStatusAirMessage.tvAirStatusMsg.text =
+                getAirStatusMessage(currentAQI)
+            itemInfoAirToday.tvToday.text = getString(R.string.hari_ini)
+            itemInfoAirToday.imgLabelAir.setImageResource(
+                getAQILabelStatus(
+                    currentAQI
+                )
+            )
+            itemInfoAirToday.root.setBackgroundResource(
+                getCardBgItemAirTodayResource(currentAQI)
+            )
+            itemInfoAirToday.tvWindSpeed.text =
+                convertWindSpeedToKmh(dataW.windSpeed.toInt())
+            "${dataW.temperature.toInt()} C".also { temp ->
+                itemInfoAirToday.tvTemperature.text = temp
+            }
+            "${dataW.humidity.toInt()}%".also { hum ->
+                itemInfoAirToday.tvHumidity.text = hum
+            }
+
+
+            with(itemListAirInfo) {
+
+                val dataA = dataCurrentAirQuality
+
+                tvLabelPM10.text = Text.spannableStringBuilder(
+                    getString(R.string.pm10),
+                    '1',
+                    0.7f
+                )
+                tvPm10.text = dataA.pm10.toInt().toString()
+                iconStatusPM10.setImageResource(getIconItem(dataA.pm10.toInt()))
+                tvStatusPM10.text = getStatusName(dataA.pm10.toInt())
+
+                tvLabelPM25.text = Text.spannableStringBuilder(
+                    getString(R.string.pm25),
+                    '2',
+                    0.7f
+                )
+                tvPM25.text = dataA.pm25.toInt().toString()
+                iconStatusPM25.setImageResource(getIconItem(dataA.pm25.toInt()))
+                tvStatusPM25.text = getStatusName(dataA.pm25.toInt())
+
+                tvLabelSO2.text = Text.spannableStringBuilder(
+                    getString(R.string.so2),
+                    '2',
+                    0.7f
+                )
+                tvSO2.text = dataA.so2.toInt().toString()
+                iconStatusSO2.setImageResource(getIconItem(dataA.so2.toInt()))
+                tvStatusSO2.text = getStatusName(dataA.so2.toInt())
+
+                tvLabelCO.text = getString(R.string.co)
+                tvCO.text = dataA.co.toInt().toString()
+                iconStatusCO.setImageResource(getIconItem(dataA.co.toInt()))
+                tvStatusCO.text = getStatusName(dataA.co.toInt())
+
+                tvLabelNO2.text = Text.spannableStringBuilder(
+                    getString(R.string.no2),
+                    '2',
+                    0.7f
+                )
+                tvNO2.text = dataA.no2.toInt().toString()
+                iconStatusNO2.setImageResource(getIconItem(dataA.no2.toInt()))
+                tvStatusNO2.text = getStatusName(dataA.no2.toInt())
+
+                tvLabelO3.text = Text.spannableStringBuilder(
+                    getString(R.string.o3),
+                    '3',
+                    0.7f
+                )
+                tvO3.text = dataA.o3.toInt().toString()
+                iconStatusO3.setImageResource(getIconItem(dataA.o3.toInt()))
+                tvStatusO3.text = getStatusName(dataA.o3.toInt())
+            }
+
+            setupAdapter(
+                binding.itemPanelHomeInfo.rvListAirForecast,
+                false,
+                addAdapterValue = {
+                    binding.itemPanelHomeInfo.rvListAirForecast.adapter =
+                        AirQualityForecastByHourAdapter(
+                            listForecast,
+                            canPlayAnim = isAllDataLoaded()
+                        )
+                }
+            )
+        }
+    }
+
+    private fun showUI() {
+        with(binding) {
+            tvLocation.visibility = View.VISIBLE
+            tvDate.visibility = View.VISIBLE
+            itemInfoAirToday.root.visibility = View.VISIBLE
+            itemPanelHomeInfo.root.visibility = View.VISIBLE
+            tvLocation.visibility = View.VISIBLE
+            shimmerFragmentHome.stopShimmer()
+            shimmerFragmentHome.visibility = View.GONE
+        }
+    }
+
+    private fun hideUI() {
+        with(binding) {
+            tvLocation.visibility = View.INVISIBLE
+            tvDate.visibility = View.INVISIBLE
+            itemInfoAirToday.root.visibility = View.INVISIBLE
+            itemPanelHomeInfo.root.visibility = View.INVISIBLE
+            tvLocation.visibility = View.INVISIBLE
+            shimmerFragmentHome.visibility = View.VISIBLE
+            shimmerFragmentHome.startShimmer()
+        }
+    }
+
+    private fun isAllDataLoaded(): Boolean =
+        isCurrentAirQualityLoaded &&
+                isAirQualityForecastByHourLoaded &&
+                isCurrentWeatherConditionLoaded
+
     private fun refreshFragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             parentFragmentManager
@@ -117,6 +292,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 .commitNow()
             binding.swipeRefresh.isRefreshing = false
         }, DELAY_REFRESH)
+    }
+
+    private fun setDefaultWindowBackgroundResource() {
+        requireActivity().window.decorView.setBackgroundResource(R.color.shimmer_color_bg)
     }
 
     private fun changeWindowBackgroundResource(aqi: Int) {
@@ -234,91 +413,44 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun loadAllData() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         getLocation(onGetLocation = { lat, lon ->
+
+            currentWeatherConditionViewModel.currentWeather.observe(requireActivity()) {
+                if (it != null) {
+                    dataCurrentWeather = it[0]
+                    getForecastData(lat, lon)
+                    isCurrentWeatherConditionLoaded = true
+                }
+            }
+
+            currentWeatherConditionViewModel.errorMessage.observe(requireActivity()) {
+                if (it != null) {
+                    showToast(it)
+                }
+            }
+
             currentWeatherConditionViewModel.getCurrentWeatherCondition(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT,
-                onSuccess = {
-                    if (it != null) {
-                        val data = it[0]
-                        currentAQI = data.aqi.toInt()
-                        changeWindowBackgroundResource(currentAQI)
-                        with(binding) {
-                            tvLocation.text = getCurrentLocationName(lat, lon)
-                            tvDate.text = getCurrentDate()
-                            itemPanelHomeInfo.itemStatusAirMessage.root.setCardBackgroundColor(
-                                getItemStatusAirMessageBgColor(currentAQI)
-                            )
-                            itemPanelHomeInfo.itemStatusAirMessage.tvAirStatusMsg.text =
-                                getAirStatusMessage(currentAQI)
-                            itemInfoAirToday.tvToday.text = getString(R.string.hari_ini)
-                            itemInfoAirToday.imgLabelAir.setImageResource(
-                                getAQILabelStatus(
-                                    currentAQI
-                                )
-                            )
-                            itemInfoAirToday.root.setBackgroundResource(
-                                getCardBgItemAirTodayResource(currentAQI)
-                            )
-                            itemInfoAirToday.tvWindSpeed.text =
-                                convertWindSpeedToKmh(data.windSpeed.toInt())
-                            "${data.temperature.toInt()} C".also { temp ->
-                                itemInfoAirToday.tvTemperature.text = temp
-                            }
-                            "${data.humidity.toInt()}%".also { hum ->
-                                itemInfoAirToday.tvHumidity.text = hum
-                            }
-                            startIncrementTextAnimation(currentAQI, itemInfoAirToday.tvAQI)
-                        }
-                        getForecastData(lat, lon)
-                    }
-                },
-                onFailed = { errorMsg ->
-                    if (errorMsg != null) {
-                        showToast("currentWeatherConditionError : $errorMsg")
-                    }
-                }
+                BuildConfig.API_KEY_WEATHERBIT
             )
+
+            currentAirQualityViewModel.currentAirQuality.observe(requireActivity()) {
+                if (it != null) {
+                    dataCurrentAirQuality = it.data[0]
+                    isCurrentAirQualityLoaded = true
+                }
+            }
+
+            currentAirQualityViewModel.errorMessage.observe(requireActivity()) {
+                if (it != null) {
+                    showToast(it)
+                }
+            }
 
             currentAirQualityViewModel.getCurrentAirQuality(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT,
-                onSuccess = {
-                    if (it != null) {
-                        val data = it.data[0]
-                        val itemListAirInfo = binding.itemPanelHomeInfo.itemInfoListAirToday
-
-                        itemListAirInfo.tvPm10.text = data.pm10.toInt().toString()
-                        itemListAirInfo.iconStatusPM10.setImageResource(getIconItem(data.pm10.toInt()))
-                        itemListAirInfo.tvStatusPM10.text = getStatusName(data.pm10.toInt())
-
-                        itemListAirInfo.tvPM25.text = data.pm25.toInt().toString()
-                        itemListAirInfo.iconStatusPM25.setImageResource(getIconItem(data.pm25.toInt()))
-                        itemListAirInfo.tvStatusPM25.text = getStatusName(data.pm25.toInt())
-
-                        itemListAirInfo.tvSO2.text = data.so2.toInt().toString()
-                        itemListAirInfo.iconStatusSO2.setImageResource(getIconItem(data.so2.toInt()))
-                        itemListAirInfo.tvStatusSO2.text = getStatusName(data.so2.toInt())
-
-                        itemListAirInfo.tvCO.text = data.co.toInt().toString()
-                        itemListAirInfo.iconStatusCO.setImageResource(getIconItem(data.co.toInt()))
-                        itemListAirInfo.tvStatusCO.text = getStatusName(data.co.toInt())
-
-                        itemListAirInfo.tvNO2.text = data.no2.toInt().toString()
-                        itemListAirInfo.iconStatusNO2.setImageResource(getIconItem(data.no2.toInt()))
-                        itemListAirInfo.tvStatusNO2.text = getStatusName(data.no2.toInt())
-
-                        itemListAirInfo.tvO3.text = data.o3.toInt().toString()
-                        itemListAirInfo.iconStatusO3.setImageResource(getIconItem(data.o3.toInt()))
-                        itemListAirInfo.tvStatusO3.text = getStatusName(data.o3.toInt())
-                    }
-                },
-                onFailed = { errorMsg ->
-                    if (errorMsg != null) {
-                        showToast("currentAirQualityError : $errorMsg")
-                    }
-                }
+                BuildConfig.API_KEY_WEATHERBIT
             )
         })
     }
@@ -326,55 +458,47 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun convertWindSpeedToKmh(speedMs: Int): String = "${speedMs * 3.6} km/h"
 
     private fun getForecastData(lat: Double, lon: Double) {
+        airQualityForecastByHourViewModel.listForecast.observe(requireActivity()) {
+            if (it != null) {
+                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
+                val formatter = SimpleDateFormat("ha", Locale("id"))
+                it.forEach { data ->
+                    val hour =
+                        formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
+                    val currentHour = formatter.format(Date())
+                    if (hour.equals(currentHour, true)) {
+                        listForecast.add(
+                            AirQualityForecastByHour(
+                                hour,
+                                getIconItem(dataCurrentWeather.aqi.toInt()),
+                                dataCurrentWeather.aqi.toInt()
+                            )
+                        )
+                    } else {
+                        listForecast.add(
+                            AirQualityForecastByHour(
+                                hour,
+                                getIconItem(data.aqi.toInt()),
+                                data.aqi.toInt()
+                            )
+                        )
+                    }
+                    isAirQualityForecastByHourLoaded = it.size == listForecast.size
+                }
+            }
+        }
+
+        airQualityForecastByHourViewModel.errorMessage.observe(requireActivity()) {
+            if (it != null) {
+                showToast(it)
+            }
+        }
+
         airQualityForecastByHourViewModel.getAirQualityForecastByHour(
             lat,
             lon,
             BuildConfig.API_KEY_WEATHERBIT,
-            HOURS,
-            onSuccess = {
-                if (it != null) {
-                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
-                    val formatter = SimpleDateFormat("ha", Locale("id"))
-                    it.forEach { data ->
-                        val hour =
-                            formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
-                        val currentHour = formatter.format(Date())
-                        if(hour.equals(currentHour, true)) {
-                            listForecast.add(
-                                AirQualityForecastByHour(
-                                    hour,
-                                    getIconItem(currentAQI),
-                                    currentAQI
-                                )
-                            )
-                        }
-                        else {
-                            listForecast.add(
-                                AirQualityForecastByHour(
-                                    hour,
-                                    getIconItem(data.aqi.toInt()),
-                                    data.aqi.toInt()
-                                )
-                            )
-                        }
-
-                        if (it.size == listForecast.size) {
-                            setupAdapter(
-                                binding.itemPanelHomeInfo.rvListAirForecast,
-                                false,
-                                addAdapterValue = {
-                                    binding.itemPanelHomeInfo.rvListAirForecast.adapter =
-                                        AirQualityForecastByHourAdapter(listForecast)
-                                })
-                        }
-                    }
-                }
-            },
-            onFailed = { errorMsg ->
-                if (errorMsg != null) {
-                    showToast(" everyHourAirQualityForecastError : $errorMsg")
-                }
-            }
+            HOURS
         )
     }
 
@@ -384,6 +508,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
         private const val DELAY_REFRESH: Long = 1000
+        private const val PERIOD_TIMER: Long = 500
         private const val HOURS = 6
     }
 }
