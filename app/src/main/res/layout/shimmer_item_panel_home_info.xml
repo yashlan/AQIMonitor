@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/card_home">
+
+    <include
+        android:id="@+id/itemStatusAirMessage"
+        layout="@layout/shimmer_item_quality_status_air_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:id="@+id/layoutItemForecast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/itemStatusAirMessage"
+        android:orientation="horizontal">
+
+        <include layout="@layout/shimmer_item_recycleview_air_quality_forecast" />
+
+        <include layout="@layout/shimmer_item_recycleview_air_quality_forecast" />
+
+        <include layout="@layout/shimmer_item_recycleview_air_quality_forecast" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/itemInfoListAirToday"
+        layout="@layout/shimmer_item_info_list_air_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutItemForecast" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/itemInfoListAirToday" />
+
+</RelativeLayout>
