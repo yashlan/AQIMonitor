@@ -69,7 +69,7 @@
                 <ImageView
                     android:id="@+id/iconStatusPM10"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -78,6 +78,7 @@
                 <TextView
                     android:id="@+id/tvStatusPM10"
                     android:layout_width="70dp"
+                    android:paddingTop="3dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
@@ -152,7 +153,7 @@
                 <ImageView
                     android:id="@+id/iconStatusPM25"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -160,6 +161,7 @@
 
                 <TextView
                     android:id="@+id/tvStatusPM25"
+                    android:paddingTop="3dp"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
@@ -235,7 +237,7 @@
                 <ImageView
                     android:id="@+id/iconStatusSO2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -244,6 +246,7 @@
                 <TextView
                     android:id="@+id/tvStatusSO2"
                     android:layout_width="70dp"
+                    android:paddingTop="3dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
@@ -318,7 +321,7 @@
                 <ImageView
                     android:id="@+id/iconStatusCO"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -327,6 +330,7 @@
                 <TextView
                     android:id="@+id/tvStatusCO"
                     android:layout_width="70dp"
+                    android:paddingTop="3dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
@@ -401,7 +405,7 @@
                 <ImageView
                     android:id="@+id/iconStatusNO2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -410,6 +414,7 @@
                 <TextView
                     android:id="@+id/tvStatusNO2"
                     android:layout_width="70dp"
+                    android:paddingTop="3dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
@@ -484,7 +489,7 @@
                 <ImageView
                     android:id="@+id/iconStatusO3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -493,6 +498,7 @@
                 <TextView
                     android:id="@+id/tvStatusO3"
                     android:layout_width="70dp"
+                    android:paddingTop="3dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
