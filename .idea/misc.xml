@@ -52,7 +52,8 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_splash.xml" value="0.2" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_discover.xml" value="0.1799145299145299" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_glossary.xml" value="0.21927083333333333" />
-        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_home.xml" value="0.264" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_home_shimmer.xml" value="0.2" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_maps.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_notifications.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/item_info_air_today.xml" value="0.264" />
@@ -65,6 +66,12 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/panel_home_info.xml" value="0.1" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/panel_info_air_today.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/quality_status_air_info.xml" value="0.2" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_fragment_home.xml" value="0.176" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_info_air_today.xml" value="0.264" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_info_list_air_today.xml" value="0.264" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_panel_home_info.xml" value="0.1799145299145299" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_quality_status_air_info.xml" value="0.264" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_recycleview_air_quality_forecast.xml" value="0.2" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21927083333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_air_24.xml" value="0.1125" />
         <entry key="app/src/main/res/layout/fragment_glossary.xml" value="0.15897435897435896" />
