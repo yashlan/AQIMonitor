@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:padding="2dp"
+            android:paddingBottom="4dp"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -62,8 +62,8 @@
 
             <TextView
                 android:id="@+id/tvForecastAQI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
                 android:textColor="@color/black"
