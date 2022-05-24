@@ -187,17 +187,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun getLocation(onGetLocation: (Double, Double) -> Unit) {
-        if (ActivityCompat.checkSelfPermission(
+        if (ContextCompat.checkSelfPermission(
                 requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
+            ContextCompat.checkSelfPermission(
                 requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
         } else {
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
+                .addOnSuccessListener { location ->
                     if (location != null) {
                         onGetLocation(location.latitude, location.longitude)
                     } else {
