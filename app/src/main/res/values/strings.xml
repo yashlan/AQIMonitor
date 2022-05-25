@@ -49,5 +49,6 @@
     <string name="no2">NO2</string>
     <string name="o3">O3</string>
     <string name="co">CO</string>
+    <string name="get_started">Get Started</string>
 
 </resources>
