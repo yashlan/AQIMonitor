@@ -65,10 +65,9 @@
             tools:ignore="UselessParent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="50dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -98,17 +97,16 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textSize="15sp"
-                        tools:text="20 km/h" />
+                        tools:text="20.6 km/h" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="50dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -145,7 +143,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
