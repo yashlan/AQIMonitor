@@ -17,7 +17,9 @@
         android:theme="@style/Theme.AWMonitorApp"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
-
+        <activity
+            android:name=".ui.activity.DetailsForecastActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
