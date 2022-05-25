@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityGetStartedBinding
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
@@ -19,7 +20,7 @@ class GetStartedActivity : AppCompatActivity(R.layout.activity_get_started) {
     override fun onCreate(savedInstanceState: Bundle?) {
         setFullscreen()
         super.onCreate(savedInstanceState)
-        this.title = "Get Started"
+        this.title = getString(R.string.get_started)
         checkHelper = CheckHelper()
 
         binding.button.setOnClickListener {
@@ -34,6 +35,8 @@ class GetStartedActivity : AppCompatActivity(R.layout.activity_get_started) {
         val checkPreference = CheckPreference(this)
         checkHelper.isLogin = true
         checkPreference.setCheck(checkHelper)
-        showToast("Selamat Datang")
+        if (BuildConfig.DEBUG) {
+            showToast("Selamat Datang")
+        }
     }
 }
