@@ -30,12 +30,13 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
+                    android:id="@+id/tvLabelPM10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/pm10"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:text="@string/pm10" />
 
             </LinearLayout>
 
@@ -69,7 +70,7 @@
                 <ImageView
                     android:id="@+id/iconStatusPM10"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -79,6 +80,7 @@
                     android:id="@+id/tvStatusPM10"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -96,7 +98,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
         </LinearLayout>
 
@@ -114,11 +116,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
+                    android:id="@+id/tvLabelPM25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pm25"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:text="@string/pm25" />
 
             </LinearLayout>
 
@@ -152,7 +155,7 @@
                 <ImageView
                     android:id="@+id/iconStatusPM25"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -162,6 +165,7 @@
                     android:id="@+id/tvStatusPM25"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -179,7 +183,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
         </LinearLayout>
 
@@ -197,11 +201,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
+                    android:id="@+id/tvLabelSO2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/so2"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:text="@string/so2" />
 
             </LinearLayout>
 
@@ -235,7 +240,7 @@
                 <ImageView
                     android:id="@+id/iconStatusSO2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -245,6 +250,7 @@
                     android:id="@+id/tvStatusSO2"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -262,7 +268,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
         </LinearLayout>
 
@@ -280,11 +286,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
+                    android:id="@+id/tvLabelCO"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/co2"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:text="@string/co" />
 
             </LinearLayout>
 
@@ -318,7 +325,7 @@
                 <ImageView
                     android:id="@+id/iconStatusCO"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -328,6 +335,7 @@
                     android:id="@+id/tvStatusCO"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -345,7 +353,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
         </LinearLayout>
 
@@ -363,11 +371,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
+                    android:id="@+id/tvLabelNO2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/no2"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:text="@string/no2" />
 
             </LinearLayout>
 
@@ -401,7 +410,7 @@
                 <ImageView
                     android:id="@+id/iconStatusNO2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -411,6 +420,7 @@
                     android:id="@+id/tvStatusNO2"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -428,7 +438,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
 
         </LinearLayout>
 
@@ -446,11 +456,12 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
+                    android:id="@+id/tvLabelO3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/o3"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:text="@string/o3" />
 
             </LinearLayout>
 
@@ -484,7 +495,7 @@
                 <ImageView
                     android:id="@+id/iconStatusO3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_air_quality_item_status_baik"
@@ -494,6 +505,7 @@
                     android:id="@+id/tvStatusO3"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -503,91 +515,6 @@
 
         </LinearLayout>
 
-
     </LinearLayout>
 
-
 </androidx.cardview.widget.CardView>
-
-    <!--<TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="@android:color/black"
-            android:paddingStart="1dp"
-            android:paddingEnd="1dp"
-            android:paddingBottom="1dp"
-            android:baselineAligned="false">
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_height="fill_parent"
-                android:layout_width="0dp"
-                android:layout_marginStart="1dp">
-
-                <TextView
-                    android:textSize="15sp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black"
-                    android:text="@string/pm10" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_height="fill_parent"
-                android:layout_width="0dp"
-                android:layout_marginStart="1dp">
-
-                <TextView
-                    android:textSize="15sp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black"
-                    android:text="asdasd" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_height="fill_parent"
-                android:layout_width="0dp"
-                android:layout_marginStart="1dp">
-
-                <TextView
-                    android:textSize="15sp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black"
-                    android:text="asdasd" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_height="fill_parent"
-                android:layout_width="0dp"
-                android:layout_marginStart="1dp">
-
-                <TextView
-                    android:textSize="15sp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:textColor="@android:color/black"
-                    android:text="asdasd" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </TableLayout>-->

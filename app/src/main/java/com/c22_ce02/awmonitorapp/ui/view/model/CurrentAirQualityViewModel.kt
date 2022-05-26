@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.ui.view.model
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.c22_ce02.awmonitorapp.data.model.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.repository.CurrentAirQualityRepository
@@ -7,13 +8,17 @@ import retrofit2.*
 
 class CurrentAirQualityViewModel(private val repository: CurrentAirQualityRepository) :
     ViewModel() {
+
+    val currentAirQuality = MutableLiveData<CurrentAirQualityResponse?>()
+    val errorMessage = MutableLiveData<String>()
+
     fun getCurrentAirQuality(
         lat: Double,
         lon: Double,
-        apikey: String,
-        onSuccess: (CurrentAirQualityResponse?) -> Unit,
-        onFailed: (String?) -> Unit
+        apikey: String
     ) {
+        currentAirQuality.postValue(null)
+        errorMessage.postValue(null)
         val call = repository.getCurrentAirQuality(lat, lon, apikey)
         call.enqueue(object : Callback<CurrentAirQualityResponse> {
             override fun onResponse(
@@ -21,14 +26,14 @@ class CurrentAirQualityViewModel(private val repository: CurrentAirQualityReposi
                 response: Response<CurrentAirQualityResponse>
             ) {
                 if (response.isSuccessful) {
-                    onSuccess(response.body())
+                    currentAirQuality.postValue(response.body())
                 } else {
-                    onFailed(response.errorBody().toString())
+                    errorMessage.postValue(response.errorBody().toString())
                 }
             }
 
             override fun onFailure(call: Call<CurrentAirQualityResponse>, t: Throwable) {
-                onFailed(t.message.toString())
+                errorMessage.postValue(t.localizedMessage?.toString() ?: t.message.toString())
             }
         })
     }

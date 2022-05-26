@@ -1,5 +1,7 @@
 package com.c22_ce02.awmonitorapp.ui.view.model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHourResponse
 import com.c22_ce02.awmonitorapp.data.repository.AirQualityForecastByHourRepository
@@ -7,14 +9,18 @@ import retrofit2.*
 
 class AirQualityForecastByHourViewModel(private val repository: AirQualityForecastByHourRepository) :
     ViewModel() {
+
+    val listForecast = MutableLiveData<List<AirQualityForecastByHourResponse.Data>?>()
+    val errorMessage = MutableLiveData<String?>()
+
     fun getAirQualityForecastByHour(
         lat: Double,
         lon: Double,
         apiKey: String,
-        hours: Int,
-        onSuccess: (List<AirQualityForecastByHourResponse.Data>?) -> Unit,
-        onFailed: (String?) -> Unit
+        hours: Int
     ) {
+        listForecast.postValue(null)
+        errorMessage.postValue(null)
         val call = repository.getAirQualityForecastByHour(lat, lon, apiKey, hours)
         call.enqueue(object : Callback<AirQualityForecastByHourResponse> {
             override fun onResponse(
@@ -22,14 +28,14 @@ class AirQualityForecastByHourViewModel(private val repository: AirQualityForeca
                 response: Response<AirQualityForecastByHourResponse>
             ) {
                 if (response.isSuccessful) {
-                    onSuccess(response.body()?.data)
+                    listForecast.postValue(response.body()?.data)
                 } else {
-                    onFailed(response.errorBody().toString())
+                    errorMessage.postValue(response.errorBody().toString())
                 }
             }
 
             override fun onFailure(call: Call<AirQualityForecastByHourResponse>, t: Throwable) {
-                onFailed(t.message.toString())
+                errorMessage.postValue(t.localizedMessage?.toString() ?: t.message.toString())
             }
         })
     }

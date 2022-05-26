@@ -1,20 +1,25 @@
 package com.c22_ce02.awmonitorapp.adapter
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ItemRecycleviewAirQualityForecastBinding
+import com.c22_ce02.awmonitorapp.ui.activity.DetailsForecastActivity
 import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class AirQualityForecastByHourAdapter(
-    private val listForecast: ArrayList<AirQualityForecastByHour>
+    private val listForecast: ArrayList<AirQualityForecastByHour>,
+    private val canPlayAnim: Boolean
 ) : RecyclerView.Adapter<AirQualityForecastByHourAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(
@@ -25,8 +30,10 @@ class AirQualityForecastByHourAdapter(
 
         fun bind(f: AirQualityForecastByHour) {
             with(binding) {
+                if (canPlayAnim) {
+                    startIncrementTextAnimation(f.aqi, tvForecastAQI)
+                }
                 tvHour.text = f.hour
-                startIncrementTextAnimation(f.aqi, tvForecastAQI)
                 tvLabelAQI.text = itemView.context.getString(R.string.aqi)
                 iconStatusAQI.setImageResource(f.iconAQISrc)
 
@@ -47,6 +54,18 @@ class AirQualityForecastByHourAdapter(
                             }
                         )
                     )
+                }
+
+                itemView.apply {
+                    setOnClickListener {
+                        startAnimation(AlphaAnimation(1f, 0.5f))
+                        context.startActivity(
+                            Intent(
+                                context,
+                                DetailsForecastActivity::class.java
+                            )
+                        )
+                    }
                 }
             }
         }

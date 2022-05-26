@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.ui.view.model
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.c22_ce02.awmonitorapp.data.model.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.data.repository.CurrentWeatherConditionRepository
@@ -9,13 +10,17 @@ import retrofit2.Response
 
 class CurrentWeatherConditionViewModel(private val repository: CurrentWeatherConditionRepository) :
     ViewModel() {
+
+    val currentWeather = MutableLiveData<List<CurrentWeatherConditionResponse.Data>?>()
+    val errorMessage = MutableLiveData<String?>()
+
     fun getCurrentWeatherCondition(
         lat: Double,
         lon: Double,
-        apiKey: String,
-        onSuccess: (List<CurrentWeatherConditionResponse.Data>?) -> Unit,
-        onFailed: (String?) -> Unit
+        apiKey: String
     ) {
+        currentWeather.postValue(null)
+        errorMessage.postValue(null)
         val call = repository.getCurrentWeatherCondition(lat, lon, apiKey)
         call.enqueue(object : Callback<CurrentWeatherConditionResponse> {
             override fun onResponse(
@@ -23,14 +28,14 @@ class CurrentWeatherConditionViewModel(private val repository: CurrentWeatherCon
                 response: Response<CurrentWeatherConditionResponse>
             ) {
                 if (response.isSuccessful) {
-                    onSuccess(response.body()?.data)
+                    currentWeather.postValue(response.body()?.data)
                 } else {
-                    onFailed(response.errorBody().toString())
+                    errorMessage.postValue(response.errorBody().toString())
                 }
             }
 
             override fun onFailure(call: Call<CurrentWeatherConditionResponse>, t: Throwable) {
-                onFailed(t.message.toString())
+                errorMessage.postValue(t.localizedMessage?.toString() ?: t.message.toString())
             }
         })
     }
