@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:paddingTop="123dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
@@ -26,15 +25,18 @@
         <androidx.cardview.widget.CardView
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_marginEnd="15dp"
             app:cardBackgroundColor="@color/shimmer_color"
-            app:cardCornerRadius="50dp"/>
+            app:cardCornerRadius="50dp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
             app:cardBackgroundColor="@color/shimmer_color"
-            app:cardCornerRadius="20dp"/>
+            app:cardCornerRadius="20dp" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
