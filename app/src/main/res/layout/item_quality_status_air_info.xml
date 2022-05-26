@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:paddingTop="123dp"
     app:cardBackgroundColor="@color/warna_baik"
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
@@ -27,23 +25,18 @@
             android:id="@+id/ic_air_quality_info"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_marginEnd="15dp"
             android:src="@drawable/ic_air_quality_info"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvAirStatusMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            tools:text="@string/status_air_baik_msg"
+            android:layout_gravity="center"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:text="@string/status_air_sangat_tidak_sehat_msg" />
 
     </LinearLayout>
 

@@ -9,13 +9,13 @@
     <string name="title_glossary">Glosarium</string>
     <string name="exit_info">Tekan sekali lagi untuk keluar aplikasi</string>
     <string name="location">Lampung, Indonesia</string>
-    <string name="title_menu_1">Emisi Gas dan Polusi</string>
-    <string name="title_menu_2">Limbah dan Sampah</string>
-    <string name="title_menu_3">Dunia Lebih Baik</string>
+    <string name="title_menu_1">Hidup lebih sehat</string>
+    <string name="title_menu_2">Pantau kualitas udara di sekitarmu</string>
+    <string name="title_menu_3">Prediksi kualitas udara</string>
 
-    <string name="desc_menu_1">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
-    <string name="desc_menu_2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
-    <string name="desc_menu_3">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</string>
+    <string name="desc_menu_1">Hidup lebih sehat dengan menjaga diri dari paparan emisi karbon</string>
+    <string name="desc_menu_2">Sekarang melalui smartphone kamu bisa mengetahui kualitas udara di sekitarmu</string>
+    <string name="desc_menu_3">Kami menerapkan Machine Learning untuk memprediksi kualitas udara per jam, sehingga kamu bisa bersiap untuk menjaga diri dari emisi karbon!</string>
 
     <string name="btn_next">Next</string>
     <string name="btn_finish">Finish</string>
@@ -32,6 +32,11 @@
     <string name="sangat_tidak_sehat">Sangat Tidak \nSehat</string>
     <string name="berbahaya">Berbahaya</string>
 
+    <string name="status_air_forecast_baik_msg">Kualitas udara di tempatmu diprediksikan berstatus Baik, pada status ini udara sangat aman bagi kesehatanmu!</string>
+    <string name="status_air_forecast_sedang_msg">Kualitas udara di tempatmu diprediksikan berstatus Sedang, pada status ini udara masih aman kok untuk kesehatanmu!</string>
+    <string name="status_air_forecast_tidak_sehat_msg">Kualitas udara di tempatmu diprediksikan Tidak Sehat, Jangan lupa pakai masker ya jika ingin keluar rumah!</string>
+    <string name="status_air_forecast_sangat_tidak_sehat_msg">Kualitas udara di tempatmu diprediksikan akan Sangat Tidak Sehat, Jangan lupa siapkan maskermu ya!</string>
+    <string name="status_air_forecast_berbahaya_msg">Kualitas udara di tempatmu diprediksikan berstatus Berbahaya, Udara sangat berbahaya bagi kesehatanmu, Jangan lupa pakai masker ya kalau mau keluar rumah!</string>
     <string name="status_air_baik_msg">Saat ini kualitas udara di tempatmu berstatus Baik, pada status ini udara Sangat aman untuk kesehatanmu!</string>
     <string name="status_air_sedang_msg">Saat ini kualitas udara di tempatmu berstatus Sedang, pada status ini udara masih aman kok untuk kesehatanmu!</string>
     <string name="status_air_tidak_sehat_msg">Saat ini kualitas udara di tempatmu berstatus Tidak Sehat, Jangan lupa pakai masker ya kalau mau keluar rumah!</string>
