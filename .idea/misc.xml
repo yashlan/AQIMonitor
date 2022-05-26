@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AWMonitor/app/src/main/res/drawable/bg_list_air_quality.xml" value="0.121" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/activity_splash.xml" value="0.21240942028985507" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/fragment_article.xml" value="0.2" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/fragment_glossary.xml" value="0.10989583333333333" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/fragment_home.xml" value="0.21240942028985507" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/fragment_maps.xml" value="0.21240942028985507" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/item_quality_status_air_info.xml" value="0.21240942028985507" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/item_recycleview_air_quality_forecast.xml" value="0.21240942028985507" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/item_row_article.xml" value="0.536" />
+        <entry key="..\:/AWMonitor/app/src/main/res/layout/shimmer_fragment_home.xml" value="0.10989583333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bg_list_air_quality.xml" value="0.1695" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bottom_nav_ic_selector.xml" value="0.1645" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/card_home.xml" value="0.185" />
@@ -74,7 +84,12 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_recycleview_air_quality_forecast.xml" value="0.2" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21927083333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_air_24.xml" value="0.1125" />
+        <entry key="app/src/main/res/drawable/ic_start1.xml" value="0.2015" />
+        <entry key="app/src/main/res/layout/activity_get_started.xml" value="0.1569620253164557" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1569620253164557" />
         <entry key="app/src/main/res/layout/fragment_glossary.xml" value="0.15897435897435896" />
+        <entry key="app/src/main/res/layout/shimmer_item_info_air_today.xml" value="0.15897435897435896" />
+        <entry key="app/src/main/res/layout/shimmer_item_info_list_air_today.xml" value="0.15897435897435896" />
       </map>
     </option>
   </component>
