@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.ListArticleAdapter
 import com.c22_ce02.awmonitorapp.data.Article
 import com.c22_ce02.awmonitorapp.databinding.FragmentArticleBinding
-import com.c22_ce02.awmonitorapp.utils.viewBinding
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
-    private val binding by viewBinding<FragmentArticleBinding>()
+    private val binding by viewBinding(FragmentArticleBinding::bind)
     private val list = ArrayList<Article>()
     private lateinit var adapter: ListArticleAdapter
 
