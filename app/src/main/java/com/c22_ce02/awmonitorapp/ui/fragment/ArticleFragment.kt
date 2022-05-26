@@ -17,6 +17,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private lateinit var adapter: ListArticleAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         adapter = ListArticleAdapter(list)
         list.addAll(listArticle)
         showRecyclerList()
