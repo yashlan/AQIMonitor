@@ -32,6 +32,11 @@
     <string name="sangat_tidak_sehat">Sangat Tidak \nSehat</string>
     <string name="berbahaya">Berbahaya</string>
 
+    <string name="status_air_forecast_baik_msg">Kualitas udara di tempatmu diprediksikan berstatus Baik, pada status ini udara sangat aman bagi kesehatanmu!</string>
+    <string name="status_air_forecast_sedang_msg">Kualitas udara di tempatmu diprediksikan berstatus Sedang, pada status ini udara masih aman kok untuk kesehatanmu!</string>
+    <string name="status_air_forecast_tidak_sehat_msg">Kualitas udara di tempatmu diprediksikan Tidak Sehat, Jangan lupa pakai masker ya jika ingin keluar rumah!</string>
+    <string name="status_air_forecast_sangat_tidak_sehat_msg">Kualitas udara di tempatmu diprediksikan akan Sangat Tidak Sehat, Jangan lupa siapkan maskermu ya!</string>
+    <string name="status_air_forecast_berbahaya_msg">Kualitas udara di tempatmu diprediksikan berstatus Berbahaya, Udara sangat berbahaya bagi kesehatanmu, Jangan lupa pakai masker ya kalau mau keluar rumah!</string>
     <string name="status_air_baik_msg">Saat ini kualitas udara di tempatmu berstatus Baik, pada status ini udara Sangat aman untuk kesehatanmu!</string>
     <string name="status_air_sedang_msg">Saat ini kualitas udara di tempatmu berstatus Sedang, pada status ini udara masih aman kok untuk kesehatanmu!</string>
     <string name="status_air_tidak_sehat_msg">Saat ini kualitas udara di tempatmu berstatus Tidak Sehat, Jangan lupa pakai masker ya kalau mau keluar rumah!</string>
