@@ -12,6 +12,7 @@ import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ItemRecycleviewAirQualityForecastBinding
 import com.c22_ce02.awmonitorapp.ui.activity.DetailsForecastActivity
+import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
 import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,12 +60,9 @@ class AirQualityForecastByHourAdapter(
                 itemView.apply {
                     setOnClickListener {
                         startAnimation(AlphaAnimation(1f, 0.5f))
-                        context.startActivity(
-                            Intent(
-                                context,
-                                DetailsForecastActivity::class.java
-                            )
-                        )
+                        val i = Intent(context, DetailsForecastActivity::class.java)
+                        i.putExtra(HomeFragment.FORECAST_EXTRA, f)
+                        context.startActivity(i)
                     }
                 }
             }
