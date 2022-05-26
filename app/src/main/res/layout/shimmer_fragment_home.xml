@@ -7,38 +7,45 @@
     android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/shimmer_color_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardLocation"
+            android:layout_width="220dp"
+            android:layout_height="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="28dp"
-            android:background="@color/shimmer_color"
+            app:cardBackgroundColor="@color/shimmer_color"
+            app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvDate"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardDate"
+            android:layout_width="150dp"
+            android:layout_height="20dp"
             android:layout_marginStart="30dp"
-            android:background="@color/shimmer_color"
-            android:textSize="15sp"
+            android:layout_marginTop="6dp"
+            app:cardBackgroundColor="@color/shimmer_color"
+            app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+            app:layout_constraintTop_toBottomOf="@id/cardLocation">
+
+        </androidx.cardview.widget.CardView>
 
         <include
             android:id="@+id/itemInfoAirToday"
             layout="@layout/shimmer_item_info_air_today"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+            app:layout_constraintTop_toBottomOf="@+id/cardDate" />
 
         <include
             android:id="@+id/itemPanelHomeInfo"

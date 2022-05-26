@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card_info_air_today_baik">
+    tools:background="@color/warna_baik">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,56 +11,27 @@
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvAQI"
+            android:layout_width="wrap_content"
+            android:layout_height="105dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="80sp"
+            tools:text="280" />
+
+        <ImageView
+            android:id="@+id/imgLabelAir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
-
-            <TextView
-                android:id="@+id/tvToday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="32dp"
-                android:textSize="28sp"
-                tools:text="Hari ini" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
-
-            <TextView
-                android:id="@+id/tvAQI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="80sp"
-                tools:text="20" />
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="0dp" />
-
-            <ImageView
-                android:id="@+id/imgLabelAir"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                tools:ignore="ContentDescription"
-                tools:src="@drawable/ic_label_baik" />
-
-        </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_label_detail_sangat_tidak_sehat" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="50dp"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
