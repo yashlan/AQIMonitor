@@ -10,19 +10,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityHomeBinding
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
 import com.c22_ce02.awmonitorapp.utils.showToast
-import com.c22_ce02.awmonitorapp.utils.viewBinding
 
 
-
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(R.layout.activity_home) {
 
     private var canExit = false
     private lateinit var navController: NavController
-    private val binding by viewBinding<ActivityHomeBinding>()
+    private val binding by viewBinding(ActivityHomeBinding::bind, R.id.container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setFullscreen()
@@ -42,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
         removeItemTintColor()
-        
+
     }
 
     private fun removeItemTintColor() {

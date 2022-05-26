@@ -1,14 +1,18 @@
 package com.c22_ce02.awmonitorapp.adapter
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ItemRecycleviewAirQualityForecastBinding
+import com.c22_ce02.awmonitorapp.ui.activity.DetailsForecastActivity
+import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
 import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +31,7 @@ class AirQualityForecastByHourAdapter(
 
         fun bind(f: AirQualityForecastByHour) {
             with(binding) {
-                if(canPlayAnim) {
+                if (canPlayAnim) {
                     startIncrementTextAnimation(f.aqi, tvForecastAQI)
                 }
                 tvHour.text = f.hour
@@ -53,9 +57,13 @@ class AirQualityForecastByHourAdapter(
                     )
                 }
 
-                itemView.setOnClickListener {
-                    Toast.makeText(itemView.context, "you clicked item at : ${f.hour}", Toast.LENGTH_SHORT)
-                        .show()
+                itemView.apply {
+                    setOnClickListener {
+                        startAnimation(AlphaAnimation(1f, 0.5f))
+                        val i = Intent(context, DetailsForecastActivity::class.java)
+                        i.putExtra(HomeFragment.FORECAST_EXTRA, f)
+                        context.startActivity(i)
+                    }
                 }
             }
         }

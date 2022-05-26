@@ -16,11 +16,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.AirQualityForecastByHourAdapter
 import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
-import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHourResponse
 import com.c22_ce02.awmonitorapp.data.model.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.model.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
@@ -36,8 +36,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.properties.Delegates
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -52,7 +50,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val listForecast = ArrayList<AirQualityForecastByHour>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val binding by viewBinding<FragmentHomeBinding>()
+    private lateinit var refreshUITimer: Timer
+    private val binding by viewBinding(FragmentHomeBinding::bind, onViewDestroyed = {
+        refreshUITimer.cancel()
+    })
     private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
         CurrentWeatherConditionViewModelFactory()
     }
@@ -91,22 +92,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         resetAll {
-            setDefaultWindowBackgroundResource()
             loadAllData()
             hideUI()
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            resetAll {
-                setDefaultWindowBackgroundResource()
-                hideUI()
-                refreshFragment()
-            }
+            hideUI()
+            refreshFragment()
+            setDefaultWindowBackgroundResource()
         }
 
-        Timer().scheduleAtFixedRate(object : TimerTask() {
+        refreshUITimer = Timer()
+        refreshUITimer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 requireActivity().runOnUiThread {
                     if (isAllDataLoaded()) {
@@ -143,6 +144,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    private fun isAllDataLoaded(): Boolean =
+        isCurrentAirQualityLoaded &&
+                isAirQualityForecastByHourLoaded &&
+                isCurrentWeatherConditionLoaded
+
+    private fun refreshFragment() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.swipeRefresh.isRefreshing = false
+            if (!binding.swipeRefresh.isRefreshing) {
+                requireActivity().apply {
+                    finish()
+                    overridePendingTransition(0, 0)
+                    startActivity(intent)
+                    overridePendingTransition(0, 0)
+                }
+            }
+        }, DELAY_REFRESH)
+    }
+
     private fun updateUI() {
 
         val currentAQI = dataCurrentWeather.aqi.toInt()
@@ -172,15 +192,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             itemInfoAirToday.root.setBackgroundResource(
                 getCardBgItemAirTodayResource(currentAQI)
             )
-            itemInfoAirToday.tvWindSpeed.text =
-                convertWindSpeedToKmh(dataW.windSpeed.toInt())
-            "${dataW.temperature.toInt()} C".also { temp ->
-                itemInfoAirToday.tvTemperature.text = temp
-            }
-            "${dataW.humidity.toInt()}%".also { hum ->
-                itemInfoAirToday.tvHumidity.text = hum
-            }
 
+            startIncrementTextAnimation(
+                convertWindSpeedToKmh(dataW.windSpeed.toInt()),
+                "km/h",
+                itemInfoAirToday.tvWindSpeed
+            )
+            startIncrementTextAnimation(
+                dataW.temperature.toInt(),
+                "C",
+                itemInfoAirToday.tvTemperature
+            )
+            startIncrementTextAnimation(
+                dataW.humidity.toInt(),
+                "%",
+                itemInfoAirToday.tvHumidity
+            )
 
             with(itemListAirInfo) {
 
@@ -191,7 +218,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     '1',
                     0.7f
                 )
-                tvPm10.text = dataA.pm10.toInt().toString()
+                startIncrementTextAnimation(dataA.pm10.toInt(), tvPm10)
                 iconStatusPM10.setImageResource(getIconItem(dataA.pm10.toInt()))
                 tvStatusPM10.text = getStatusName(dataA.pm10.toInt())
 
@@ -200,7 +227,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     '2',
                     0.7f
                 )
-                tvPM25.text = dataA.pm25.toInt().toString()
+                startIncrementTextAnimation(dataA.pm25.toInt(), tvPM25)
                 iconStatusPM25.setImageResource(getIconItem(dataA.pm25.toInt()))
                 tvStatusPM25.text = getStatusName(dataA.pm25.toInt())
 
@@ -209,12 +236,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     '2',
                     0.7f
                 )
-                tvSO2.text = dataA.so2.toInt().toString()
+                startIncrementTextAnimation(dataA.so2.toInt(), tvSO2)
                 iconStatusSO2.setImageResource(getIconItem(dataA.so2.toInt()))
                 tvStatusSO2.text = getStatusName(dataA.so2.toInt())
 
                 tvLabelCO.text = getString(R.string.co)
-                tvCO.text = dataA.co.toInt().toString()
+                startIncrementTextAnimation(dataA.co.toInt(), tvCO)
                 iconStatusCO.setImageResource(getIconItem(dataA.co.toInt()))
                 tvStatusCO.text = getStatusName(dataA.co.toInt())
 
@@ -223,7 +250,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     '2',
                     0.7f
                 )
-                tvNO2.text = dataA.no2.toInt().toString()
+                startIncrementTextAnimation(dataA.no2.toInt(), tvNO2)
                 iconStatusNO2.setImageResource(getIconItem(dataA.no2.toInt()))
                 tvStatusNO2.text = getStatusName(dataA.no2.toInt())
 
@@ -232,7 +259,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     '3',
                     0.7f
                 )
-                tvO3.text = dataA.o3.toInt().toString()
+                startIncrementTextAnimation(dataA.o3.toInt(), tvO3)
                 iconStatusO3.setImageResource(getIconItem(dataA.o3.toInt()))
                 tvStatusO3.text = getStatusName(dataA.o3.toInt())
             }
@@ -275,31 +302,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun isAllDataLoaded(): Boolean =
-        isCurrentAirQualityLoaded &&
-                isAirQualityForecastByHourLoaded &&
-                isCurrentWeatherConditionLoaded
-
-    private fun refreshFragment() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            parentFragmentManager
-                .beginTransaction()
-                .detach(this)
-                .commitNow()
-            parentFragmentManager
-                .beginTransaction()
-                .attach(this)
-                .commitNow()
-            binding.swipeRefresh.isRefreshing = false
-        }, DELAY_REFRESH)
-    }
-
     private fun setDefaultWindowBackgroundResource() {
-        requireActivity().window.decorView.setBackgroundResource(R.color.shimmer_color_bg)
+        binding.root.setBackgroundResource(R.color.shimmer_color_bg)
     }
 
     private fun changeWindowBackgroundResource(aqi: Int) {
-        requireActivity().window.decorView.setBackgroundResource(
+        binding.root.setBackgroundResource(
             when (aqi) {
                 in 0..50 -> R.drawable.window_bg_baik
                 in 51..100 -> R.drawable.window_bg_sedang
@@ -455,7 +463,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
     }
 
-    private fun convertWindSpeedToKmh(speedMs: Int): String = "${speedMs * 3.6} km/h"
+    private fun convertWindSpeedToKmh(speedMs: Int): Int = (speedMs * 3.6).toInt()
 
     private fun getForecastData(lat: Double, lon: Double) {
         airQualityForecastByHourViewModel.listForecast.observe(requireActivity()) {
@@ -469,17 +477,29 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (hour.equals(currentHour, true)) {
                         listForecast.add(
                             AirQualityForecastByHour(
-                                hour,
-                                getIconItem(dataCurrentWeather.aqi.toInt()),
-                                dataCurrentWeather.aqi.toInt()
+                                hour = hour,
+                                iconAQISrc = getIconItem(dataCurrentWeather.aqi.toInt()),
+                                aqi = dataCurrentWeather.aqi.toInt(),
+                                pm10 = data.pm10.toInt(),
+                                pm25 = data.pm25.toInt(),
+                                o3 = data.o3.toInt(),
+                                so2 = data.so2.toInt(),
+                                no2 = data.no2.toInt(),
+                                co = data.co.toInt()
                             )
                         )
                     } else {
                         listForecast.add(
                             AirQualityForecastByHour(
-                                hour,
-                                getIconItem(data.aqi.toInt()),
-                                data.aqi.toInt()
+                                hour = hour,
+                                iconAQISrc = getIconItem(data.aqi.toInt()),
+                                aqi = data.aqi.toInt(),
+                                pm10 = data.pm10.toInt(),
+                                pm25 = data.pm25.toInt(),
+                                o3 = data.o3.toInt(),
+                                so2 = data.so2.toInt(),
+                                no2 = data.no2.toInt(),
+                                co = data.co.toInt()
                             )
                         )
                     }
@@ -510,5 +530,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         private const val DELAY_REFRESH: Long = 1000
         private const val PERIOD_TIMER: Long = 500
         private const val HOURS = 6
+        const val FORECAST_EXTRA = "FORECAST_EXTRA"
     }
 }

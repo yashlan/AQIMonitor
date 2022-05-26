@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:paddingTop="123dp"
-    app:cardBackgroundColor="@color/shimmer_color_bg"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
     app:cardPreventCornerOverlap="true"
@@ -23,27 +22,20 @@
         android:padding="10dp"
         tools:ignore="UseCompoundDrawables">
 
-        <ImageView
-            android:id="@+id/ic_air_quality_info"
+        <androidx.cardview.widget.CardView
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_marginEnd="15dp"
-            android:background="@color/shimmer_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            app:cardBackgroundColor="@color/shimmer_color"
+            app:cardCornerRadius="50dp" />
 
-        <TextView
-            android:id="@+id/tvAirStatusMsg"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/shimmer_color"
-            android:layout_gravity="center_vertical|end"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/shimmer_color"
+            app:cardCornerRadius="20dp" />
 
     </LinearLayout>
 
