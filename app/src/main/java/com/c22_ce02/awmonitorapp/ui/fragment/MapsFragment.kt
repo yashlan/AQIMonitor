@@ -18,15 +18,21 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
 
 
     private val mapsViewModel: MapsViewModel by viewModels()
-    private val binding by viewBinding(FragmentMapsBinding::bind)
-
+    private val binding by viewBinding(FragmentMapsBinding::bind, onViewDestroyed = {
+        stopHandler()
+    })
+    private val handler = Handler(Looper.getMainLooper())
 
     private val callback = OnMapReadyCallback { googleMap ->
         showLoading(true)
         mapsViewModel.getListCity(googleMap)
-        Handler(Looper.getMainLooper()).postDelayed({
+        handler.postDelayed({
             showLoading(false)
         }, MAPS_FAKE_TIME_LOAD)
+    }
+
+    private fun stopHandler() {
+        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
