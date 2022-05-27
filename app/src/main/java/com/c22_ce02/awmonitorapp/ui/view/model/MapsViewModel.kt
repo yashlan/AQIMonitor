@@ -2,20 +2,15 @@ package com.c22_ce02.awmonitorapp.ui.view.model
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.asset.DummyResponseItem
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -52,6 +47,7 @@ class MapsViewModel(application: Application): AndroidViewModel(application) {
                 data.lat = loc.getString("lat")
                 data.lng = loc.getString("lng")
                 data.city = loc.getString("city")
+                data.aqi = loc.getString("aqi")
 
                 listLocation.add(data)
 
@@ -62,17 +58,57 @@ class MapsViewModel(application: Application): AndroidViewModel(application) {
 
                 val name = listLocation[i].city.toString()
 
-
-                mMap.addMarker(
-                    MarkerOptions().position(location).title(name)
-                        .snippet("PM2.5: 47, PM10: 15, AQI: 14")
-                        .icon(
-                            vectorToBitmap(
-                                R.drawable.ic_marker_green,
-                                Color.parseColor("#FF3333")
-                            )
+                when {
+                    listLocation[i].aqi?.toInt()!! < 10 -> {
+                        mMap.addMarker(
+                            MarkerOptions().position(location).title(name)
+                                .snippet("PM2.5: 47, PM10: 15, AQI: 14")
+                                .icon(
+                                    vectorToBitmap(
+                                        R.drawable.ic_marker_green,
+                                        Color.parseColor("#32C090")
+                                    )
+                                )
                         )
-                )
+                    }
+                    listLocation[i].aqi?.toInt()!! < 20 -> {
+                        mMap.addMarker(
+                            MarkerOptions().position(location).title(name)
+                                .snippet("PM2.5: 47, PM10: 15, AQI: 14")
+                                .icon(
+                                    vectorToBitmap(
+                                        R.drawable.ic_marker_green,
+                                        Color.parseColor("#6F9EFF")
+                                    )
+                                )
+                        )
+                    }
+                    listLocation[i].aqi?.toInt()!! < 30 -> {
+                        mMap.addMarker(
+                            MarkerOptions().position(location).title(name)
+                                .snippet("PM2.5: 47, PM10: 15, AQI: 14")
+                                .icon(
+                                    vectorToBitmap(
+                                        R.drawable.ic_marker_green,
+                                        Color.parseColor("#FFE37E")
+                                    )
+                                )
+                        )
+                    }
+                    listLocation[i].aqi?.toInt()!! < 40 -> {
+                        mMap.addMarker(
+                            MarkerOptions().position(location).title(name)
+                                .snippet("PM2.5: 47, PM10: 15, AQI: 14")
+                                .icon(
+                                    vectorToBitmap(
+                                        R.drawable.ic_marker_green,
+                                        Color.parseColor("#FF3333")
+                                    )
+                                )
+                        )
+                    }
+                }
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
             }
         } catch (e: JSONException) {
@@ -81,7 +117,7 @@ class MapsViewModel(application: Application): AndroidViewModel(application) {
     }
 
 
-     fun loadJSONFromAsset(): String? {
+     private fun loadJSONFromAsset(): String? {
         val json = try {
             val inputStream = context.assets.open("city.json")
             val size = inputStream.available()
@@ -96,7 +132,7 @@ class MapsViewModel(application: Application): AndroidViewModel(application) {
         return json
     }
 
-     fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
+     private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
         val vectorDrawable = ResourcesCompat.getDrawable(context.resources, id, null)
         if (vectorDrawable == null) {
             Log.e("BitmapHelper", "Resource not found")
