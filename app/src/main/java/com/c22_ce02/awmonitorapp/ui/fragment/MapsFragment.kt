@@ -1,119 +1,63 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.c22_ce02.awmonitorapp.R
-import com.c22_ce02.awmonitorapp.asset.DummyResponseItem
-
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
+import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
+import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
 
-    private var listLocation: ArrayList<DummyResponseItem> = ArrayList()
-    private lateinit var mMap: GoogleMap
+
+    private val mapsViewModel : MapsViewModel by viewModels()
+    private lateinit var binding : FragmentMapsBinding
+
 
     private val callback = OnMapReadyCallback { googleMap ->
-        getListCity(googleMap)
+        showLoading(true)
+        mapsViewModel.getListCity(googleMap)
+        Handler(Looper.getMainLooper()).postDelayed({
+            showLoading(false)
+        }, MAPS_FAKE_TIME_LOAD)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentMapsBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
     }
 
-    private fun getListCity(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        try {
-            val jsonObject = JSONObject(loadJSONFromAsset()!!)
-            val locs = jsonObject.getJSONArray("data")
-
-            for (i in 0 until locs.length() - 1) {
-                val loc = locs.getJSONObject(i)
-                val data = DummyResponseItem()
-
-                data.lat = loc.getString("lat")
-                data.lng = loc.getString("lng")
-                data.city = loc.getString("city")
-
-                listLocation.add(data)
-
-                val location = LatLng(
-                    listLocation[i].lat!!.toDouble(),
-                    listLocation[i].lng?.toDouble()!!
-                )
-
-                val name = listLocation[i].city.toString()
-                mMap.addMarker(
-                    MarkerOptions().position(location).title(name)
-                        .snippet("PM2.5: 47, PM10: 15, AQI: 14")
-                        .icon(
-                            vectorToBitmap(
-                                R.drawable.ic_marker_green,
-                                Color.parseColor("#1592FF")
-                            )
-                        )
-                )
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.mapsLoading.visibility = View.VISIBLE
+        } else {
+            binding.mapsLoading.visibility = View.GONE
         }
     }
 
-
-    private fun loadJSONFromAsset(): String? {
-        val json = try {
-            val inputStream = requireContext().assets.open("city.json")
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            String(buffer)
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-            return null
-        }
-        return json
+    companion object {
+        private const val MAPS_FAKE_TIME_LOAD: Long = 8000
     }
 
-    private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
-        val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)
-        if (vectorDrawable == null) {
-            Log.e("BitmapHelper", "Resource not found")
-            return BitmapDescriptorFactory.defaultMarker()
-        }
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
-    }
 }

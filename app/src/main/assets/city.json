@@ -1,6 +1,7 @@
 {
   "data": [
     {
+      "aqi": "10",
       "city": "Jakarta",
       "lat": "-6.2146",
       "lng": "106.8451",
@@ -12,6 +13,7 @@
       "population_proper": "10154134"
     },
     {
+      "aqi": "29",
       "city": "Surabaya",
       "lat": "-7.2458",
       "lng": "112.7378",
@@ -23,6 +25,7 @@
       "population_proper": "4975000"
     },
     {
+      "aqi": "31",
       "city": "Bandung",
       "lat": "-6.9500",
       "lng": "107.5667",
@@ -34,6 +37,7 @@
       "population_proper": "2394873"
     },
     {
+      "aqi": "11",
       "city": "Bekasi",
       "lat": "-6.2333",
       "lng": "107.0000",
@@ -45,6 +49,7 @@
       "population_proper": "2381053"
     },
     {
+      "aqi": "38",
       "city": "Tangerang",
       "lat": "-6.1783",
       "lng": "106.6319",
@@ -56,6 +61,7 @@
       "population_proper": "2237006"
     },
     {
+      "aqi": "22",
       "city": "Medan",
       "lat": "3.6667",
       "lng": "98.6667",
@@ -67,6 +73,7 @@
       "population_proper": "2210625"
     },
     {
+      "aqi": "4",
       "city": "Makassar",
       "lat": "-5.1331",
       "lng": "119.4136",
@@ -78,6 +85,7 @@
       "population_proper": "1651146"
     },
     {
+      "aqi": "6",
       "city": "Semarang",
       "lat": "-6.9667",
       "lng": "110.4167",
@@ -89,6 +97,7 @@
       "population_proper": "1621384"
     },
     {
+      "aqi": "32",
       "city": "Palembang",
       "lat": "-2.9833",
       "lng": "104.7644",
@@ -100,6 +109,7 @@
       "population_proper": "1452456"
     },
     {
+      "aqi": "18",
       "city": "Cilacap",
       "lat": "-7.7167",
       "lng": "109.0170",
@@ -111,6 +121,7 @@
       "population_proper": "1174964"
     },
     {
+      "aqi": "24",
       "city": "Bandar Lampung",
       "lat": "-5.4294",
       "lng": "105.2625",
@@ -122,6 +133,7 @@
       "population_proper": "1166761"
     },
     {
+      "aqi": "35",
       "city": "Padang",
       "lat": "-0.9556",
       "lng": "100.3606",
@@ -133,6 +145,7 @@
       "population_proper": "914970"
     },
     {
+      "aqi": "15",
       "city": "Pekanbaru",
       "lat": "0.5333",
       "lng": "101.4500",
@@ -144,6 +157,7 @@
       "population_proper": "855221"
     },
     {
+      "aqi": "7",
       "city": "Denpasar",
       "lat": "-8.6667",
       "lng": "115.2167",
@@ -155,6 +169,7 @@
       "population_proper": "834881"
     },
     {
+      "aqi": "30",
       "city": "Samarinda",
       "lat": "-0.5022",
       "lng": "117.1536",
@@ -166,6 +181,7 @@
       "population_proper": "753370"
     },
     {
+      "aqi": "40",
       "city": "Banjarmasin",
       "lat": "-3.3333",
       "lng": "114.5833",
@@ -177,6 +193,7 @@
       "population_proper": "692793"
     },
     {
+      "aqi": "40",
       "city": "Pontianak",
       "lat": "-0.0206",
       "lng": "109.3414",
@@ -188,6 +205,7 @@
       "population_proper": "618388"
     },
     {
+      "aqi": "40",
       "city": "Serang",
       "lat": "-6.1200",
       "lng": "106.1503",
@@ -199,6 +217,7 @@
       "population_proper": "613356"
     },
     {
+      "aqi": "40",
       "city": "Jambi",
       "lat": "-1.5900",
       "lng": "103.6100",
@@ -210,6 +229,7 @@
       "population_proper": "602187"
     },
     {
+      "aqi": "40",
       "city": "Manado",
       "lat": "1.4931",
       "lng": "124.8413",
