@@ -16,8 +16,13 @@ object Injection {
         return CurrentAirQualityRepository(apiService)
     }
 
-    fun provideEveryHourAirQualityForecastRepository(): AirQualityForecastByHourRepository {
+    fun provideAirQualityForecastByHourRepository(): AirQualityForecastByHourRepository {
         val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_WEATHERBIT)
         return AirQualityForecastByHourRepository(apiService)
+    }
+
+    fun provideWeatherForecastByHourRepository(): WeatherForecastByHourRepository {
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_WEATHERBIT)
+        return WeatherForecastByHourRepository(apiService)
     }
 }
