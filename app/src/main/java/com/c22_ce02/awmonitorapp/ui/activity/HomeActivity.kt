@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -62,16 +63,25 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
     }
 
     fun onClickItemNavHome(item: MenuItem) {
+        if (navController.currentDestination?.id == R.id.navigation_home) {
+            return
+        }
         navController.navigate(R.id.navigation_home)
         changeStateIconItem(item)
     }
 
     fun onClickItemNavDiscover(item: MenuItem) {
+        if (navController.currentDestination?.id == R.id.mapsFragment) {
+            return
+        }
         navController.navigate(R.id.mapsFragment)
         changeStateIconItem(item)
     }
 
     fun onClickItemNavGlossary(item: MenuItem) {
+        if (navController.currentDestination?.id == R.id.navigation_glossary) {
+            return
+        }
         navController.navigate(R.id.navigation_glossary)
         changeStateIconItem(item)
     }
