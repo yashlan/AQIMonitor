@@ -16,6 +16,9 @@ data class DummyResponseItem(
 	@field:SerializedName("capital")
 	var capital: String? = null,
 
+	@field:SerializedName("aqi")
+	var aqi: String? = null,
+
 	@field:SerializedName("lng")
 	var lng: String? = null,
 
