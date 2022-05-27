@@ -1,9 +1,8 @@
 package com.c22_ce02.awmonitorapp.ui.view.model
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHourResponse
+import com.c22_ce02.awmonitorapp.data.response.AirQualityForecastByHourResponse
 import com.c22_ce02.awmonitorapp.data.repository.AirQualityForecastByHourRepository
 import retrofit2.*
 

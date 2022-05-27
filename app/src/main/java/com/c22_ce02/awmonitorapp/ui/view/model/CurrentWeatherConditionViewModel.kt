@@ -2,7 +2,7 @@ package com.c22_ce02.awmonitorapp.ui.view.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.c22_ce02.awmonitorapp.data.model.CurrentWeatherConditionResponse
+import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.data.repository.CurrentWeatherConditionRepository
 import retrofit2.Call
 import retrofit2.Callback
