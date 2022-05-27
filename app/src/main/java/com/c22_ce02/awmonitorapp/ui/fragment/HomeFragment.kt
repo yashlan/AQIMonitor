@@ -473,19 +473,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 it.forEach { data ->
                     val hour =
                         formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
-                    val currentHour = formatter.format(Date())
+                    val currentHour = formatter.format(Date()).lowercase()
                     if (hour.equals(currentHour, true)) {
                         listForecast.add(
                             AirQualityForecastByHour(
-                                hour = hour,
+                                hour = currentHour,
                                 iconAQISrc = getIconItem(dataCurrentWeather.aqi.toInt()),
                                 aqi = dataCurrentWeather.aqi.toInt(),
-                                pm10 = data.pm10.toInt(),
-                                pm25 = data.pm25.toInt(),
-                                o3 = data.o3.toInt(),
-                                so2 = data.so2.toInt(),
-                                no2 = data.no2.toInt(),
-                                co = data.co.toInt()
+                                pm10 = dataCurrentAirQuality.pm10.toInt(),
+                                pm25 = dataCurrentAirQuality.pm25.toInt(),
+                                o3 = dataCurrentAirQuality.o3.toInt(),
+                                so2 = dataCurrentAirQuality.so2.toInt(),
+                                no2 = dataCurrentAirQuality.no2.toInt(),
+                                co = dataCurrentAirQuality.co.toInt()
                             )
                         )
                     } else {
