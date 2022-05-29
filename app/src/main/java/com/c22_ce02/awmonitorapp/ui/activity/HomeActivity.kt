@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityHomeBinding
+import com.c22_ce02.awmonitorapp.notification.AirQualityNotificationReceiver
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
 import com.c22_ce02.awmonitorapp.utils.showToast
 
@@ -42,11 +42,16 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
         removeItemTintColor()
-
+        setupNotification()
     }
 
     private fun removeItemTintColor() {
         binding.navView.itemIconTintList = null
+    }
+
+    private fun setupNotification() {
+        showToast("test notif")
+        AirQualityNotificationReceiver().setRepeatingNotification(this)
     }
 
     override fun onBackPressed() {
@@ -59,7 +64,7 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         showToast(R.string.exit_info)
         Handler(Looper.getMainLooper()).postDelayed({
             canExit = false
-        }, 2000)
+        }, DELAY_EXIT)
     }
 
     fun onClickItemNavHome(item: MenuItem) {
@@ -98,5 +103,9 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
                 menuItem.isChecked = true
             }
         }
+    }
+
+    companion object {
+        private const val DELAY_EXIT: Long = 2000
     }
 }
