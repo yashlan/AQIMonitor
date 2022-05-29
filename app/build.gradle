@@ -51,6 +51,13 @@ android {
 
 dependencies {
 
+
+    //work manager
+    implementation "androidx.work:work-runtime:2.7.1"
+
+    //loopj
+    implementation 'com.loopj.android:android-async-http:1.4.10'
+
     //delegate binding
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
 
