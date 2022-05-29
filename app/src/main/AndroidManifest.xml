@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SET_ALARM"/>
 
     <application
         android:allowBackup="true"
@@ -17,6 +19,13 @@
         android:theme="@style/Theme.AWMonitorApp"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+
+        <receiver
+            android:name=".notification.AirQualityNotificationReceiver"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="ExportedReceiver" />
+
         <activity
             android:name=".ui.activity.DetailsForecastActivity"
             android:exported="false" />
