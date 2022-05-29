@@ -1,10 +1,14 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
 import android.Manifest
+import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.location.LocationManager.GPS_PROVIDER
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -20,7 +24,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.AirQualityAndWeatherForecastByHourAdapter
-import com.c22_ce02.awmonitorapp.data.model.*
+import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.WeatherForecastByHour
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
@@ -40,13 +46,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     private var isCurrentWeatherConditionLoaded = false
     private var isAirQualityForecastByHourLoaded = false
     private var isWeatherForecastByHourLoaded = false
     private var isCurrentAirQualityLoaded = false
+    private var isLocationChanged = false
     private var allowRefresh = false
+
+    private var newLat = 0.0
+    private var newLon = 0.0
 
     private lateinit var dataCurrentWeather: CurrentWeatherConditionResponse.Data
     private lateinit var dataCurrentAirQuality: CurrentAirQualityResponse.Data
@@ -55,9 +65,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val listForecastAirAndWeather = ArrayList<AirQualityAndWeatherForecastByHour>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationManager: LocationManager
     private lateinit var refreshUITimer: Timer
+    private lateinit var refreshLocationTimer: Timer
+
     private val binding by viewBinding(FragmentHomeBinding::bind, onViewDestroyed = {
         refreshUITimer.cancel()
+        refreshLocationTimer.cancel()
     })
     private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
         CurrentWeatherConditionViewModelFactory()
@@ -115,6 +129,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         refreshUITimer = Timer()
+        refreshLocationTimer = Timer()
+
         refreshUITimer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 requireActivity().runOnUiThread {
@@ -154,7 +170,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         listForecastAir.clear()
         listForecastAir.removeAll(listForecastAir)
 
-        if (listForecastAir.isEmpty()) {
+        if (listForecastAir.isEmpty() &&
+            listForecastWeather.isEmpty() &&
+            listForecastAirAndWeather.isEmpty()
+        ) {
             onReset.invoke()
         }
     }
@@ -191,9 +210,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val dataW = dataCurrentWeather
 
             getLocation(onGetLocation = { lat, lon ->
-                tvLocation.text = getCurrentLocationName(lat, lon)
+                itemLocationAndDate.tvLocation.text = getCurrentLocationName(lat, lon)
             })
-            tvDate.text = getCurrentDate()
+            itemLocationAndDate.tvDate.text = getCurrentDate()
             itemPanelHomeInfo.itemStatusAirMessage.root.setCardBackgroundColor(
                 getItemStatusAirMessageBgColor(currentAQI)
             )
@@ -305,11 +324,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun showUI() {
         with(binding) {
-            tvLocation.visibility = View.VISIBLE
-            tvDate.visibility = View.VISIBLE
+            itemLocationAndDate.tvLocation.visibility = View.VISIBLE
+            itemLocationAndDate.tvDate.visibility = View.VISIBLE
             itemInfoAirToday.root.visibility = View.VISIBLE
             itemPanelHomeInfo.root.visibility = View.VISIBLE
-            tvLocation.visibility = View.VISIBLE
             shimmerFragmentHome.stopShimmer()
             shimmerFragmentHome.visibility = View.GONE
         }
@@ -317,11 +335,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun hideUI() {
         with(binding) {
-            tvLocation.visibility = View.INVISIBLE
-            tvDate.visibility = View.INVISIBLE
+            itemLocationAndDate.tvLocation.visibility = View.INVISIBLE
+            itemLocationAndDate.tvDate.visibility = View.INVISIBLE
             itemInfoAirToday.root.visibility = View.INVISIBLE
             itemPanelHomeInfo.root.visibility = View.INVISIBLE
-            tvLocation.visibility = View.INVISIBLE
             shimmerFragmentHome.visibility = View.VISIBLE
             shimmerFragmentHome.startShimmer()
         }
@@ -434,12 +451,64 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (location != null) {
                         onGetLocation(location.latitude, location.longitude)
                     } else {
-                        showToast("lokasi tidak diketahui")
+                        requestLocation()
+                        refreshLocationTimer.scheduleAtFixedRate(object : TimerTask() {
+                            override fun run() {
+                                requireActivity().runOnUiThread {
+                                    if (isLocationChanged) {
+                                        onGetLocation(newLat, newLon)
+                                        showToast("lokasi berhasil ditemukan")
+                                        cancel()
+                                    }
+                                }
+                            }
+                        }, 0, PERIOD_TIMER)
                     }
                 }
                 .addOnFailureListener {
                     showToast(it.localizedMessage?.toString() ?: it.message.toString())
                 }
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        newLat = location.latitude
+        newLon = location.longitude
+        isLocationChanged = true
+        locationManager.removeUpdates(this)
+    }
+
+    private fun requestLocation() {
+        locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
+        if (locationManager.isProviderEnabled(GPS_PROVIDER)) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
+            } else {
+                locationManager.requestLocationUpdates(
+                    GPS_PROVIDER,
+                    10000L,
+                    1000f,
+                    this
+                )
+                showToast("Sedang Mencari Lokasi")
+            }
+        } else {
+            binding.shimmerFragmentHome.stopShimmer()
+            showSnackBar(
+                binding.root,
+                R.string.msg_permission_maps,
+                R.string.yes,
+                onClickOkAction = {
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                }
+            )
         }
     }
 
