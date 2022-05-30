@@ -10,11 +10,10 @@ import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherForecastByHour
-import com.c22_ce02.awmonitorapp.data.model.AirQualityForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ActivityDetailsForecastBinding
 import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
-import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
-import com.c22_ce02.awmonitorapp.utils.Text
+import com.c22_ce02.awmonitorapp.utils.spannableStringBuilder
+import com.c22_ce02.awmonitorapp.utils.startIncrementTextAnimation
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,12 +55,12 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                         startIncrementTextAnimation(it.forecastAirQuality.aqi, tvAQI)
                         startIncrementTextAnimation(
                             convertWindSpeedToKmh(it.forecastWeather.windSpeed),
-                            "km/h",
+                            " km/h",
                             tvWindSpeed
                         )
                         startIncrementTextAnimation(
                             it.forecastWeather.temperature,
-                            "C",
+                            " C",
                             tvTemperature
                         )
                         startIncrementTextAnimation(
@@ -83,7 +82,7 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
 
                     with(itemInfoListAirForecast) {
 
-                        tvLabelPM10.text = Text.spannableStringBuilder(
+                        tvLabelPM10.text = spannableStringBuilder(
                             getString(R.string.pm10),
                             '1',
                             0.7f
@@ -92,7 +91,7 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                         iconStatusPM10.setImageResource(getIconItem(it.forecastAirQuality.pm10))
                         tvStatusPM10.text = getStatusName(it.forecastAirQuality.pm10)
 
-                        tvLabelPM25.text = Text.spannableStringBuilder(
+                        tvLabelPM25.text = spannableStringBuilder(
                             getString(R.string.pm25),
                             '2',
                             0.7f
@@ -101,7 +100,7 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                         iconStatusPM25.setImageResource(getIconItem(it.forecastAirQuality.pm25))
                         tvStatusPM25.text = getStatusName(it.forecastAirQuality.pm25)
 
-                        tvLabelSO2.text = Text.spannableStringBuilder(
+                        tvLabelSO2.text = spannableStringBuilder(
                             getString(R.string.so2),
                             '2',
                             0.7f
@@ -115,7 +114,7 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                         iconStatusCO.setImageResource(getIconItem(it.forecastAirQuality.co))
                         tvStatusCO.text = getStatusName(it.forecastAirQuality.co)
 
-                        tvLabelNO2.text = Text.spannableStringBuilder(
+                        tvLabelNO2.text = spannableStringBuilder(
                             getString(R.string.no2),
                             '2',
                             0.7f
@@ -124,7 +123,7 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                         iconStatusNO2.setImageResource(getIconItem(it.forecastAirQuality.no2))
                         tvStatusNO2.text = getStatusName(it.forecastAirQuality.no2)
 
-                        tvLabelO3.text = Text.spannableStringBuilder(
+                        tvLabelO3.text = spannableStringBuilder(
                             getString(R.string.o3),
                             '3',
                             0.7f
