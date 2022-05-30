@@ -12,7 +12,7 @@ import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ItemRecycleviewAirQualityForecastBinding
 import com.c22_ce02.awmonitorapp.ui.activity.DetailsForecastActivity
 import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
-import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
+import com.c22_ce02.awmonitorapp.utils.startIncrementTextAnimation
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
