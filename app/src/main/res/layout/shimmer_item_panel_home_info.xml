@@ -24,6 +24,10 @@
 
         <include layout="@layout/shimmer_item_recycleview_air_quality_forecast" />
 
+        <include layout="@layout/shimmer_item_recycleview_air_quality_forecast" />
+
+        <include layout="@layout/shimmer_item_recycleview_air_quality_forecast" />
+
     </LinearLayout>
 
     <include
