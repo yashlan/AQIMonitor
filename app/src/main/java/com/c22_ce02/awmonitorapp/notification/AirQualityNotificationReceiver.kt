@@ -1,29 +1,35 @@
 package com.c22_ce02.awmonitorapp.notification
 
 import android.Manifest
-import android.app.*
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Looper
 import android.os.StrictMode
-import android.os.SystemClock
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
+import com.c22_ce02.awmonitorapp.utils.isNetworkAvailable
 import com.google.android.gms.location.LocationServices
 import com.loopj.android.http.AsyncHttpResponseHandler
 import com.loopj.android.http.SyncHttpClient
 import cz.msebera.android.httpclient.Header
 import org.json.JSONObject
 import java.util.*
+import kotlin.concurrent.thread
+
 
 class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
 
@@ -33,8 +39,8 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
     private var newLat = 0.0
     private var newLon = 0.0
 
-    override fun onReceive(c: Context?, i: Intent?) {
-        showAirQualityNotification(c!!)
+    override fun onReceive(c: Context, i: Intent?) {
+        showAirQualityNotification(c)
     }
 
     private fun getLocation(context: Context, onGetLocation: (Double, Double) -> Unit) {
@@ -48,23 +54,24 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
         ) {
             return
         } else {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        onGetLocation(location.latitude, location.longitude)
-                    } else {
-                        requestLocation(context)
-                        val refreshLocationTimer = Timer()
-                        refreshLocationTimer.scheduleAtFixedRate(object : TimerTask() {
-                            override fun run() {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    onGetLocation(location.latitude, location.longitude)
+                } else {
+                    requestLocation(context)
+                    val refreshLocationTimer = Timer()
+                    refreshLocationTimer.scheduleAtFixedRate(object : TimerTask() {
+                        override fun run() {
+                            thread {
                                 if (isLocationChanged) {
                                     onGetLocation(newLat, newLon)
                                     cancel()
                                 }
                             }
-                        }, 0, PERIOD)
-                    }
+                        }
+                    }, 0, PERIOD)
                 }
+            }
         }
     }
 
@@ -102,6 +109,22 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
         StrictMode.setThreadPolicy(policy)
     }
 
+    private fun getCurrentLocationName(context: Context, lat: Double, lon: Double): String {
+        val geocoder = Geocoder(context, Locale("id"))
+        val addresses = geocoder.getFromLocation(lat, lon, 1)
+        val result = if (addresses.size > 0) {
+            val adminArea =
+                if (addresses[0].adminArea != null) addresses[0].adminArea else "Tidak Diketahui"
+            val subLocality =
+                if (addresses[0].subLocality != null) addresses[0].subLocality else adminArea
+            val country = addresses[0].countryName
+            "$subLocality, $country"
+        } else {
+            "lokasimu"
+        }
+        return result
+    }
+
     private fun getCurrentAirQuality(context: Context, onSuccess: (String, String) -> Unit) {
         getLocation(context, onGetLocation = { lat, lon ->
             if (Looper.myLooper() == null) {
@@ -119,12 +142,14 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                 ) {
                     val result = String(responseBody)
                     try {
+                        val locationName = getCurrentLocationName(context, lat, lon)
                         val responseObject = JSONObject(result)
                         val data = responseObject.getJSONArray("data")
                         val aqi = data.getJSONObject(0).getString("aqi")
-                        val title = "Kualitas Udara Saat Ini : $aqi"
-                        val message = "kualitas udara di tempatmu saat ini sedang tidak sehat, " +
-                                "jangan lupa pakai masker ketika keluar rumah"
+                        val title = "Kualitas Udara Indeks Saat Ini $aqi"
+                        val message =
+                            "kualitas udara di $locationName saat ini sedang tidak sehat, " +
+                                    "jangan lupa pakai masker ketika keluar rumah"
                         onSuccess(title, message)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -144,11 +169,14 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
     }
 
     private fun showAirQualityNotification(context: Context) {
+
+        if (!isNetworkAvailable(context, showNotAvailableInfo = false))
+            return
+
         getCurrentAirQuality(context, onSuccess = { title, message ->
             val mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val mBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
-                //.setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setLargeIcon(
                     BitmapFactory.decodeResource(
@@ -158,33 +186,38 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                 )
                 .setContentTitle(title)
                 .setContentText(message)
-                .setSubText("Lihat Selengkapnya")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setStyle(
                     NotificationCompat.BigTextStyle().bigText(message).setBigContentTitle(title)
                 )
                 .setAutoCancel(true)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-                channel.description = CHANNEL_NAME
-                mBuilder.setChannelId(CHANNEL_ID)
-                mNotificationManager.createNotificationChannel(channel)
-            }
-
             val notification = mBuilder.build()
             mNotificationManager.notify(ID_REPEATING, notification)
         })
     }
 
+    fun createChannel(
+        context: Context
+    ) {
+        if (!isAlarmAlreadySet(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val mNotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val mBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            mBuilder.setChannelId(CHANNEL_ID)
+            mNotificationManager.createNotificationChannel(channel)
+        }
+    }
+
     fun setRepeatingNotification(context: Context) {
 
         val alarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
         val intent = Intent(context, AirQualityNotificationReceiver::class.java)
 
         val pendingIntent =
@@ -192,25 +225,44 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                 context,
                 ID_REPEATING,
                 intent,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     PendingIntent.FLAG_IMMUTABLE
-                else 0
+                else
+                    0
             )
 
-        alarmManager.setRepeating(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            System.currentTimeMillis(),
+        alarmManager?.cancel(pendingIntent)
+
+        val calendar = Calendar.getInstance()
+        alarmManager?.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis + REPEAT_TIME,
             REPEAT_TIME,
             pendingIntent
         )
     }
 
+    private fun isAlarmAlreadySet(context: Context): Boolean {
+        val intent = Intent(context, AirQualityNotificationReceiver::class.java)
+        val requestCode = ID_REPEATING
+
+        return PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            intent,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                PendingIntent.FLAG_NO_CREATE
+            else
+                0
+        ) != null
+    }
+
     companion object {
         private const val ID_REPEATING = 101
         private const val CHANNEL_ID = "Channel_1"
-        private const val CHANNEL_NAME = "Check Current Air Quality channel"
+        private const val CHANNEL_NAME = "Cek Kualitas Udara"
         private const val PERIOD: Long = 500
-        private const val REPEAT_TIME: Long = 60000
+        private const val REPEAT_TIME: Long = 60 * (60 * 1000)
     }
 
 }
