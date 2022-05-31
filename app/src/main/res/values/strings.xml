@@ -9,16 +9,18 @@
     <string name="title_glossary">Glosarium</string>
     <string name="exit_info">Tekan sekali lagi untuk keluar</string>
     <string name="location">Lampung, Indonesia</string>
-    <string name="title_menu_1">Hidup lebih sehat</string>
-    <string name="title_menu_2">Pantau kualitas udara di sekitarmu</string>
-    <string name="title_menu_3">Prediksi kualitas udara</string>
+    <string name="title_slide_1">Hidup lebih sehat</string>
+    <string name="title_slide_2">Pantau kualitas udara di sekitarmu</string>
+    <string name="title_slide_3">Prediksi kualitas udara</string>
+    <string name="btn_first_button_title">Get Started</string>
 
-    <string name="desc_menu_1">Hidup lebih sehat dengan menjaga diri dari paparan emisi karbon</string>
-    <string name="desc_menu_2">Sekarang melalui smartphone kamu bisa mengetahui kualitas udara di sekitarmu</string>
-    <string name="desc_menu_3">Kami menerapkan Machine Learning untuk memprediksi kualitas udara per jam, sehingga kamu bisa bersiap untuk menjaga diri dari emisi karbon!</string>
+    <string name="desc_slide_1">Hidup lebih sehat dengan menjaga diri dari paparan emisi karbon</string>
+    <string name="desc_slide_2">Sekarang melalui smartphone kamu bisa mengetahui kualitas udara di sekitarmu</string>
+    <string name="desc_slide_3">Kami menerapkan Machine Learning untuk memprediksi kualitas udara per jam, sehingga kamu bisa bersiap untuk menjaga diri dari emisi karbon!</string>
 
-    <string name="btn_next">Next</string>
+    <string name="btn_next">Next >></string>
     <string name="btn_finish">Finish</string>
+    <string name="btn_skip">Skip</string>
     <string name="splash_title">AWMonitor App</string>
     <string name="logo_desc">Logo AWMonitor App</string>
     <string name="finish">Finish</string>

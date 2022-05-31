@@ -15,7 +15,10 @@
     <color name="background_get_started">#2E335A</color>
     <color name="pink">#F06292</color>
     <color name="navi">#2D3D4F</color>
-    <color name="gray">#546E7A</color>
+    <color name="gray">#505050</color>
+    <color name="shadow">#DEE3E4</color>
+    <color name="end_color">#0FA37C</color>
+    <color name="start_color">#28F4AF</color>
 
     <color name="deep_orange">#FF5726</color>
     <color name="shimmer_color_bg">#DDDDDD</color>

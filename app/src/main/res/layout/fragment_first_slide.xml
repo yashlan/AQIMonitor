@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.FirstSlideFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/first_slide_container"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/first_slide_logo"
+            android:layout_width="275dp"
+            android:layout_height="282dp"
+            android:src="@drawable/ic_start_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.254" />
+
+
+        <TextView
+            android:id="@+id/first_slide_title"
+            style="@style/title_slide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/title_slide_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/first_slide_logo" />
+
+        <TextView
+            android:id="@+id/first_slide_desc"
+            style="@style/desc_slide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/desc_slide_1"
+            app:layout_constraintEnd_toEndOf="@+id/first_slide_title"
+            app:layout_constraintStart_toStartOf="@+id/first_slide_title"
+            app:layout_constraintTop_toBottomOf="@+id/first_slide_title" />
+
+        <Button
+            android:id="@+id/btn_started"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_with_gradient"
+            android:text="@string/get_started"
+            app:layout_constraintEnd_toEndOf="@+id/first_slide_desc"
+            app:layout_constraintStart_toStartOf="@+id/first_slide_desc"
+            app:layout_constraintTop_toBottomOf="@+id/first_slide_desc"
+            android:layout_marginTop="40dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
