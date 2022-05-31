@@ -21,4 +21,10 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="CustomAlertDialog" parent="android:Theme.Holo.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
 </resources>
