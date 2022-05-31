@@ -27,6 +27,9 @@
             tools:ignore="ExportedReceiver" />
 
         <activity
+            android:name=".ui.activity.OnBoardingActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ui.activity.DetailsForecastActivity"
             android:exported="false" />
 
