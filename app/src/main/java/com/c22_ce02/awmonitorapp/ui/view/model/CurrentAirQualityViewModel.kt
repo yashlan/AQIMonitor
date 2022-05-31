@@ -10,7 +10,7 @@ class CurrentAirQualityViewModel(private val repository: CurrentAirQualityReposi
     ViewModel() {
 
     val currentAirQuality = MutableLiveData<CurrentAirQualityResponse?>()
-    val errorMessage = MutableLiveData<String>()
+    val errorMessage = MutableLiveData<String?>()
 
     fun getCurrentAirQuality(
         lat: Double,

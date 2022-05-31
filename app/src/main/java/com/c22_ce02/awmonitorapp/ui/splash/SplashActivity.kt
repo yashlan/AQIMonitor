@@ -13,6 +13,7 @@ import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.ui.activity.GetStartedActivity
 import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
+import com.c22_ce02.awmonitorapp.ui.activity.OnBoardingActivity
 import com.c22_ce02.awmonitorapp.utils.loadImageViaGlide
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
 
@@ -35,7 +36,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
                 startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             } else {
-                startActivity(Intent(this, GetStartedActivity::class.java))
+                startActivity(Intent(this, OnBoardingActivity::class.java))
                 finish()
             }
         }, SPLASH_TIME_OUT)

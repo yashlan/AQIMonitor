@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
         <activity
+            android:name=".ui.activity.OnBoardingActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ui.activity.DetailsForecastActivity"
             android:exported="false" />
 
