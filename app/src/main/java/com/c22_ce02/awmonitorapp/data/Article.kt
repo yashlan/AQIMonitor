@@ -1,7 +1,7 @@
 package com.c22_ce02.awmonitorapp.data
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Article(
@@ -10,4 +10,4 @@ data class Article(
     var description: String? = null,
     var created_by: String? = null,
     var created_at: String? = null
-):Parcelable
+) : Parcelable
