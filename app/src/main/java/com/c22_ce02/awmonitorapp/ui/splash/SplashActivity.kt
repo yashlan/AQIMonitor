@@ -11,7 +11,6 @@ import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivitySplashBinding
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
-import com.c22_ce02.awmonitorapp.ui.activity.GetStartedActivity
 import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
 import com.c22_ce02.awmonitorapp.ui.activity.OnBoardingActivity
 import com.c22_ce02.awmonitorapp.utils.loadImageViaGlide
