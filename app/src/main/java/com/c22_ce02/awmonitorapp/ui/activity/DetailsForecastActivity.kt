@@ -12,6 +12,7 @@ import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ActivityDetailsForecastBinding
 import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
+import com.c22_ce02.awmonitorapp.utils.forcePortraitScreenOrientation
 import com.c22_ce02.awmonitorapp.utils.spannableStringBuilder
 import com.c22_ce02.awmonitorapp.utils.startIncrementTextAnimation
 import java.text.SimpleDateFormat
@@ -23,6 +24,7 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
     private val currentHour = SimpleDateFormat("ha", Locale("id")).format(Date()).lowercase()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        forcePortraitScreenOrientation()
         super.onCreate(savedInstanceState)
 
         intent.getParcelableExtra<AirQualityAndWeatherForecastByHour>(HomeFragment.FORECAST_EXTRA)
