@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">AW Monitor App</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">AQIMonitor</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="yes">Ya</string>
+    <string name="tidak">Tidak</string>
     <string name="msg_permission_maps">Anda harus mengizinkan izin Lokasi, Tekan Ya untuk menyetel.</string>
     <string name="title_home">Dashboard</string>
     <string name="title_discover">Discover</string>
@@ -21,8 +21,6 @@
     <string name="btn_next">Next >></string>
     <string name="btn_finish">Finish</string>
     <string name="btn_skip">Skip</string>
-    <string name="splash_title">AWMonitor App</string>
-    <string name="logo_desc">Logo AWMonitor App</string>
     <string name="finish">Finish</string>
     <string name="title_activity_discover">DiscoverActivity</string>
 
@@ -62,6 +60,9 @@
     <string name="create_at">created at</string>
     <string name="created_by">created by</string>
     <string name="top_news_for_you">Top News for you</string>
+    <string name="msg_no_internet">Tidak Ada Koneksi Internet</string>
+    <string name="permission_msg_access_bg_location">Izinkan \'Akses Lokasi Sepanjang Waktu\' untuk mendapatkan notifikasi kualitas udara tiap jam</string>
+    <string name="konfirmasi">Konfirmasi</string>
 
     <string-array name="title">
         <item>Pertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon BarengPertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon Bareng</item>
