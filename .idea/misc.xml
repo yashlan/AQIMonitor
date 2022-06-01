@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bg_list_air_quality.xml" value="0.1695" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bottom_nav_bg.xml" value="0.171" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bottom_nav_ic_selector.xml" value="0.1645" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/card_home.xml" value="0.185" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/card_info_air_today_baik.xml" value="0.1375" />
@@ -11,17 +12,22 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/card_info_air_today_sangat_tidak_sehat.xml" value="0.1375" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/card_info_air_today_sedang.xml" value="0.1375" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/card_info_air_today_tidak_sehat.xml" value="0.1375" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/circle.xml" value="0.1725" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/circle_baik.xml" value="0.1645" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/circle_berbahaya.xml" value="0.1645" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/circle_sangat_tidak_sehat.xml" value="0.1645" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/dialog_title_bg.xml" value="0.169" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_info.xml" value="0.1375" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_item_status_baik.xml" value="0.156" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_item_status_berbahaya.xml" value="0.1375" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_item_status_sangat_tidak_sehat.xml" value="0.156" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_item_status_sedang.xml" value="0.156" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_item_status_tidak_sehat.xml" value="0.156" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_bottom_nav_bg.xml" value="0.1845" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_home.xml" value="0.136" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_info_air_today.xml" value="0.169" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_info_air_today_sangat_tidak_sehat.xml" value="0.136" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_info_air_today_test.xml" value="0.169" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_info_air_today_tidak_sehat.xml" value="0.136" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_circle_24.xml" value="0.169" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_circle_tidak_sehat.xml" value="0.1645" />
@@ -29,6 +35,9 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_glossary_selector.xml" value="0.1405" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home.xml" value="0.2055" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1645" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home_enable.xml" value="0.2265" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_home_selector.xml" value="0.182" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_item_bg_bottom_nav.xml" value="0.23" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_label_baik.xml" value="0.1695" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_label_berbahaya.xml" value="0.1695" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_label_co.xml" value="0.1185" />
@@ -56,6 +65,7 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_maps_air_quality.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_qqactivity.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_splash.xml" value="0.2" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/dialog_custom.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_article.xml" value="0.1799145299145299" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_discover.xml" value="0.1799145299145299" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_glossary.xml" value="0.21927083333333333" />
@@ -63,6 +73,7 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_home_shimmer.xml" value="0.2" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_maps.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_notifications.xml" value="0.21927083333333333" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_second_slide.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/item_info_air_today.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/item_info_forecast_air_today.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/item_info_list_air_today.xml" value="0.264" />
@@ -78,26 +89,19 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_fragment_home.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_info_air_today.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_info_list_air_today.xml" value="0.264" />
-        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_panel_home_info.xml" value="0.264" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_panel_home_info.xml" value="0.176" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_quality_status_air_info.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/shimmer_item_recycleview_air_quality_forecast.xml" value="0.4" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21927083333333333" />
-        <entry key="app/src/main/res/drawable/button_with_gradient.xml" value="0.196" />
         <entry key="app/src/main/res/drawable/ic_baseline_air_24.xml" value="0.1125" />
         <entry key="app/src/main/res/drawable/ic_start1.xml" value="0.2015" />
-        <entry key="app/src/main/res/drawable/next_button.xml" value="0.137" />
         <entry key="app/src/main/res/drawable/window_bg_sangat_tidak_sehat.xml" value="0.176" />
         <entry key="app/src/main/res/layout/action_bar_detail_forecast.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_get_started.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.13854166666666667" />
-        <entry key="app/src/main/res/layout/activity_on_boarding.xml" value="0.13854166666666667" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1569620253164557" />
         <entry key="app/src/main/res/layout/fragment_article.xml" value="0.15897435897435896" />
-        <entry key="app/src/main/res/layout/fragment_first_slide.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_glossary.xml" value="0.15897435897435896" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/fragment_second_slide.xml" value="0.32839506172839505" />
-        <entry key="app/src/main/res/layout/fragment_third_slide.xml" value="0.13854166666666667" />
         <entry key="app/src/main/res/layout/shimmer_item_info_air_today.xml" value="0.15897435897435896" />
         <entry key="app/src/main/res/layout/shimmer_item_info_list_air_today.xml" value="0.15897435897435896" />
       </map>
