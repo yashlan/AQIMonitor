@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.utils
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -27,4 +28,8 @@ fun AppCompatActivity.setFullscreen() {
         }
     }
     supportActionBar?.hide()
+}
+
+fun AppCompatActivity.forcePortraitScreenOrientation() {
+    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
 }
