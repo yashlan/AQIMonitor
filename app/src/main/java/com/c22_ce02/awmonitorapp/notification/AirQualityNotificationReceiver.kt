@@ -22,13 +22,17 @@ import androidx.core.app.NotificationCompat
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.utils.isNetworkAvailable
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.loopj.android.http.AsyncHttpResponseHandler
 import com.loopj.android.http.SyncHttpClient
 import cz.msebera.android.httpclient.Header
 import org.json.JSONObject
+import timber.log.Timber
 import java.util.*
-import kotlin.concurrent.thread
 
 
 class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
@@ -54,7 +58,17 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
         ) {
             return
         } else {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            fusedLocationClient.getCurrentLocation(
+                LocationRequest.PRIORITY_HIGH_ACCURACY,
+                object : CancellationToken() {
+                    override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                        return CancellationTokenSource().token
+                    }
+
+                    override fun isCancellationRequested(): Boolean {
+                        return false
+                    }
+                }).addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     onGetLocation(location.latitude, location.longitude)
                 } else {
@@ -62,11 +76,9 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                     val refreshLocationTimer = Timer()
                     refreshLocationTimer.scheduleAtFixedRate(object : TimerTask() {
                         override fun run() {
-                            thread {
-                                if (isLocationChanged) {
-                                    onGetLocation(newLat, newLon)
-                                    cancel()
-                                }
+                            if (isLocationChanged) {
+                                onGetLocation(newLat, newLon)
+                                cancel()
                             }
                         }
                     }, 0, PERIOD)
@@ -125,7 +137,7 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
         return result
     }
 
-    private fun getCurrentAirQuality(context: Context, onSuccess: (String, String) -> Unit) {
+    private fun getCurrentAirQuality(context: Context, onSuccess: (String, String, Int) -> Unit) {
         getLocation(context, onGetLocation = { lat, lon ->
             if (Looper.myLooper() == null) {
                 Looper.prepare()
@@ -146,13 +158,13 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                         val responseObject = JSONObject(result)
                         val data = responseObject.getJSONArray("data")
                         val aqi = data.getJSONObject(0).getString("aqi")
-                        val title = "Kualitas Udara Indeks Saat Ini $aqi"
+                        val title = "Indeks Kualitas Udara saat ini sebesar ${aqi.toInt()}"
                         val message =
-                            "kualitas udara di $locationName saat ini sedang tidak sehat, " +
-                                    "jangan lupa pakai masker ketika keluar rumah"
-                        onSuccess(title, message)
+                            "Kualitas udara di $locationName saat ini berada di kategori tidak sehat, " +
+                                    "jadi jangan lupa pakai masker saat keluar rumah ya!"
+                        onSuccess(title, message, aqi.toInt())
                     } catch (e: Exception) {
-                        e.printStackTrace()
+                        Timber.e(e.message)
                     }
                 }
 
@@ -162,7 +174,7 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                     responseBody: ByteArray?,
                     error: Throwable
                 ) {
-
+                    Timber.e(error.message)
                 }
             })
         })
@@ -170,10 +182,15 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
 
     private fun showAirQualityNotification(context: Context) {
 
-        if (!isNetworkAvailable(context, showNotAvailableInfo = false))
+        if (!isNetworkAvailable(context, showNotAvailableInfo = false)) {
             return
+        }
 
-        getCurrentAirQuality(context, onSuccess = { title, message ->
+        getCurrentAirQuality(context, onSuccess = { title, message, aqi ->
+
+            if (aqi <= 100)
+                return@getCurrentAirQuality
+
             val mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val mBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -197,9 +214,7 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
         })
     }
 
-    fun createChannel(
-        context: Context
-    ) {
+    fun createChannel(context: Context) {
         if (!isAlarmAlreadySet(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -209,6 +224,11 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             )
+
+            channel.enableLights(true)
+            channel.enableVibration(true)
+            channel.lockscreenVisibility = Context.MODE_PRIVATE
+
             mBuilder.setChannelId(CHANNEL_ID)
             mNotificationManager.createNotificationChannel(channel)
         }
