@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityOnBoardingBinding
 import com.c22_ce02.awmonitorapp.ui.fragment.FirstSlideFragment
+import com.c22_ce02.awmonitorapp.utils.forcePortraitScreenOrientation
 
 
 class OnBoardingActivity : AppCompatActivity() {
@@ -12,6 +13,7 @@ class OnBoardingActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOnBoardingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        forcePortraitScreenOrientation()
         super.onCreate(savedInstanceState)
         binding = ActivityOnBoardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
