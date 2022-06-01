@@ -14,7 +14,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -39,9 +41,13 @@ import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentWeatherConditionViewModelFactory
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.WeatherForecastByHourViewModelFactory
 import com.c22_ce02.awmonitorapp.utils.*
-import com.c22_ce02.awmonitorapp.utils.Animation.startIncrementTextAnimation
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,12 +72,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationManager: LocationManager
-    private lateinit var refreshUITimer: Timer
-    private lateinit var refreshLocationTimer: Timer
+    private var refreshUITimer: Timer? = null
+    private var refreshLocationTimer: Timer? = null
 
     private val binding by viewBinding(FragmentHomeBinding::bind, onViewDestroyed = {
-        refreshUITimer.cancel()
-        refreshLocationTimer.cancel()
+        refreshUITimer?.cancel()
+        refreshLocationTimer?.cancel()
     })
     private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
         CurrentWeatherConditionViewModelFactory()
@@ -114,13 +120,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        resetAll {
-            loadAllData()
-            hideUI()
-        }
 
         binding.swipeRefresh.setOnRefreshListener {
             hideUI()
@@ -128,10 +129,21 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             setDefaultWindowBackgroundResource()
         }
 
+        if (!isNetworkAvailable(requireContext(), showNotAvailableInfo = true)) {
+            hideUI()
+            binding.shimmerFragmentHome.hideShimmer()
+            return
+        }
+
+        resetAll {
+            loadAllData()
+            hideUI()
+        }
+
         refreshUITimer = Timer()
         refreshLocationTimer = Timer()
 
-        refreshUITimer.scheduleAtFixedRate(object : TimerTask() {
+        refreshUITimer?.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 requireActivity().runOnUiThread {
                     if (isAllDataLoaded()) {
@@ -204,6 +216,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         val itemListAirInfo = binding.itemPanelHomeInfo.itemInfoListAirToday
 
         changeWindowBackgroundResource(currentAQI)
+
         with(binding) {
             startIncrementTextAnimation(currentAQI, itemInfoAirToday.tvAQI)
 
@@ -230,12 +243,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
             startIncrementTextAnimation(
                 convertWindSpeedToKmh(dataW.windSpeed.toInt()),
-                "km/h",
+                " km/h",
                 itemInfoAirToday.tvWindSpeed
             )
             startIncrementTextAnimation(
                 dataW.temperature.toInt(),
-                "C",
+                " C",
                 itemInfoAirToday.tvTemperature
             )
             startIncrementTextAnimation(
@@ -248,7 +261,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
                 val dataA = dataCurrentAirQuality
 
-                tvLabelPM10.text = Text.spannableStringBuilder(
+                tvLabelPM10.text = spannableStringBuilder(
                     getString(R.string.pm10),
                     '1',
                     0.7f
@@ -257,7 +270,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 iconStatusPM10.setImageResource(getIconItem(dataA.pm10.toInt()))
                 tvStatusPM10.text = getStatusName(dataA.pm10.toInt())
 
-                tvLabelPM25.text = Text.spannableStringBuilder(
+                tvLabelPM25.text = spannableStringBuilder(
                     getString(R.string.pm25),
                     '2',
                     0.7f
@@ -266,7 +279,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 iconStatusPM25.setImageResource(getIconItem(dataA.pm25.toInt()))
                 tvStatusPM25.text = getStatusName(dataA.pm25.toInt())
 
-                tvLabelSO2.text = Text.spannableStringBuilder(
+                tvLabelSO2.text = spannableStringBuilder(
                     getString(R.string.so2),
                     '2',
                     0.7f
@@ -280,7 +293,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 iconStatusCO.setImageResource(getIconItem(dataA.co.toInt()))
                 tvStatusCO.text = getStatusName(dataA.co.toInt())
 
-                tvLabelNO2.text = Text.spannableStringBuilder(
+                tvLabelNO2.text = spannableStringBuilder(
                     getString(R.string.no2),
                     '2',
                     0.7f
@@ -289,7 +302,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 iconStatusNO2.setImageResource(getIconItem(dataA.no2.toInt()))
                 tvStatusNO2.text = getStatusName(dataA.no2.toInt())
 
-                tvLabelO3.text = Text.spannableStringBuilder(
+                tvLabelO3.text = spannableStringBuilder(
                     getString(R.string.o3),
                     '3',
                     0.7f
@@ -299,26 +312,28 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 tvStatusO3.text = getStatusName(dataA.o3.toInt())
             }
 
-            for (i in 0 until HOURS - 1) {
+            for (i in 0 until HOURS) {
                 listForecastAirAndWeather.add(
                     AirQualityAndWeatherForecastByHour(
                         listForecastAir[i],
                         listForecastWeather[i]
                     )
                 )
-            }
 
-            setupAdapter(
-                binding.itemPanelHomeInfo.rvListAirForecast,
-                false,
-                addAdapterValue = {
-                    binding.itemPanelHomeInfo.rvListAirForecast.adapter =
-                        AirQualityAndWeatherForecastByHourAdapter(
-                            listForecastAirAndWeather,
-                            canPlayAnim = isAllDataLoaded()
-                        )
+                if (listForecastAirAndWeather.size == HOURS) {
+                    setupAdapter(
+                        binding.itemPanelHomeInfo.rvListAirForecast,
+                        false,
+                        addAdapterValue = {
+                            binding.itemPanelHomeInfo.rvListAirForecast.adapter =
+                                AirQualityAndWeatherForecastByHourAdapter(
+                                    listForecastAirAndWeather,
+                                    canPlayAnim = isAllDataLoaded()
+                                )
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 
@@ -328,7 +343,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             itemLocationAndDate.tvDate.visibility = View.VISIBLE
             itemInfoAirToday.root.visibility = View.VISIBLE
             itemPanelHomeInfo.root.visibility = View.VISIBLE
-            shimmerFragmentHome.stopShimmer()
             shimmerFragmentHome.visibility = View.GONE
         }
     }
@@ -340,7 +354,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             itemInfoAirToday.root.visibility = View.INVISIBLE
             itemPanelHomeInfo.root.visibility = View.INVISIBLE
             shimmerFragmentHome.visibility = View.VISIBLE
-            shimmerFragmentHome.startShimmer()
         }
     }
 
@@ -419,7 +432,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     }
 
     private fun getCurrentDate(): String {
-        val dateNumber = SimpleDateFormat("dd", Locale("id")).format(Date())
+        val dateNumber = SimpleDateFormat("d", Locale("id")).format(Date())
         val yearNumber = SimpleDateFormat("yyyy", Locale("id")).format(Date())
         val dayName =
             Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("id"))
@@ -431,9 +444,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     private fun getCurrentLocationName(lat: Double, lon: Double): String {
         val geocoder = Geocoder(requireContext(), Locale("id"))
         val addresses = geocoder.getFromLocation(lat, lon, 1)
-        val subLocality = addresses[0].subLocality
-        val adminArea = addresses[0].adminArea
-        return "${subLocality ?: adminArea}, Indonesia"
+        val result = if (addresses.size > 0) {
+            val adminArea =
+                if (addresses[0].adminArea != null) addresses[0].adminArea else "Tidak Diketahui"
+            val subLocality =
+                if (addresses[0].subLocality != null) addresses[0].subLocality else adminArea
+            val country = addresses[0].countryName
+            "$subLocality, $country"
+        } else {
+            "Tidak Diketahui"
+        }
+        return result
     }
 
     private fun getLocation(onGetLocation: (Double, Double) -> Unit) {
@@ -446,13 +467,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         ) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
         } else {
-            fusedLocationClient.lastLocation
+            fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,
+                object : CancellationToken() {
+                    override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                        return CancellationTokenSource().token
+                    }
+
+                    override fun isCancellationRequested(): Boolean {
+                        return false
+                    }
+                })
                 .addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         onGetLocation(location.latitude, location.longitude)
                     } else {
                         requestLocation()
-                        refreshLocationTimer.scheduleAtFixedRate(object : TimerTask() {
+                        refreshLocationTimer?.scheduleAtFixedRate(object : TimerTask() {
                             override fun run() {
                                 requireActivity().runOnUiThread {
                                     if (isLocationChanged) {
@@ -526,7 +556,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
             currentWeatherConditionViewModel.errorMessage.observe(requireActivity()) {
                 if (it != null) {
-                    showToast(it)
+                    if (BuildConfig.DEBUG) {
+                        Timber.e(it)
+                    }
                 }
             }
 
@@ -545,7 +577,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
             currentAirQualityViewModel.errorMessage.observe(requireActivity()) {
                 if (it != null) {
-                    showToast(it)
+                    if (BuildConfig.DEBUG) {
+                        Timber.e(it)
+                    }
                 }
             }
 
@@ -604,7 +638,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
         airQualityForecastByHourViewModel.errorMessage.observe(requireActivity()) {
             if (it != null) {
-                showToast(it)
+                if (BuildConfig.DEBUG) {
+                    Timber.e(it)
+                }
             }
         }
 
@@ -647,7 +683,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
         weatherForecastByHourViewModel.errorMessage.observe(requireActivity()) {
             if (it != null) {
-                showToast(it)
+                if (BuildConfig.DEBUG) {
+                    Timber.e(it)
+                }
             }
         }
 
