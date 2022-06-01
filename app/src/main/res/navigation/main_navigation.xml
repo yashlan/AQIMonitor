@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_article" />
 
     <fragment
-        android:id="@+id/mapsFragment"
+        android:id="@+id/navigation_maps"
         android:name="com.c22_ce02.awmonitorapp.ui.fragment.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
