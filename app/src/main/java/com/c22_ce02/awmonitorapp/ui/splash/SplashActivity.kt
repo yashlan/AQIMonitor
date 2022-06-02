@@ -12,9 +12,12 @@ import com.c22_ce02.awmonitorapp.databinding.ActivitySplashBinding
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
+import com.c22_ce02.awmonitorapp.ui.activity.LoginActivity
 import com.c22_ce02.awmonitorapp.ui.activity.OnBoardingActivity
+import com.c22_ce02.awmonitorapp.utils.forcePortraitScreenOrientation
 import com.c22_ce02.awmonitorapp.utils.loadImageViaGlide
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
+import com.google.firebase.auth.FirebaseAuth
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
@@ -25,18 +28,27 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
     private lateinit var checkHelper: CheckHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        forcePortraitScreenOrientation()
         setFullscreen()
         super.onCreate(savedInstanceState)
         loadImageViaGlide(R.drawable.logo_no_background, binding.imageView)
         mCheckPreferences = CheckPreference(this)
         checkHelper = mCheckPreferences.getCheck()
+        val user = FirebaseAuth.getInstance().currentUser
         Handler(Looper.getMainLooper()).postDelayed({
-            if (checkHelper.isLogin) {
-                startActivity(Intent(this, HomeActivity::class.java))
-                finish()
-            } else {
-                startActivity(Intent(this, OnBoardingActivity::class.java))
-                finish()
+            when {
+                user == null && checkHelper.isUserFinishBoarding -> {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
+                user == null && !checkHelper.isUserFinishBoarding -> {
+                    startActivity(Intent(this, OnBoardingActivity::class.java))
+                    finish()
+                }
+                else -> {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
+                }
             }
         }, SPLASH_TIME_OUT)
     }

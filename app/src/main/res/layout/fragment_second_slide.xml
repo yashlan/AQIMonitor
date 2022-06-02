@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.SecondSlideFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/first_slide_container"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
@@ -60,9 +60,9 @@
             android:id="@+id/second_btn_skip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/end_color"
-            android:backgroundTint="@color/white"
+            android:background="@android:color/transparent"
             android:text="@string/btn_skip"
+            android:textColor="@color/end_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

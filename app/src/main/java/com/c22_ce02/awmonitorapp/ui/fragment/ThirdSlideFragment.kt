@@ -10,14 +10,15 @@ import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
-import com.c22_ce02.awmonitorapp.databinding.FragmentSecondSlideBinding
 import com.c22_ce02.awmonitorapp.databinding.FragmentThirdSlideBinding
 import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
+import com.c22_ce02.awmonitorapp.ui.activity.LoginActivity
 import com.c22_ce02.awmonitorapp.utils.showToast
+import com.google.firebase.auth.FirebaseAuth
 
 class ThirdSlideFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var binding : FragmentThirdSlideBinding
+    private lateinit var binding: FragmentThirdSlideBinding
     private lateinit var checkHelper: CheckHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +30,7 @@ class ThirdSlideFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentThirdSlideBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -41,16 +42,22 @@ class ThirdSlideFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if (v?.id == R.id.btn_finish){
-            val intent = Intent(requireContext(), HomeActivity::class.java)
-            startActivity(intent)
+        if (v?.id == R.id.btn_finish) {
             savePref()
-            activity?.finish()
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user == null) {
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+                activity?.finish()
+            } else {
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
+                activity?.finish()
+            }
         }
     }
+
     private fun savePref() {
         val checkPreference = CheckPreference(requireContext())
-        checkHelper.isLogin = true
+        checkHelper.isUserFinishBoarding = true
         checkPreference.setCheck(checkHelper)
         if (BuildConfig.DEBUG) {
             showToast("Selamat Datang")
