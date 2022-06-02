@@ -21,6 +21,9 @@
         android:theme="@style/Theme.AWMonitorApp"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -35,15 +38,12 @@
         <activity
             android:name=".ui.activity.OnBoardingActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.activity.DetailsForecastActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.activity.HomeActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"

@@ -16,7 +16,7 @@ class FirstSlideFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFirstSlideBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -42,6 +42,4 @@ class FirstSlideFragment : Fragment(), View.OnClickListener {
             }
         }
     }
-
-
 }
