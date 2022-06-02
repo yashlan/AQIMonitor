@@ -14,9 +14,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -74,10 +72,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     private lateinit var locationManager: LocationManager
     private var refreshUITimer: Timer? = null
     private var refreshLocationTimer: Timer? = null
+    private var refreshFragmentHandler: Handler? = null
 
     private val binding by viewBinding(FragmentHomeBinding::bind, onViewDestroyed = {
         refreshUITimer?.cancel()
         refreshLocationTimer?.cancel()
+        refreshFragmentHandler?.removeCallbacksAndMessages(null)
     })
     private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
         CurrentWeatherConditionViewModelFactory()
@@ -197,7 +197,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 isWeatherForecastByHourLoaded
 
     private fun refreshFragment() {
-        Handler(Looper.getMainLooper()).postDelayed({
+        refreshFragmentHandler = Handler(Looper.getMainLooper())
+        refreshFragmentHandler?.postDelayed({
             binding.swipeRefresh.isRefreshing = false
             if (!binding.swipeRefresh.isRefreshing) {
                 requireActivity().apply {
