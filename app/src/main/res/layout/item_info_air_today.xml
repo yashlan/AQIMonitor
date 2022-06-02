@@ -22,8 +22,8 @@
                 android:id="@+id/tvToday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="17dp"
+                android:gravity="center"
                 android:textSize="28sp"
                 tools:text="Hari ini" />
 
@@ -31,7 +31,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="110dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:orientation="horizontal"
             tools:ignore="UseCompoundDrawables">
@@ -40,7 +40,8 @@
                 android:id="@+id/tvAQI"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="80sp"
+                android:gravity="center"
+                android:textSize="85sp"
                 tools:text="20" />
 
             <View
@@ -61,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="12dp"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
