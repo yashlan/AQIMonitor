@@ -6,14 +6,16 @@ import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityOnBoardingBinding
 import com.c22_ce02.awmonitorapp.ui.fragment.FirstSlideFragment
 import com.c22_ce02.awmonitorapp.utils.forcePortraitScreenOrientation
+import com.c22_ce02.awmonitorapp.utils.setFullscreen
 
 
 class OnBoardingActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityOnBoardingBinding
+    private lateinit var binding: ActivityOnBoardingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         forcePortraitScreenOrientation()
+        setFullscreen()
         super.onCreate(savedInstanceState)
         binding = ActivityOnBoardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -23,7 +25,11 @@ class OnBoardingActivity : AppCompatActivity() {
 
         mFragmentManager
             .beginTransaction()
-            .add(R.id.frame_container,mFirstSlideFragment,mFirstSlideFragment::class.java.simpleName)
+            .add(
+                R.id.frame_container,
+                mFirstSlideFragment,
+                mFirstSlideFragment::class.java.simpleName
+            )
             .commit()
     }
 }
