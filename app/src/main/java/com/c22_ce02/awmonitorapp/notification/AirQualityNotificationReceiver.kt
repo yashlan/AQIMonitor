@@ -1,12 +1,11 @@
 package com.c22_ce02.awmonitorapp.notification
 
 import android.Manifest
-import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
+import android.app.ActivityManager.RunningAppProcessInfo
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.ACTIVITY_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -21,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
+import com.c22_ce02.awmonitorapp.ui.splash.SplashActivity
 import com.c22_ce02.awmonitorapp.utils.isNetworkAvailable
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -182,6 +182,10 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
 
     private fun showAirQualityNotification(context: Context) {
 
+        if (!isBackgroundRunning(context)) {
+            return
+        }
+
         if (!isNetworkAvailable(context, showNotAvailableInfo = false)) {
             return
         }
@@ -191,9 +195,20 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
             if (aqi <= 100)
                 return@getCurrentAirQuality
 
+            val notifyIntent = Intent(context, SplashActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val notifyPendingIntent = PendingIntent.getActivity(
+                context, 0, notifyIntent,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                else
+                    0
+            )
             val mNotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val mBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setContentIntent(notifyPendingIntent)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setLargeIcon(
                     BitmapFactory.decodeResource(
@@ -245,7 +260,7 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                 context,
                 ID_REPEATING,
                 intent,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                     PendingIntent.FLAG_IMMUTABLE
                 else
                     0
@@ -270,11 +285,26 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
             context,
             requestCode,
             intent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 PendingIntent.FLAG_NO_CREATE
             else
                 0
         ) != null
+    }
+
+    private fun isBackgroundRunning(context: Context): Boolean {
+        val am = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val runningProcesses = am.runningAppProcesses
+        for (processInfo in runningProcesses) {
+            if (processInfo.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                for (activeProcess in processInfo.pkgList) {
+                    if (activeProcess == context.packageName) {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
     }
 
     companion object {
