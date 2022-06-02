@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.ListArticleAdapter
-import com.c22_ce02.awmonitorapp.data.Article
+import com.c22_ce02.awmonitorapp.data.model.Article
 import com.c22_ce02.awmonitorapp.databinding.FragmentArticleBinding
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
@@ -18,7 +18,9 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         adapter = ListArticleAdapter(list)
+
         list.addAll(listArticle)
         showRecyclerList()
     }

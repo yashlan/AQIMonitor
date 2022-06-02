@@ -93,7 +93,7 @@
     </string-array>
 
     <string-array name="image">
-        <item>@drawable/article2</item>
+        <item>@drawable/article1</item>
         <item>@drawable/article2</item>
         <item>@drawable/article3</item>
         <item>@drawable/article4</item>
