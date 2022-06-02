@@ -1,19 +1,19 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     xmlns:tools="http://schemas.android.com/tools"
-    android:width="360dp"
-    android:height="296dp"
-    android:viewportWidth="360"
-    android:viewportHeight="296"
+    android:width="351dp"
+    android:height="284dp"
+    android:viewportWidth="351"
+    android:viewportHeight="284"
     tools:ignore="VectorRaster">
   <path
-      android:pathData="M41,24L318,24A20,20 0,0 1,338 44L338,240A20,20 0,0 1,318 260L41,260A20,20 0,0 1,21 240L21,44A20,20 0,0 1,41 24z">
+      android:pathData="M32,12L309,12A20,20 0,0 1,329 32L329,228A20,20 0,0 1,309 248L32,248A20,20 0,0 1,12 228L12,32A20,20 0,0 1,32 12z">
     <aapt:attr name="android:fillColor">
-      <gradient 
-          android:startY="260"
-          android:startX="338"
-          android:endY="121.721"
-          android:endX="-17.0579"
+      <gradient
+          android:startY="248"
+          android:startX="329"
+          android:endY="109.721"
+          android:endX="-26.0579"
           android:type="linear">
         <item android:offset="0" android:color="#FFD7A035"/>
         <item android:offset="1" android:color="#FFFFE37E"/>

@@ -34,7 +34,7 @@
                         android:type="linear">
 
                         <item
-                            android:color="#FF3333"
+                            android:color="#F91717"
                             android:offset="0.37" />
 
                         <item
