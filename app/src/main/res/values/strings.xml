@@ -6,7 +6,7 @@
     <string name="msg_permission_maps">Anda harus mengizinkan izin Lokasi, Tekan Ya untuk menyetel.</string>
     <string name="title_home">Dashboard</string>
     <string name="title_discover">Discover</string>
-    <string name="title_glossary">Glosarium</string>
+    <string name="title_article">Artikel</string>
     <string name="exit_info">Tekan sekali lagi untuk keluar</string>
     <string name="location">Lampung, Indonesia</string>
     <string name="title_slide_1">Hidup lebih sehat</string>
@@ -55,7 +55,6 @@
     <string name="o3">O3</string>
     <string name="co">CO</string>
     <string name="get_started">Get Started</string>
-    <string name="title_article">Tiltel Article</string>
     <string name="description">Description</string>
     <string name="create_at">created at</string>
     <string name="created_by">created by</string>
@@ -63,6 +62,7 @@
     <string name="msg_no_internet">Tidak Ada Koneksi Internet</string>
     <string name="permission_msg_access_bg_location">Izinkan \'Akses Lokasi Sepanjang Waktu\' untuk mendapatkan notifikasi kualitas udara tiap jam</string>
     <string name="konfirmasi">Konfirmasi</string>
+    <string name="title_profile">Profil</string>
 
     <string-array name="title">
         <item>Pertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon BarengPertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon Bareng</item>
