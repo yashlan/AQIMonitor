@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.api
 
+import com.c22_ce02.awmonitorapp.data.response.ArticleResponse
 import com.c22_ce02.awmonitorapp.data.response.AirQualityForecastByHourResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
@@ -39,5 +40,10 @@ interface ApiService {
         @Query("key") apiKey: String,
         @Query("hours") hours:Int,
     ): Call<WeatherForecastByHourResponse>
+
+    @GET("2957848512475559337/posts")
+    fun getArticle(
+        @Query("key") key: String
+    ):Call<ArticleResponse>
     
 }
