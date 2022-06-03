@@ -1,12 +1,9 @@
 package com.c22_ce02.awmonitorapp.api
 
-import com.c22_ce02.awmonitorapp.data.response.AirQualityForecastByHourResponse
-import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
-import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
-import com.c22_ce02.awmonitorapp.data.response.WeatherForecastByHourResponse
+import com.c22_ce02.awmonitorapp.data.response.*
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
+import java.util.*
 
 interface ApiService {
 
@@ -15,7 +12,7 @@ interface ApiService {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("key") apiKey: String,
-    ) : Call<CurrentAirQualityResponse>
+    ): Call<CurrentAirQualityResponse>
 
     @GET("current")
     fun getCurrentWeatherCondition(
@@ -29,7 +26,7 @@ interface ApiService {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("key") apiKey: String,
-        @Query("hours") hours:Int,
+        @Query("hours") hours: Int,
     ): Call<AirQualityForecastByHourResponse>
 
     @GET("forecast/hourly")
@@ -37,7 +34,23 @@ interface ApiService {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("key") apiKey: String,
-        @Query("hours") hours:Int,
+        @Query("hours") hours: Int,
     ): Call<WeatherForecastByHourResponse>
-    
+
+    @FormUrlEncoded
+    @POST("history/input")
+    fun postCurrentWeatherAndAirData(
+        @Field("location") location: String,
+        @Field("date") date: String,
+        @Field("aqi") aqi: Double,
+        @Field("o3") o3: Double,
+        @Field("so2") so2: Double,
+        @Field("no2") no2: Double,
+        @Field("co") co: Double,
+        @Field("pm10") pm10: Double,
+        @Field("pm25") pm25: Double,
+        @Field("temperature") temperature: Double,
+        @Field("humidity") humidity: Double,
+        @Field("wind_speed") windSpeed: Double,
+    ): Call<PostCurrentWeatherAndAirResponse>
 }

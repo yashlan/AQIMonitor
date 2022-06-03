@@ -15,5 +15,7 @@ data class CurrentWeatherConditionResponse(
         val windSpeed: Double,
         @SerializedName("temp")
         val temperature: Double,
+        @SerializedName("ob_time")
+        val obTime: String,
     )
 }

@@ -6,12 +6,12 @@ import com.c22_ce02.awmonitorapp.data.repository.*
 
 object Injection {
 
-    fun provideCurrentWeatherConditionRepository() : CurrentWeatherConditionRepository {
+    fun provideCurrentWeatherConditionRepository(): CurrentWeatherConditionRepository {
         val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_WEATHERBIT)
         return CurrentWeatherConditionRepository(apiService)
     }
 
-    fun provideCurrentAirQualityRepository() : CurrentAirQualityRepository {
+    fun provideCurrentAirQualityRepository(): CurrentAirQualityRepository {
         val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_WEATHERBIT)
         return CurrentAirQualityRepository(apiService)
     }
@@ -24,5 +24,10 @@ object Injection {
     fun provideWeatherForecastByHourRepository(): WeatherForecastByHourRepository {
         val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_WEATHERBIT)
         return WeatherForecastByHourRepository(apiService)
+    }
+
+    fun providePostCurrentWeatherAndAirDataRepository(): PostCurrentWeatherAndAirDataRepository {
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor)
+        return PostCurrentWeatherAndAirDataRepository(apiService)
     }
 }
