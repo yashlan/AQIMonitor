@@ -2,8 +2,8 @@
 AQIMonitor adalah aplikasi.......
 
 ## Other Repository
-- Machine Learning : 
-- Cloud Computing : 
+- Machine Learning : https://github.com/muhammadraflij/company-capstone
+- Cloud Computing : https://github.com/catherineelfrida/AWMonitor/tree/main/Cloud%20Computing
 
 ## Team Member
 |     ID     |        Role        |            Nama             |
@@ -28,9 +28,9 @@ AQIMonitor adalah aplikasi.......
 - Halaman Maps untuk melihat kualitas udara saat ini di seluruh wilayah Indonesia
 
 ## User Interface
-wireframe : 
-mock up : https://www.figma.com/file/5n40uEMiJn3y17nkadhsp3/?node-id=118%3A647
-prototype : 
+- wireframe : <br>
+- mock up : https://www.figma.com/file/5n40uEMiJn3y17nkadhsp3/?node-id=118%3A647 <br>
+- prototype : 
 
 ## Task And Schedule
 - link :
@@ -40,7 +40,7 @@ prototype :
 
 ## Technologies
 - Android Studio
-- Visual Code
+- Visual Studio Code
 - Node.js
 
 ## Languanges
@@ -52,6 +52,13 @@ prototype :
 - Google Cloud
 - Flask
 
-## Libraries
-- Retfrofit
-- 
+## Additional Libraries
+|           Android             |        Machine Learing        |    Cloud Computing          |
+|-------------------------------|-------------------------------|-----------------------------|
+|Retrofit + Logging interceptor |                               |                             |
+|Timber                         |                               |                             |
+|Loopj                          |                               |                             |
+|Kirich1409 ViewModel Delegate  |                               |                             |
+|Shimmer                        |                               |                             |
+|Lottie                         |                               |                             |
+|Glide                          |                               |                             |
