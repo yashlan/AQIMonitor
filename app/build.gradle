@@ -21,7 +21,7 @@ android {
 
         buildConfigField("String", "API_KEY_WEATHERBIT", '"4604d31a5c914fea8f23c1f095f38463"')
         buildConfigField("String", "BASE_URL_WEATHERBIT", '"https://api.weatherbit.io/v2.0/"')
-        buildConfigField("String","BASE_URL_BLOGER",'"https://www.googleapis.com/blogger/v3/blogs/')
+        buildConfigField("String","BASE_URL_BLOGER",'"https://www.googleapis.com/blogger/v3/blogs/"')
         buildConfigField("String","GOOGLE_API",'"AIzaSyAM8plQ2khFp_7wAzGcmGtSbeHtqQxr4Rw"')
 
 
