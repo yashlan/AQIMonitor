@@ -21,6 +21,7 @@ android {
 
         buildConfigField("String", "API_KEY_WEATHERBIT", '"4604d31a5c914fea8f23c1f095f38463"')
         buildConfigField("String", "BASE_URL_WEATHERBIT", '"https://api.weatherbit.io/v2.0/"')
+        buildConfigField("String", "BASE_URL_AQIMonitor", '"https://awmonitor-351813.as.r.appspot.com/"')
 
 
 //        === API AWMonitor ====
@@ -56,11 +57,11 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
 
+    //showcase view
+    implementation 'com.github.mreram:showcaseview:1.4.0'
+
     //timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
-
-    //work manager
-    implementation "androidx.work:work-runtime:2.7.1"
 
     //loopj
     implementation 'com.loopj.android:android-async-http:1.4.10'
@@ -91,7 +92,6 @@ dependencies {
     //navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
-    implementation 'androidx.navigation:navigation-fragment:2.4.2'
 
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
