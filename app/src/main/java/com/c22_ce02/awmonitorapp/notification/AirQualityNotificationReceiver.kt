@@ -137,6 +137,15 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
         return result
     }
 
+    private fun getCategoryName(aqi: Int): String? {
+        return when (aqi) {
+            in 101..150 -> "tidak sehat"
+            in 151..300 -> "sangat tidak sehat"
+            in 300..Int.MAX_VALUE -> "berbahaya"
+            else -> null
+        }
+    }
+
     private fun getCurrentAirQuality(context: Context, onSuccess: (String, String, Int) -> Unit) {
         getLocation(context, onGetLocation = { lat, lon ->
             if (Looper.myLooper() == null) {
@@ -160,7 +169,7 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                         val aqi = data.getJSONObject(0).getString("aqi")
                         val title = "Indeks Kualitas Udara saat ini sebesar ${aqi.toInt()}"
                         val message =
-                            "Kualitas udara di $locationName saat ini berada di kategori tidak sehat, " +
+                            "Kualitas udara di $locationName saat ini berada di kategori ${getCategoryName(aqi.toInt())}, " +
                                     "jadi jangan lupa pakai masker saat keluar rumah ya!"
                         onSuccess(title, message, aqi.toInt())
                     } catch (e: Exception) {
@@ -314,5 +323,4 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
         private const val PERIOD: Long = 500
         private const val REPEAT_TIME: Long = 60 * (60 * 1000)
     }
-
 }
