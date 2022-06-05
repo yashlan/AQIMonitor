@@ -1,22 +1,20 @@
 package com.c22_ce02.awmonitorapp.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.c22_ce02.awmonitorapp.data.model.Article
 import com.c22_ce02.awmonitorapp.databinding.ItemRowArticleBinding
+import com.c22_ce02.awmonitorapp.ui.activity.DetailArticleActivity
+import com.c22_ce02.awmonitorapp.ui.fragment.ArticleFragment
 import com.c22_ce02.awmonitorapp.utils.loadImageViaGlide
 
-class ListArticleAdapter(private val listArticle: ArrayList<Article>) : RecyclerView.Adapter<ListArticleAdapter.ListViewHolder>() {
-
-    private lateinit var onItemClickCallback: OnItemClickCallback
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
+class ListArticleAdapter(
+    private val listArticle: ArrayList<Article>
+) : RecyclerView.Adapter<ListArticleAdapter.ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding =
@@ -30,7 +28,8 @@ class ListArticleAdapter(private val listArticle: ArrayList<Article>) : Recycler
 
     override fun getItemCount(): Int = listArticle.size
 
-    inner class ListViewHolder(private var binding: ItemRowArticleBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ListViewHolder(private var binding: ItemRowArticleBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Article) {
             with(binding) {
                 tvItemTitle.text = article.title
@@ -38,15 +37,15 @@ class ListArticleAdapter(private val listArticle: ArrayList<Article>) : Recycler
                 tvItemCreatedBy.text = article.created_by
                 tvItemCreatedAt.text = article.created_at
                 itemView.apply {
-                    context.loadImageViaGlide(article.imageurl?.toUri(),binding.imgItemPhoto)
-                    setOnClickListener{
-                        onItemClickCallback.onItemClicked(article)
+                    context.loadImageViaGlide(article.imageurl?.toUri(), binding.imgItemPhoto)
+                    setOnClickListener {
+                        startAnimation(AlphaAnimation(1f, 0.5f))
+                        val i = Intent(context, DetailArticleActivity::class.java)
+                        i.putExtra(ArticleFragment.URL_EXTRA, article.url)
+                        context.startActivity(i)
                     }
-                }
                 }
             }
         }
-    interface OnItemClickCallback {
-        fun onItemClicked(data: Article)
     }
 }
