@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "799625618567-0q8jpeh1p4mmbc04opr8ok4jmib0hmql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.c22_ce02.awmonitorapp",
+            "certificate_hash": "4c7567b46ed981ff38a4da21ce6fc6b1d630797b"
+          }
+        },
+        {
+          "client_id": "799625618567-dvkactb0uh2bq9ra38dbe84jbsfu4a1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.c22_ce02.awmonitorapp",
+            "certificate_hash": "504bd1cef5f6533c870337d4bad5ee0fac572ae6"
+          }
+        },
+        {
           "client_id": "799625618567-h55fmt1mcark3cdq3vmtnoc6kefgrm2t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
