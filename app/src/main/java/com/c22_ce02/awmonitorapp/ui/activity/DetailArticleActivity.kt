@@ -1,14 +1,21 @@
 package com.c22_ce02.awmonitorapp.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.c22_ce02.awmonitorapp.databinding.ActivityDetailArticleBinding
+import android.webkit.WebView
+import androidx.appcompat.app.AppCompatActivity
+import com.c22_ce02.awmonitorapp.data.model.Article
 
 class DetailArticleActivity : AppCompatActivity() {
-    private val binding by viewBinding(ActivityDetailArticleBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        val myWebView = WebView(applicationContext)
+        setContentView(myWebView)
+        val article = intent.getParcelableExtra<Article>(EXTRA_DATA) as Article
+        myWebView.loadUrl(article.url.toString())
+
+        supportActionBar?.title = null
+    }
+    companion object {
+        var EXTRA_DATA = "extra_data"
     }
 }

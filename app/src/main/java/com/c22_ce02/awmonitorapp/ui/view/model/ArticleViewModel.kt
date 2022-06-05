@@ -14,10 +14,10 @@ class ArticleViewModel(private val repository: ArticleRepository): ViewModel() {
     val listArticle = MutableLiveData<List<ArticleResponse.ItemsItem>?>()
     val errorMessage = MutableLiveData<String?>()
 
-    fun getArticle(Key: String){
+    fun getArticle(Key: String, fetchImage: Boolean){
         listArticle.postValue(null)
         errorMessage.postValue(null)
-        val call = repository.getArticle(Key)
+        val call = repository.getArticle(Key,fetchImage)
         call.enqueue(object : Callback<ArticleResponse>{
             override fun onResponse(
                 call: Call<ArticleResponse>,

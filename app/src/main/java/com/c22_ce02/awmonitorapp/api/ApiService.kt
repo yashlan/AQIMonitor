@@ -43,7 +43,8 @@ interface ApiService {
 
     @GET("2957848512475559337/posts")
     fun getArticle(
-        @Query("key") key: String
+        @Query("key") key: String,
+        @Query("fetchImages") fetchImages: Boolean
     ):Call<ArticleResponse>
     
 }

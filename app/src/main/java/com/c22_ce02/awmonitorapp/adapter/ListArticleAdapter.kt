@@ -2,11 +2,13 @@ package com.c22_ce02.awmonitorapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.c22_ce02.awmonitorapp.data.model.Article
 import com.c22_ce02.awmonitorapp.databinding.ItemRowArticleBinding
+import com.c22_ce02.awmonitorapp.utils.loadImageViaGlide
 
 class ListArticleAdapter(private val listArticle: ArrayList<Article>) : RecyclerView.Adapter<ListArticleAdapter.ListViewHolder>() {
 
@@ -31,15 +33,12 @@ class ListArticleAdapter(private val listArticle: ArrayList<Article>) : Recycler
     inner class ListViewHolder(private var binding: ItemRowArticleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Article) {
             with(binding) {
-                Glide.with(binding.imgItemPhoto)
-                    .load(article.image)
-                    .apply(RequestOptions().override(320, 120))
-                    .into(imgItemPhoto)
-                binding.tvItemTitle.text = article.title
-                binding.tvItemDescription.text = article.description
-                binding.tvItemCreatedBy.text = article.created_by
-                binding.tvItemCreatedAt.text = article.created_at
+                tvItemTitle.text = article.title
+                tvItemDescription.text = article.description
+                tvItemCreatedBy.text = article.created_by
+                tvItemCreatedAt.text = article.created_at
                 itemView.apply {
+                    context.loadImageViaGlide(article.imageurl?.toUri(),binding.imgItemPhoto)
                     setOnClickListener{
                         onItemClickCallback.onItemClicked(article)
                     }
