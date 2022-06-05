@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.c22_ce02.awmonitorapp">
+    package="com.c22_ce02.awmonitorapp" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,7 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AWMonitorApp"
         android:usesCleartextTraffic="true"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute" >
+        <activity
+            android:name=".ui.activity.DetailArticleActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false" />
@@ -47,7 +50,7 @@
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

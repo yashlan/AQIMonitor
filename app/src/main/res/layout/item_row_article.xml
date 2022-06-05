@@ -20,8 +20,12 @@
 
         <ImageView
             android:id="@+id/img_item_photo"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintHorizontal_bias="0.493"
             card_view:layout_constraintStart_toStartOf="parent"
@@ -31,26 +35,30 @@
 
         <TextView
             android:id="@+id/tv_item_title"
-            android:layout_width="320dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_toEndOf="@id/img_item_photo"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            card_view:layout_constraintEnd_toEndOf="@+id/img_item_photo"
-            card_view:layout_constraintStart_toStartOf="@+id/img_item_photo"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/img_item_photo"
             tools:text="@string/title_article" />
 
         <TextView
             android:id="@+id/tv_item_description"
-            android:layout_width="320dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:ellipsize="end"
+            android:maxLength="200"
             android:maxLines="5"
             android:textColor="@color/gray"
             android:textSize="14sp"
-            card_view:layout_constraintEnd_toEndOf="@+id/tv_item_title"
+            card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintHorizontal_bias="0.0"
             card_view:layout_constraintStart_toStartOf="@+id/tv_item_title"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_item_title"
@@ -72,7 +80,7 @@
 
         <TextView
             android:id="@+id/tv_item_created_at"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:ellipsize="end"
@@ -80,6 +88,8 @@
             android:textColor="#757575"
             android:textSize="12sp"
             card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="@+id/tv_item_description"
+            card_view:layout_constraintHorizontal_bias="0.0"
             card_view:layout_constraintStart_toEndOf="@+id/tv_item_created_by"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_item_description"
             card_view:layout_constraintVertical_bias="0.0"

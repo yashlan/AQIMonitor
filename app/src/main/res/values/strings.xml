@@ -63,6 +63,7 @@
     <string name="msg_no_internet">Tidak Ada Koneksi Internet</string>
     <string name="permission_msg_access_bg_location">Izinkan \'Akses Lokasi Sepanjang Waktu\' untuk mendapatkan notifikasi kualitas udara tiap jam</string>
     <string name="konfirmasi">Konfirmasi</string>
+    <string name="published">Published</string>
 
     <string-array name="title">
         <item>Pertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon BarengPertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon Bareng</item>

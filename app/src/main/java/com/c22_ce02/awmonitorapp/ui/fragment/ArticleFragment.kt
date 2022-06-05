@@ -62,7 +62,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         listArticle.add(
             Article(
                 title = dataArticle.title,
-                description = dataArticle.content,
+                description = (dataArticle.content),
                 created_by = dataArticle.author.displayName,
                 created_at = dataArticle.published
         )
