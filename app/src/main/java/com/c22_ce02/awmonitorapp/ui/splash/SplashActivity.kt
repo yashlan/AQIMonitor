@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
         super.onCreate(savedInstanceState)
         loadImageViaGlide(R.drawable.logo_no_background, binding.imageView)
         mCheckPreferences = CheckPreference(this)
-        checkHelper = mCheckPreferences.getCheck()
+        checkHelper = mCheckPreferences.getCheckBoarding()
         val user = FirebaseAuth.getInstance().currentUser
         Handler(Looper.getMainLooper()).postDelayed({
             when {
