@@ -56,20 +56,22 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
                             email,
                             pw,
                             onSuccess = { data ->
-                                hideLoadingDialog()
-                                if (data?.status == 200) {
+                                if (data != null) {
+                                    hideLoadingDialog()
                                     val userPref = UserPreference(this@LoginActivity)
                                     userPref.saveSession(
                                         data.data.name,
                                         data.data.email,
-                                        onSave = {
-                                            startActivity(
-                                                Intent(
-                                                    this@LoginActivity,
-                                                    HomeActivity::class.java
+                                        onSave = { savedName, savedEmail ->
+                                            if (savedName != null && savedEmail != null) {
+                                                startActivity(
+                                                    Intent(
+                                                        this@LoginActivity,
+                                                        HomeActivity::class.java
+                                                    )
                                                 )
-                                            )
-                                            finish()
+                                                finish()
+                                            }
                                         }
                                     )
                                 }
