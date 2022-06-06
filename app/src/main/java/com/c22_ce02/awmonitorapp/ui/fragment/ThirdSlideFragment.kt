@@ -58,7 +58,7 @@ class ThirdSlideFragment : Fragment(), View.OnClickListener {
     private fun savePref() {
         val checkPreference = CheckPreference(requireContext())
         checkHelper.isUserFinishBoarding = true
-        checkPreference.setCheck(checkHelper)
+        checkPreference.setCheckBoarding(checkHelper)
         if (BuildConfig.DEBUG) {
             showToast("Selamat Datang")
         }
