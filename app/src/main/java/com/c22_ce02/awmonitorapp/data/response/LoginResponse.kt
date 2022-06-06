@@ -3,8 +3,6 @@ package com.c22_ce02.awmonitorapp.data.response
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
-    @SerializedName("status")
-    val status: Int,
     @SerializedName("data")
     val data: Data
 ) {
