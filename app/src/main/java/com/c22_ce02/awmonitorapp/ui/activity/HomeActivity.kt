@@ -10,7 +10,6 @@ import android.os.*
 import android.provider.Settings
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -65,7 +64,8 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_maps,
-                R.id.navigation_glossary,
+                R.id.navigation_article,
+                R.id.navigation_profile,
             )
         ).build()
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -151,11 +151,19 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         changeStateIconItem(item)
     }
 
-    fun onClickItemNavGlossary(item: MenuItem) {
-        if (navController.currentDestination?.id == R.id.navigation_glossary) {
+    fun onClickItemNavArticle(item: MenuItem) {
+        if (navController.currentDestination?.id == R.id.navigation_article) {
             return
         }
-        navController.navigate(R.id.navigation_glossary)
+        navController.navigate(R.id.navigation_article)
+        changeStateIconItem(item)
+    }
+
+    fun onClickItemNavProfile(item: MenuItem) {
+        if (navController.currentDestination?.id == R.id.navigation_profile) {
+            return
+        }
+        navController.navigate(R.id.navigation_profile)
         changeStateIconItem(item)
     }
 
@@ -167,7 +175,10 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
             R.id.item_navigation_discover -> {
                 menuItem.isChecked = true
             }
-            R.id.item_navigation_glossary -> {
+            R.id.item_navigation_article -> {
+                menuItem.isChecked = true
+            }
+            R.id.item_navigation_profile -> {
                 menuItem.isChecked = true
             }
         }
