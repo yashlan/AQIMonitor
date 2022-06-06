@@ -45,7 +45,7 @@ class ThirdSlideFragment : Fragment(), View.OnClickListener {
         if (v?.id == R.id.btn_finish) {
             savePref()
             val user = UserPreference(requireContext())
-            if (!user.isSessionEmpty()) {
+            if (user.isSessionEmpty()) {
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
                 activity?.finish()
             } else {

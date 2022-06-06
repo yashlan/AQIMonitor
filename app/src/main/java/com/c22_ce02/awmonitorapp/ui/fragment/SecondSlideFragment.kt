@@ -63,7 +63,7 @@ class SecondSlideFragment : Fragment(), View.OnClickListener {
         } else if (v?.id == R.id.second_btn_skip) {
             savePref()
             val user = UserPreference(requireContext())
-            if (!user.isSessionEmpty()) {
+            if (user.isSessionEmpty()) {
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
                 activity?.finish()
             } else {
