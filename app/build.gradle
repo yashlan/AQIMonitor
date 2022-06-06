@@ -19,16 +19,13 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY_WEATHERBIT", '"4604d31a5c914fea8f23c1f095f38463"')
-        buildConfigField("String", "BASE_URL_WEATHERBIT", '"https://api.weatherbit.io/v2.0/"')
-        buildConfigField("String", "BASE_URL_AQIMonitor", '"https://awmonitor-351813.as.r.appspot.com/"')
+        buildConfigField("String", "API_KEY_WEATHERBIT", API_KEY_WEATHERBIT)
+        buildConfigField("String", "BASE_URL_WEATHERBIT", BASE_URL_WEATHERBIT)
+        buildConfigField("String", "BASE_URL_AQIMonitor", BASE_URL_AQIMonitor)
+        buildConfigField("String", "BASE_URL_HEROKU", BASE_URL_HEROKU)
 
 
-//        === API AWMonitor ====
-        manifestPlaceholders = [GOOGLE_API: "AIzaSyAM8plQ2khFp_7wAzGcmGtSbeHtqQxr4Rw"]
-
-//         === API Newbie Test =====
-//        manifestPlaceholders = [GOOGLE_API: "AIzaSyCfWz2_9ATSzFcGvhxFPc17b4W3WQ9w3BU"]
+        manifestPlaceholders = [GOOGLE_API: GOOGLE_API]
 
     }
 
@@ -56,6 +53,9 @@ dependencies {
     // FirebaseUI for Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
+
+    //circle image
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     //showcase view
     implementation 'com.github.mreram:showcaseview:1.4.0'
