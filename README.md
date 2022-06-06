@@ -62,3 +62,8 @@ AQIMonitor adalah aplikasi.......
 |Shimmer                        |                               |                             |
 |Lottie                         |                               |                             |
 |Glide                          |                               |                             |
+|Jitpack.io                     |                               |                             |
+|ShowcaseView                   |                               |                             |
+|CircleImageView                |                               |                             |
+|Jsoup                          |                               |                             |
+|time4j-android                 |                               |                             |
