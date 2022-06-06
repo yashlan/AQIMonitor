@@ -89,4 +89,5 @@ fun AppCompatActivity.showLoadingDialog() {
 
 fun hideLoadingDialog() {
     loadingDialog.hide()
+    loadingDialog.dismiss()
 }
