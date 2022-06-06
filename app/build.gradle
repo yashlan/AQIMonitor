@@ -23,9 +23,11 @@ android {
         buildConfigField("String", "BASE_URL_WEATHERBIT", BASE_URL_WEATHERBIT)
         buildConfigField("String", "BASE_URL_AQIMonitor", BASE_URL_AQIMonitor)
         buildConfigField("String", "BASE_URL_HEROKU", BASE_URL_HEROKU)
+        buildConfigField("String", "BASE_URL_BLOGGER", BASE_URL_BLOGGER)
+        buildConfigField("String", "GOOGLE_API", GOOGLE_API)
 
 
-        manifestPlaceholders = [GOOGLE_API: GOOGLE_API]
+        manifestPlaceholders = [GOOGLE_API_MANIFEST: GOOGLE_API]
 
     }
 
