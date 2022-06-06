@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.data.preference
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.core.content.edit
 
@@ -13,23 +14,15 @@ class UserPreference(context: Context) {
         return userId.isEmpty() && name.isEmpty()
     }
 
-    fun deleteSession(onDelete: () -> Unit) {
-        preference.edit {
-            clear().apply {
-                onDelete.invoke()
-            }
-        }
+    fun deleteSession(onDelete: (Boolean) -> Unit) {
+        preference.edit().clear().apply()
+        onDelete.invoke(isSessionEmpty())
     }
 
-    fun saveSession(name: String, email: String, onSave: () -> Unit) {
-        preference.edit {
-            putString(NAME_KEY, name)
-            putString(EMAIL_KEY, email)
-        }.apply {
-            if (!isSessionEmpty()) {
-                onSave.invoke()
-            }
-        }
+    fun saveSession(name: String, email: String, onSave: (String?, String?) -> Unit) {
+        preference.edit().putString(NAME_KEY, name).apply()
+        preference.edit().putString(EMAIL_KEY, email).apply()
+        onSave.invoke(getName(), getEmail())
     }
 
     fun getName(): String = preference.getString(NAME_KEY, "").toString()
