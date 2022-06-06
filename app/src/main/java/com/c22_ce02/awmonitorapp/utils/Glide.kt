@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
@@ -8,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 
 fun AppCompatActivity.loadImageViaGlide(uri: Uri?, target: ImageView) {
     Glide
@@ -18,13 +20,16 @@ fun AppCompatActivity.loadImageViaGlide(uri: Uri?, target: ImageView) {
         .into(target)
 }
 
-fun Fragment.loadImageViaGlide(uri: Uri?, target: ImageView) {
+
+fun Context.loadImageViaGlide(uri: Uri?, target: ImageView) {
     Glide
         .with(this)
         .load(uri)
         .centerCrop()
+        .override(200, 200)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
         .into(target)
+
 }
 
 fun AppCompatActivity.loadImageViaGlide(drawable: Int, target: ImageView) {

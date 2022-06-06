@@ -66,4 +66,10 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): Call<LoginResponse>
+
+    @GET("2957848512475559337/posts")
+    fun getArticle(
+        @Query("key") key: String,
+        @Query("fetchImages") fetchImages: Boolean
+    ):Call<ArticleResponse>
 }

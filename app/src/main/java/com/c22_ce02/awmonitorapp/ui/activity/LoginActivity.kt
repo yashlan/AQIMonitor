@@ -16,6 +16,7 @@ import com.c22_ce02.awmonitorapp.ui.view.model.LoginViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.LoginViewModelFactory
 import com.c22_ce02.awmonitorapp.utils.*
 
+
 class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
     private val binding by viewBinding(ActivityLoginBinding::bind)
@@ -31,6 +32,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
     override fun onBackPressed() {
         /*agar tombol back tidak berfungsi*/
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         forcePortraitScreenOrientation()
@@ -117,7 +119,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
             editTextEmail.isNotError() && !email.isNullOrEmpty() &&
                     editTextPassword.isNotError() && !password.isNullOrEmpty()
         }
-
 
     companion object {
         private const val DELAY_CHECK_FIELD: Long = 200

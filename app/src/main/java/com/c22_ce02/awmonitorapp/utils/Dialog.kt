@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.c22_ce02.awmonitorapp.R
 
+
 private lateinit var loadingDialog: AlertDialog
 
 fun AppCompatActivity.createCustomAlertDialog(

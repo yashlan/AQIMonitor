@@ -102,9 +102,16 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7'
 
+    //time4j
+    implementation group: 'net.time4j', name: 'time4j-android', version: '4.8-2021a'
+
+    //jsoup
+    implementation 'org.jsoup:jsoup:1.13.1'
+
+
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

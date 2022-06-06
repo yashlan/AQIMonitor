@@ -1,52 +1,87 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.ListArticleAdapter
-import com.c22_ce02.awmonitorapp.data.Article
+import com.c22_ce02.awmonitorapp.data.model.Article
 import com.c22_ce02.awmonitorapp.databinding.FragmentArticleBinding
+import com.c22_ce02.awmonitorapp.ui.activity.DetailArticleActivity
+import com.c22_ce02.awmonitorapp.ui.view.model.ArticleViewModel
+import com.c22_ce02.awmonitorapp.ui.view.modelfactory.ArticleViewModelFactory
+import com.c22_ce02.awmonitorapp.utils.convertToTimeAgo
+import com.c22_ce02.awmonitorapp.utils.initializeTime4A
+import com.c22_ce02.awmonitorapp.utils.setupAdapter
+import org.jsoup.Jsoup
+import timber.log.Timber
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     private val binding by viewBinding(FragmentArticleBinding::bind)
-    private val list = ArrayList<Article>()
+    private val articleViewModel: ArticleViewModel by viewModels {
+        ArticleViewModelFactory()
+    }
+    private val listArticle = ArrayList<Article>()
     private lateinit var adapter: ListArticleAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ListArticleAdapter(list)
-        list.addAll(listArticle)
-        showRecyclerList()
+
+        initializeTime4A()
+        loadData()
     }
 
-    private val listArticle: ArrayList<Article>
-        get() {
-            val dataTitle = resources.getStringArray(R.array.title)
-            val dataDescription = resources.getStringArray(R.array.description)
-            val dataImage = resources.obtainTypedArray(R.array.image)
-            val dataCreatedby = resources.getStringArray(R.array.created_by)
-            val dataCreatedat = resources.getStringArray(R.array.created_at)
-            val listArticle = ArrayList<Article>()
-            for (i in dataTitle.indices) {
-                val article = Article(
-                    dataImage.getResourceId(i,-1),
-                    dataTitle[i],
-                    dataDescription[i],
-                    dataCreatedby[i],
-                    dataCreatedat[i],
+    private fun loadData(){
+        showLoading(true)
+        articleViewModel.listArticle.observe(requireActivity()){ list ->
+            list?.forEach {
+                val content = Jsoup.parse(it.content).text()
+                val description = content.substring(0, content.length.coerceAtMost(200))
+                listArticle.add(
+                    Article(
+                        imageurl = it.images?.get(0)?.url,
+                        title = it.title,
+                        description = "$description...",
+                        created_by = getString(R.string.app_name),
+                        created_at = convertToTimeAgo(it.published),
+                        url = it.url
+                    )
                 )
-                listArticle.add(article)
+
+                if(listArticle.size == list.size) {
+                    setupAdapter(binding.recyclerviewArticle, true, addAdapterValue = {
+                        binding.recyclerviewArticle.adapter = ListArticleAdapter(listArticle)
+                    })
+                    showLoading(false)
+                }
             }
-            return listArticle
         }
 
-    private fun showRecyclerList() {
-        binding.recyclerviewArticle.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerviewArticle.setHasFixedSize(true)
-        binding.recyclerviewArticle.adapter = adapter
+        articleViewModel.errorMessage.observe(requireActivity()){
+            if (it != null){
+                if (BuildConfig.DEBUG) {
+                    Timber.e(it)
+                }
+            }
+        }
+
+        articleViewModel.getArticle(BuildConfig.GOOGLE_API, true)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    companion object {
+        const val URL_EXTRA = "URL_EXTRA"
     }
 }

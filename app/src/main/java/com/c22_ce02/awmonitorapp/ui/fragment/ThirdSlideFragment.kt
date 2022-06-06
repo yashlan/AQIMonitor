@@ -16,6 +16,7 @@ import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
 import com.c22_ce02.awmonitorapp.ui.activity.LoginActivity
 import com.c22_ce02.awmonitorapp.utils.showToast
 
+
 class ThirdSlideFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentThirdSlideBinding

@@ -40,4 +40,9 @@ object Injection {
         val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor)
         return LoginRepository(apiService)
     }
+
+    fun provideArticleRepository(): ArticleRepository {
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_BLOGER)
+        return ArticleRepository(apiService)
+    }
 }

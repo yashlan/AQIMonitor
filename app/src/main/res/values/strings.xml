@@ -75,39 +75,5 @@
     <string name="login">Masuk</string>
     <string name="not_have_account">tidak punya akun?</string>
     <string name="loading">Sedang Proses...</string>
-
-    <string-array name="title">
-        <item>Pertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon BarengPertamina dan Chevron Sepakat Jajaki Bisnis Rendah Karbon Bareng</item>
-        <item>Generasi Milenial Bisa Kurangi Emisi Karbon, Gimana Caranya?</item>
-        <item>Peduli Bumi, Ini Sederet Langkah PLN Turunkan Emisi Global di RIPeduli Bumi, Ini Sederet Langkah PLN Turunkan Emisi Global di RI</item>
-        <item>4 Tips Mengurangi Emisi Karbon dalam Aktivitasmu!</item>
-    </string-array>
-
-    <string-array name="description">
-        <item>PT Pertamina (Persero) dengan Chevron Corporation melalui anak per…</item>
-        <item>Indonesia saat ini telah memperbarui komitmen untuk mengurangi efek gas rumah kaca (GRK) dalam dokumen Nat</item>
-        <item>PT PLN (Persero) terus berupaya dalam menurunkan emisi global di Indonesia. Hal ini dilakukan dalam rangka menja....</item>
-        <item>Hampir semua aktivitas kita sehari-hari menghasilkan jejak karbon. Apakah lalu kita harus berhenti melakukan itu?</item>
-    </string-array>
-
-    <string-array name="created_by">
-        <item>AW Monitor</item>
-        <item>AW Monitor</item>
-        <item>AW Monitor</item>
-        <item>AW Monitor</item>
-    </string-array>
-
-    <string-array name="created_at">
-        <item>15 mins ago</item>
-        <item>15 mins ago</item>
-        <item>15 mins ago</item>
-        <item>15 mins ago</item>
-    </string-array>
-
-    <string-array name="image">
-        <item>@drawable/article2</item>
-        <item>@drawable/article2</item>
-        <item>@drawable/article3</item>
-        <item>@drawable/article4</item>
-    </string-array>
+    <string name="published">Published</string>
 </resources>

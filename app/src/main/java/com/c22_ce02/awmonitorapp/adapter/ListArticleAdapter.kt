@@ -1,21 +1,20 @@
 package com.c22_ce02.awmonitorapp.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.animation.AlphaAnimation
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.c22_ce02.awmonitorapp.data.Article
+import com.c22_ce02.awmonitorapp.data.model.Article
 import com.c22_ce02.awmonitorapp.databinding.ItemRowArticleBinding
+import com.c22_ce02.awmonitorapp.ui.activity.DetailArticleActivity
+import com.c22_ce02.awmonitorapp.ui.fragment.ArticleFragment
+import com.c22_ce02.awmonitorapp.utils.loadImageViaGlide
 
-class ListArticleAdapter(private val listArticle: ArrayList<Article>) :
-    RecyclerView.Adapter<ListArticleAdapter.ListViewHolder>() {
-    private lateinit var onItemClickCallback: OnItemClickCallback
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
+class ListArticleAdapter(
+    private val listArticle: ArrayList<Article>
+) : RecyclerView.Adapter<ListArticleAdapter.ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding =
@@ -29,30 +28,24 @@ class ListArticleAdapter(private val listArticle: ArrayList<Article>) :
 
     override fun getItemCount(): Int = listArticle.size
 
-    class ListViewHolder(private var binding: ItemRowArticleBinding) :
+    inner class ListViewHolder(private var binding: ItemRowArticleBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Article) {
             with(binding) {
-                Glide.with(binding.imgItemPhoto)
-                    .load(article.image)
-                    .apply(RequestOptions().override(320, 120))
-                    .into(imgItemPhoto)
                 tvItemTitle.text = article.title
                 tvItemDescription.text = article.description
                 tvItemCreatedBy.text = article.created_by
                 tvItemCreatedAt.text = article.created_at
-                itemView.setOnClickListener {
-                    Toast.makeText(
-                        itemView.context,
-                        "you clicked item at : ${article.title}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                itemView.apply {
+                    context.loadImageViaGlide(article.imageurl?.toUri(), binding.imgItemPhoto)
+                    setOnClickListener {
+                        startAnimation(AlphaAnimation(1f, 0.5f))
+                        val i = Intent(context, DetailArticleActivity::class.java)
+                        i.putExtra(ArticleFragment.URL_EXTRA, article.url)
+                        context.startActivity(i)
+                    }
                 }
             }
         }
-    }
-
-    interface OnItemClickCallback {
-        fun onItemClicked(data: Article)
     }
 }
