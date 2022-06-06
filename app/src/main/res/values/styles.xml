@@ -7,7 +7,6 @@
         <item name="background">@null</item>
     </style>
 
-
     <style name="title_slide">
         <item name="fontFamily">@font/poppins_medium</item>
         <item name="android:textSize">24sp</item>
@@ -27,31 +26,15 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/white</item>
+        <item name="textColorAlertDialogListItem">@color/white</item>
+    </style>
+
     <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-    </style>
-
-    <style name="LoginTheme" parent="FirebaseUI">
-
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/teal_200</item>
-        <item name="colorButtonNormal">@color/teal_200</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlActivated">@color/white</item>
-        <item name="colorControlHighlight">@color/white</item>
-
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-        <item name="android:windowBackground">@drawable/background_login</item>
-        <item name="android:textColorHint">@android:color/darker_gray</item>
     </style>
 
 </resources>

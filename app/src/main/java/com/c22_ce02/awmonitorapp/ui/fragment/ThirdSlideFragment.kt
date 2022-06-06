@@ -10,11 +10,11 @@ import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
+import com.c22_ce02.awmonitorapp.data.preference.UserPreference
 import com.c22_ce02.awmonitorapp.databinding.FragmentThirdSlideBinding
 import com.c22_ce02.awmonitorapp.ui.activity.HomeActivity
 import com.c22_ce02.awmonitorapp.ui.activity.LoginActivity
 import com.c22_ce02.awmonitorapp.utils.showToast
-import com.google.firebase.auth.FirebaseAuth
 
 class ThirdSlideFragment : Fragment(), View.OnClickListener {
 
@@ -44,8 +44,8 @@ class ThirdSlideFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_finish) {
             savePref()
-            val user = FirebaseAuth.getInstance().currentUser
-            if (user == null) {
+            val user = UserPreference(requireContext())
+            if (!user.isSessionEmpty()) {
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
                 activity?.finish()
             } else {

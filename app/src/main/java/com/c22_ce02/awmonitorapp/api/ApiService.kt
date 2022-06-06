@@ -3,7 +3,6 @@ package com.c22_ce02.awmonitorapp.api
 import com.c22_ce02.awmonitorapp.data.response.*
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.*
 
 interface ApiService {
 
@@ -21,13 +20,12 @@ interface ApiService {
         @Query("key") apiKey: String,
     ): Call<CurrentWeatherConditionResponse>
 
-    @GET("forecast/airquality")
-    fun getAirQualityForecastByHour(
+    @GET("by_location")
+    fun getAirQualityForecastAndHistoryByHour(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("key") apiKey: String,
-        @Query("hours") hours: Int,
-    ): Call<AirQualityForecastByHourResponse>
+    ): Call<AirQualityForecastAndHistoryByHourResponse>
 
     @GET("forecast/hourly")
     fun getWeatherForecastByHour(
@@ -53,4 +51,19 @@ interface ApiService {
         @Field("humidity") humidity: Double,
         @Field("wind_speed") windSpeed: Double,
     ): Call<PostCurrentWeatherAndAirResponse>
+
+    @FormUrlEncoded
+    @POST("users/createaccount")
+    fun register(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Call<RegisterResponse>
+
+    @FormUrlEncoded
+    @POST("users/login")
+    fun login(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Call<LoginResponse>
 }

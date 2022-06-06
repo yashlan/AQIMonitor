@@ -19,6 +19,7 @@
     <color name="shadow">#DEE3E4</color>
     <color name="end_color">#0FA37C</color>
     <color name="start_color">#28F4AF</color>
+    <color name="hint">#8F8F8F</color>
 
     <color name="deep_orange">#FF5726</color>
     <color name="shimmer_color_bg">#DDDDDD</color>

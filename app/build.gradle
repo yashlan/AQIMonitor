@@ -50,10 +50,6 @@ android {
 
 dependencies {
 
-    // FirebaseUI for Firebase Auth
-    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
-
     //circle image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AirQualityAndWeatherForecastByHour(
-    val forecastAirQuality: AirQualityForecastByHour,
+data class AirQualityAndWeatherHistoryForecastByHour(
+    val historyAndForecastAirQuality: AirQualityHistoryAndForecastByHour,
     val forecastWeather: WeatherForecastByHour
 ) : Parcelable

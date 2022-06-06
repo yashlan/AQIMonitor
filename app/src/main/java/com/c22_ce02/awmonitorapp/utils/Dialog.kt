@@ -2,12 +2,16 @@ package com.c22_ce02.awmonitorapp.utils
 
 import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.c22_ce02.awmonitorapp.R
+
+private lateinit var loadingDialog: AlertDialog
 
 fun AppCompatActivity.createCustomAlertDialog(
     title: String,
@@ -65,4 +69,23 @@ fun Fragment.createCustomAlertDialog(
     }
 
     alertDialog.show()
+}
+
+fun AppCompatActivity.showLoadingDialog() {
+    val view = LayoutInflater.from(this)
+        .inflate(
+            R.layout.loading_layout,
+            findViewById<ConstraintLayout>(R.id.loading_layout)
+        )
+    val loading = view.findViewById<ImageView>(R.id.imgLoading)
+    loadImageViaGlide(R.drawable.loading_bar, loading)
+    loadingDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+        .setView(view)
+        .setCancelable(false)
+        .create()
+    loadingDialog.show()
+}
+
+fun hideLoadingDialog() {
+    loadingDialog.hide()
 }

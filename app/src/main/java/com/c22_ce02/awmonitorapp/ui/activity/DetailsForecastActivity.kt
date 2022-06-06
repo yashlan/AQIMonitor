@@ -9,7 +9,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
-import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ActivityDetailsForecastBinding
 import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
 import com.c22_ce02.awmonitorapp.utils.forcePortraitScreenOrientation
@@ -27,16 +27,16 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
         forcePortraitScreenOrientation()
         super.onCreate(savedInstanceState)
 
-        intent.getParcelableExtra<AirQualityAndWeatherForecastByHour>(HomeFragment.FORECAST_EXTRA)
+        intent.getParcelableExtra<AirQualityAndWeatherHistoryForecastByHour>(HomeFragment.FORECAST_EXTRA)
             ?.let {
-                if (currentHour.equals(it.forecastAirQuality.hour, true)) {
+                if (currentHour.equals(it.historyAndForecastAirQuality.hour, true)) {
                     setupCustomActionBar(getString(R.string.now))
                 } else {
-                    setupCustomActionBar(it.forecastAirQuality.hour)
+                    setupCustomActionBar(it.historyAndForecastAirQuality.hour)
                 }
                 with(binding) {
                     root.setBackgroundResource(
-                        when (it.forecastAirQuality.aqi) {
+                        when (it.historyAndForecastAirQuality.aqi) {
                             in 0..50 -> R.drawable.window_bg_baik
                             in 51..100 -> R.drawable.window_bg_sedang
                             in 101..150 -> R.drawable.window_bg_tidak_sehat
@@ -46,15 +46,15 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                     )
 
                     itemStatusAirMessage.tvAirStatusMsg.text =
-                        getAirStatusMessage(it.forecastAirQuality.aqi)
+                        getAirStatusMessage(it.historyAndForecastAirQuality.aqi)
                     itemStatusAirMessage.root.setCardBackgroundColor(
                         getItemStatusAirMessageBgColor(
-                            it.forecastAirQuality.aqi
+                            it.historyAndForecastAirQuality.aqi
                         )
                     )
 
                     with(itemInfoAirForecast) {
-                        startIncrementTextAnimation(it.forecastAirQuality.aqi, tvAQI)
+                        startIncrementTextAnimation(it.historyAndForecastAirQuality.aqi, tvAQI)
                         startIncrementTextAnimation(
                             convertWindSpeedToKmh(it.forecastWeather.windSpeed),
                             " km/h",
@@ -72,7 +72,7 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                         )
 
                         imgLabelAir.setBackgroundResource(
-                            when (it.forecastAirQuality.aqi) {
+                            when (it.historyAndForecastAirQuality.aqi) {
                                 in 0..50 -> R.drawable.ic_label_detail_baik
                                 in 51..100 -> R.drawable.ic_label_detail_sedang
                                 in 101..150 -> R.drawable.ic_label_detail_tidak_sehat
@@ -89,50 +89,50 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                             '1',
                             0.7f
                         )
-                        startIncrementTextAnimation(it.forecastAirQuality.pm10, tvPm10)
-                        iconStatusPM10.setImageResource(getIconItem(it.forecastAirQuality.pm10))
-                        tvStatusPM10.text = getStatusName(it.forecastAirQuality.pm10)
+                        startIncrementTextAnimation(it.historyAndForecastAirQuality.pm10, tvPm10)
+                        iconStatusPM10.setImageResource(getIconItem(it.historyAndForecastAirQuality.pm10))
+                        tvStatusPM10.text = getStatusName(it.historyAndForecastAirQuality.pm10)
 
                         tvLabelPM25.text = spannableStringBuilder(
                             getString(R.string.pm25),
                             '2',
                             0.7f
                         )
-                        startIncrementTextAnimation(it.forecastAirQuality.pm25, tvPM25)
-                        iconStatusPM25.setImageResource(getIconItem(it.forecastAirQuality.pm25))
-                        tvStatusPM25.text = getStatusName(it.forecastAirQuality.pm25)
+                        startIncrementTextAnimation(it.historyAndForecastAirQuality.pm25, tvPM25)
+                        iconStatusPM25.setImageResource(getIconItem(it.historyAndForecastAirQuality.pm25))
+                        tvStatusPM25.text = getStatusName(it.historyAndForecastAirQuality.pm25)
 
                         tvLabelSO2.text = spannableStringBuilder(
                             getString(R.string.so2),
                             '2',
                             0.7f
                         )
-                        startIncrementTextAnimation(it.forecastAirQuality.so2, tvSO2)
-                        iconStatusSO2.setImageResource(getIconItem(it.forecastAirQuality.so2))
-                        tvStatusSO2.text = getStatusName(it.forecastAirQuality.so2)
+                        startIncrementTextAnimation(it.historyAndForecastAirQuality.so2, tvSO2)
+                        iconStatusSO2.setImageResource(getIconItem(it.historyAndForecastAirQuality.so2))
+                        tvStatusSO2.text = getStatusName(it.historyAndForecastAirQuality.so2)
 
                         tvLabelCO.text = getString(R.string.co)
-                        startIncrementTextAnimation(it.forecastAirQuality.co, tvCO)
-                        iconStatusCO.setImageResource(getIconItem(it.forecastAirQuality.co))
-                        tvStatusCO.text = getStatusName(it.forecastAirQuality.co)
+                        startIncrementTextAnimation(it.historyAndForecastAirQuality.co, tvCO)
+                        iconStatusCO.setImageResource(getIconItem(it.historyAndForecastAirQuality.co))
+                        tvStatusCO.text = getStatusName(it.historyAndForecastAirQuality.co)
 
                         tvLabelNO2.text = spannableStringBuilder(
                             getString(R.string.no2),
                             '2',
                             0.7f
                         )
-                        startIncrementTextAnimation(it.forecastAirQuality.no2, tvNO2)
-                        iconStatusNO2.setImageResource(getIconItem(it.forecastAirQuality.no2))
-                        tvStatusNO2.text = getStatusName(it.forecastAirQuality.no2)
+                        startIncrementTextAnimation(it.historyAndForecastAirQuality.no2, tvNO2)
+                        iconStatusNO2.setImageResource(getIconItem(it.historyAndForecastAirQuality.no2))
+                        tvStatusNO2.text = getStatusName(it.historyAndForecastAirQuality.no2)
 
                         tvLabelO3.text = spannableStringBuilder(
                             getString(R.string.o3),
                             '3',
                             0.7f
                         )
-                        startIncrementTextAnimation(it.forecastAirQuality.o3, tvO3)
-                        iconStatusO3.setImageResource(getIconItem(it.forecastAirQuality.o3))
-                        tvStatusO3.text = getStatusName(it.forecastAirQuality.o3)
+                        startIncrementTextAnimation(it.historyAndForecastAirQuality.o3, tvO3)
+                        iconStatusO3.setImageResource(getIconItem(it.historyAndForecastAirQuality.o3))
+                        tvStatusO3.text = getStatusName(it.historyAndForecastAirQuality.o3)
                     }
                 }
             }

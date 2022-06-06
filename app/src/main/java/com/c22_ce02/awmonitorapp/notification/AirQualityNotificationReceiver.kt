@@ -169,7 +169,11 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                         val aqi = data.getJSONObject(0).getString("aqi")
                         val title = "Indeks Kualitas Udara saat ini sebesar ${aqi.toInt()}"
                         val message =
-                            "Kualitas udara di $locationName saat ini berada di kategori ${getCategoryName(aqi.toInt())}, " +
+                            "Kualitas udara di $locationName saat ini berada di kategori ${
+                                getCategoryName(
+                                    aqi.toInt()
+                                )
+                            }, " +
                                     "jadi jangan lupa pakai masker saat keluar rumah ya!"
                         onSuccess(title, message, aqi.toInt())
                     } catch (e: Exception) {

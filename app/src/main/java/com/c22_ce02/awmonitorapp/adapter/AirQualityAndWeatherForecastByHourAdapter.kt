@@ -8,7 +8,7 @@ import android.view.animation.AlphaAnimation
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.c22_ce02.awmonitorapp.R
-import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ItemRecycleviewAirQualityForecastBinding
 import com.c22_ce02.awmonitorapp.ui.activity.DetailsForecastActivity
 import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
@@ -18,7 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class AirQualityAndWeatherForecastByHourAdapter(
-    private val listForecast: ArrayList<AirQualityAndWeatherForecastByHour>,
+    private val listHistoryForecast: ArrayList<AirQualityAndWeatherHistoryForecastByHour>,
     private val canPlayAnim: Boolean
 ) : RecyclerView.Adapter<AirQualityAndWeatherForecastByHourAdapter.MyViewHolder>() {
 
@@ -28,16 +28,16 @@ class AirQualityAndWeatherForecastByHourAdapter(
 
         private val currentHour = SimpleDateFormat("ha", Locale("id")).format(Date()).lowercase()
 
-        fun bind(f: AirQualityAndWeatherForecastByHour) {
+        fun bind(f: AirQualityAndWeatherHistoryForecastByHour) {
             with(binding) {
                 if (canPlayAnim) {
-                    startIncrementTextAnimation(f.forecastAirQuality.aqi, tvForecastAQI)
+                    startIncrementTextAnimation(f.historyAndForecastAirQuality.aqi, tvForecastAQI)
                 }
-                tvHour.text = f.forecastAirQuality.hour
+                tvHour.text = f.historyAndForecastAirQuality.hour
                 tvLabelAQI.text = itemView.context.getString(R.string.aqi)
-                iconStatusAQI.setImageResource(f.forecastAirQuality.iconAQISrc)
+                iconStatusAQI.setImageResource(f.historyAndForecastAirQuality.iconAQISrc)
 
-                if (f.forecastAirQuality.hour.equals(currentHour, true)) {
+/*                if (f.historyAndForecastAirQuality.hour.equals(currentHour, true)) {
                     tvHour.text = itemView.context.getString(R.string.now)
                     tvHour.setTextColor(Color.WHITE)
                     tvForecastAQI.setTextColor(Color.WHITE)
@@ -45,7 +45,7 @@ class AirQualityAndWeatherForecastByHourAdapter(
                     cardItemAirForecastToday.setCardBackgroundColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            when (f.forecastAirQuality.aqi) {
+                            when (f.historyAndForecastAirQuality.aqi) {
                                 in 0..50 -> R.color.warna_baik
                                 in 51..100 -> R.color.warna_sedang
                                 in 101..150 -> R.color.warna_tidak_sehat
@@ -54,7 +54,7 @@ class AirQualityAndWeatherForecastByHourAdapter(
                             }
                         )
                     )
-                }
+                }*/
 
                 itemView.apply {
                     setOnClickListener {
@@ -82,7 +82,7 @@ class AirQualityAndWeatherForecastByHourAdapter(
     override fun onBindViewHolder(
         holder: MyViewHolder,
         position: Int
-    ) = holder.bind(listForecast[position])
+    ) = holder.bind(listHistoryForecast[position])
 
-    override fun getItemCount(): Int = listForecast.size
+    override fun getItemCount(): Int = listHistoryForecast.size
 }
