@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     tools:background="@color/warna_baik">
 
-    <ScrollView
+    <com.c22_ce02.awmonitorapp.utils.customview.CustomScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -23,15 +24,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <include
                 android:id="@+id/itemInfoAirToday"
                 layout="@layout/item_info_air_today"
-                android:layout_marginStart="11dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/itemLocationAndDate" />
@@ -58,6 +58,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </com.c22_ce02.awmonitorapp.utils.customview.CustomScrollView>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
