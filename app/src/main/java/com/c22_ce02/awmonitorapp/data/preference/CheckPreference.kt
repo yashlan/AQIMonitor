@@ -1,28 +1,39 @@
 package com.c22_ce02.awmonitorapp.data.preference
 
-import android.annotation.SuppressLint
 import android.content.Context
 
 class CheckPreference(context: Context) {
 
     private val preference = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-    @SuppressLint("CommitPrefEdits")
-    fun setCheck(value: CheckHelper) {
+    fun setCheckBoarding(value: CheckHelper) {
         val editor = preference.edit()
-        editor.putBoolean(IS_FINISH_BOARDING.toString(), value.isUserFinishBoarding)
+        editor.putBoolean(BOARDING_KEY, value.isUserFinishBoarding)
         editor.apply()
     }
 
-    fun getCheck(): CheckHelper {
+    fun getCheckBoarding(): CheckHelper {
         val result = CheckHelper()
-        result.isUserFinishBoarding = preference.getBoolean(IS_FINISH_BOARDING.toString(), false)
+        result.isUserFinishBoarding = preference.getBoolean(BOARDING_KEY, false)
+        return result
+    }
+
+    fun setCheckGuide(value: CheckHelper) {
+        val editor = preference.edit()
+        editor.putBoolean(GUIDE_KEY, value.isUserFinishGuide)
+        editor.apply()
+    }
+
+    fun getCheckGuide(): CheckHelper {
+        val result = CheckHelper()
+        result.isUserFinishGuide = preference.getBoolean(GUIDE_KEY, false)
         return result
     }
 
 
     companion object {
         private const val PREF_NAME = "checkPref"
-        private const val IS_FINISH_BOARDING = false
+        private const val BOARDING_KEY = "BOARDING_KEY"
+        private const val GUIDE_KEY = "GUIDE_KEY"
     }
 }
