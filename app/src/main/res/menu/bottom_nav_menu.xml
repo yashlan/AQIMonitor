@@ -14,9 +14,15 @@
         android:title="@string/title_discover" />
 
     <item
-        android:id="@+id/item_navigation_glossary"
-        android:icon="@drawable/ic_glossary_selector"
-        android:onClick="onClickItemNavGlossary"
-        android:title="@string/title_glossary" />
+        android:id="@+id/item_navigation_article"
+        android:icon="@drawable/ic_article_selector"
+        android:onClick="onClickItemNavArticle"
+        android:title="@string/title_article" />
+
+    <item
+        android:id="@+id/item_navigation_profile"
+        android:icon="@drawable/ic_profile_selector"
+        android:onClick="onClickItemNavProfile"
+        android:title="@string/title_profile" />
 
 </menu>
