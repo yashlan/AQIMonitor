@@ -53,7 +53,7 @@ interface ApiService {
     ): Call<PostCurrentWeatherAndAirResponse>
 
     @FormUrlEncoded
-    @POST("users/createaccount")
+    @POST("users/registrasi")
     fun register(
         @Field("name") name: String,
         @Field("email") email: String,
