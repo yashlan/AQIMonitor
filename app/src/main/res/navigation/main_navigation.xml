@@ -12,15 +12,21 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_glossary"
+        android:id="@+id/navigation_article"
         android:name="com.c22_ce02.awmonitorapp.ui.fragment.ArticleFragment"
-        android:label="@string/title_glossary"
+        android:label="@string/title_article"
         tools:layout="@layout/fragment_article" />
 
     <fragment
         android:id="@+id/navigation_maps"
         android:name="com.c22_ce02.awmonitorapp.ui.fragment.MapsFragment"
-        android:label="fragment_maps"
+        android:label="Maps"
         tools:layout="@layout/fragment_maps" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.c22_ce02.awmonitorapp.ui.fragment.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>
