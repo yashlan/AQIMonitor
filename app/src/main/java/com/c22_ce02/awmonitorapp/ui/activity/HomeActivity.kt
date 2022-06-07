@@ -90,6 +90,7 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
                 createCustomAlertDialog(
                     getString(R.string.konfirmasi),
                     getString(R.string.permission_msg_access_bg_location),
+                    R.drawable.notification,
                     actionPositiveButton = {
                         backgroundLocationPermission.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                     }
