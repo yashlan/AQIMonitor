@@ -1,24 +1,25 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.ListArticleAdapter
 import com.c22_ce02.awmonitorapp.data.model.Article
 import com.c22_ce02.awmonitorapp.databinding.FragmentArticleBinding
-import com.c22_ce02.awmonitorapp.ui.activity.DetailArticleActivity
 import com.c22_ce02.awmonitorapp.ui.view.model.ArticleViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.ArticleViewModelFactory
-import com.c22_ce02.awmonitorapp.utils.convertToTimeAgo
-import com.c22_ce02.awmonitorapp.utils.initializeTime4A
-import com.c22_ce02.awmonitorapp.utils.setupAdapter
+import com.c22_ce02.awmonitorapp.utils.*
 import org.jsoup.Jsoup
 import timber.log.Timber
+
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
@@ -26,62 +27,102 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private val articleViewModel: ArticleViewModel by viewModels {
         ArticleViewModelFactory()
     }
-    private val listArticle = ArrayList<Article>()
-    private lateinit var adapter: ListArticleAdapter
+    private lateinit var listArticle: ArrayList<Article>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.swipeRefresh.setOnRefreshListener {
+            refreshFragment()
+        }
+
+        if (!isNetworkAvailable(requireContext(), showNotAvailableInfo = true)) {
+            binding.shimmerFragmentArticle.hideShimmer()
+            return
+        }
 
         initializeTime4A()
         loadData()
     }
 
-    private fun loadData(){
+    private fun refreshFragment() {
+        val refreshFragmentHandler = Handler(Looper.getMainLooper())
+        refreshFragmentHandler.postDelayed({
+            binding.swipeRefresh.isRefreshing = false
+            if (!binding.swipeRefresh.isRefreshing) {
+                val navHostFragment =
+                    requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_home_activity)
+                navHostFragment?.findNavController()?.navigate(R.id.navigation_article)
+            }
+        }, DELAY_REFRESH)
+    }
+
+    private fun loadData() {
         showLoading(true)
-        articleViewModel.listArticle.observe(requireActivity()){ list ->
-            list?.forEach {
-                val content = Jsoup.parse(it.content).text()
-                val description = content.substring(0, content.length.coerceAtMost(200))
-                listArticle.add(
-                    Article(
-                        imageurl = it.images?.get(0)?.url,
-                        title = it.title,
-                        description = "$description...",
-                        created_by = getString(R.string.app_name),
-                        created_at = convertToTimeAgo(it.published),
-                        url = it.url
-                    )
-                )
+        articleViewModel.getArticle(
+            BuildConfig.GOOGLE_API,
+            true,
+            onSuccess = { list ->
+                if (list != null && list.isNotEmpty()) {
+                    listArticle = ArrayList()
+                    listArticle.clear()
+                    list.forEach {
+                        val content = Jsoup.parse(it.content).text()
+                        val description =
+                            content.substring(0, content.length.coerceAtMost(MAX_CHAR))
+                        listArticle.add(
+                            Article(
+                                imageurl = it.images?.get(0)?.url,
+                                title = it.title,
+                                description = "$description...",
+                                created_by = getString(R.string.app_name),
+                                created_at = convertToTimeAgo(it.published),
+                                url = it.url
+                            )
+                        )
 
-                if(listArticle.size == list.size) {
-                    setupAdapter(binding.recyclerviewArticle, true, addAdapterValue = {
-                        binding.recyclerviewArticle.adapter = ListArticleAdapter(listArticle)
-                    })
-                    showLoading(false)
+                        if (listArticle.size == list.size) {
+                            if (view == null) return@forEach
+                            setupAdapter(binding.recyclerviewArticle, true, addAdapterValue = {
+                                binding.recyclerviewArticle.adapter =
+                                    ListArticleAdapter(listArticle)
+                            })
+                            showLoading(false)
+                            binding.root.setBackgroundColor(
+                                ActivityCompat.getColor(
+                                    requireContext(),
+                                    R.color.bg_fragment_article_color
+                                )
+                            )
+                        }
+                    }
+                }
+            },
+            onError = { errorMsg ->
+                showLoading(false)
+                if (errorMsg != null) {
+                    if (BuildConfig.DEBUG) {
+                        Timber.e(errorMsg)
+                    }
                 }
             }
-        }
-
-        articleViewModel.errorMessage.observe(requireActivity()){
-            if (it != null){
-                if (BuildConfig.DEBUG) {
-                    Timber.e(it)
-                }
-            }
-        }
-
-        articleViewModel.getArticle(BuildConfig.GOOGLE_API, true)
+        )
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
+            binding.shimmerFragmentArticle.visibility = View.VISIBLE
+            binding.shimmerFragmentArticle.startShimmer()
+            binding.recyclerviewArticle.visibility = View.GONE
         } else {
-            binding.progressBar.visibility = View.GONE
+            binding.shimmerFragmentArticle.stopShimmer()
+            binding.shimmerFragmentArticle.visibility = View.GONE
+            binding.recyclerviewArticle.visibility = View.VISIBLE
         }
     }
 
     companion object {
         const val URL_EXTRA = "URL_EXTRA"
+        private const val MAX_CHAR = 120
+        private const val DELAY_REFRESH: Long = 500
     }
 }
