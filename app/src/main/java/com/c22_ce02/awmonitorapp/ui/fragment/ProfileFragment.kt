@@ -40,9 +40,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun logout() {
-        user.deleteSession {
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
-            requireActivity().finish()
+        user.deleteSession { isSessionEmpty ->
+            if (isSessionEmpty) {
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+                requireActivity().finish()
+            }
         }
     }
 }
