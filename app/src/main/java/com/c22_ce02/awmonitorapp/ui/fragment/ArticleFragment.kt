@@ -71,7 +71,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
                             content.substring(0, content.length.coerceAtMost(MAX_CHAR))
                         listArticle.add(
                             Article(
-                                imageurl = it.images?.get(0)?.url,
+                                imageUrl = it.images?.get(0)?.url,
                                 title = it.title,
                                 description = "$description...",
                                 created_by = getString(R.string.app_name),

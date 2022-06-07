@@ -43,7 +43,7 @@ class ListArticleAdapter(
                 tvItemCreatedBy.text = article.created_by
                 tvItemCreatedAt.text = article.created_at
                 itemView.apply {
-                    context.loadImageViaGlide(article.imageurl?.toUri(), binding.imgThumbnail)
+                    context.loadImageViaGlide(article.imageUrl?.toUri(), binding.imgThumbnail)
                     setOnClickListener {
                         startAnimation(AlphaAnimation(1f, 0.5f))
                         val i = Intent(context, DetailArticleActivity::class.java)
