@@ -26,8 +26,9 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
-    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <style name="AlertDialogLoadingTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="colorPrimary">@color/white</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="textColorAlertDialogListItem">@color/white</item>
     </style>
 
