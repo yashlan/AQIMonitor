@@ -23,4 +23,5 @@
     <color name="deep_orange">#FF5726</color>
     <color name="shimmer_color_bg">#DDDDDD</color>
     <color name="shimmer_color">#C2C2C2</color>
+    <color name="bg_fragment_article_color">#B5B5B5</color>
 </resources>
