@@ -29,7 +29,6 @@ fun Context.loadImageViaGlide(uri: Uri?, target: ImageView) {
         .override(200, 200)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
         .into(target)
-
 }
 
 fun AppCompatActivity.loadImageViaGlide(drawable: Int, target: ImageView) {
