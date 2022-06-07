@@ -10,25 +10,42 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
 
-
+    private lateinit var mMap : GoogleMap
     private val mapsViewModel: MapsViewModel by viewModels()
     private val binding by viewBinding(FragmentMapsBinding::bind, onViewDestroyed = {
         stopHandler()
     })
     private val handler = Handler(Looper.getMainLooper())
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mapsViewModel.getCurrentData()
+
+        mapsViewModel.showLoading.observe(this){
+            showLoading(it)
+        }
+    }
+
     private val callback = OnMapReadyCallback { googleMap ->
-        showLoading(true)
-        mapsViewModel.getListCity(googleMap)
-        handler.postDelayed({
-            showLoading(false)
-        }, MAPS_FAKE_TIME_LOAD)
+        mMap = googleMap
+
+        mapsViewModel.currentData.observe(this){
+            for( (index) in it.withIndex()){
+                val location = LatLng(it[index].lat.toDouble(), it[index].lon.toDouble())
+                mMap.addMarker(MarkerOptions().position(location).title(it[index].city))
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+            }
+        }
     }
 
     private fun stopHandler() {
@@ -51,8 +68,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         }
     }
 
-    companion object {
-        private const val MAPS_FAKE_TIME_LOAD: Long = 8000
-    }
+
 
 }

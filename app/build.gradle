@@ -20,10 +20,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_KEY_WEATHERBIT", API_KEY_WEATHERBIT)
+        buildConfigField("String", "API_KEY_HEROKU", API_KEY_HEROKU)
+        buildConfigField("String", "API_KEY_ML_DEPLOYMENT", API_KEY_ML_DEPLOYMENT)
         buildConfigField("String", "BASE_URL_WEATHERBIT", BASE_URL_WEATHERBIT)
         buildConfigField("String", "BASE_URL_AQIMonitor", BASE_URL_AQIMonitor)
         buildConfigField("String", "BASE_URL_HEROKU", BASE_URL_HEROKU)
         buildConfigField("String", "BASE_URL_BLOGGER", BASE_URL_BLOGGER)
+        buildConfigField("String", "BASE_URL_ML_DEPLOYMENT", BASE_URL_ML_DEPLOYMENT)
         buildConfigField("String", "GOOGLE_API", GOOGLE_API)
 
 
