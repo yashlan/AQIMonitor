@@ -51,6 +51,10 @@ android {
 
 dependencies {
 
+
+    //fancy alert dialog
+    implementation 'com.github.Shashank02051997:FancyGifDialog-Android:1.4'
+
     //circle image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
