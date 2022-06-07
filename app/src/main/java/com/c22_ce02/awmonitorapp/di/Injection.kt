@@ -42,7 +42,7 @@ object Injection {
     }
 
     fun provideArticleRepository(): ArticleRepository {
-        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_BLOGER)
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_BLOGGER)
         return ArticleRepository(apiService)
     }
 }
