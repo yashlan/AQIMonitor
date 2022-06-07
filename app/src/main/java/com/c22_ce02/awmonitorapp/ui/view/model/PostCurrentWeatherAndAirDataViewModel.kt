@@ -4,14 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.c22_ce02.awmonitorapp.data.repository.PostCurrentWeatherAndAirDataRepository
 import com.c22_ce02.awmonitorapp.data.response.PostCurrentWeatherAndAirResponse
+import com.c22_ce02.awmonitorapp.utils.translateError
 import com.google.gson.Gson
 import retrofit2.*
 
 class PostCurrentWeatherAndAirDataViewModel(private val repository: PostCurrentWeatherAndAirDataRepository) :
     ViewModel() {
-
-    val responseSuccessMessage = MutableLiveData<String?>()
-    val responseErrorMessage = MutableLiveData<String?>()
 
     fun postCurrentWeatherAndAirData(
         location: String,
@@ -25,11 +23,10 @@ class PostCurrentWeatherAndAirDataViewModel(private val repository: PostCurrentW
         pm25: Double,
         humidity: Double,
         temperature: Double,
-        windSpeed: Double
+        windSpeed: Double,
+        onSuccess: (String?) -> Unit,
+        onError: (String?) -> Unit
     ) {
-        responseSuccessMessage.postValue(null)
-        responseErrorMessage.postValue(null)
-
         val call = repository.postCurrentWeatherAndAirData(
             location = location,
             date = date,
@@ -51,20 +48,14 @@ class PostCurrentWeatherAndAirDataViewModel(private val repository: PostCurrentW
                 response: Response<PostCurrentWeatherAndAirResponse>
             ) {
                 if (response.isSuccessful) {
-                    responseSuccessMessage.postValue("post data current weather and air berhasil!")
+                    onSuccess("post data current weather and air berhasil!")
                 } else {
-                    val errorMsg = Gson().fromJson(
-                        response.errorBody()?.string(),
-                        PostCurrentWeatherAndAirResponse::class.java
-                    ).message
-                    responseErrorMessage.postValue(errorMsg)
+                    onError(response.translateError())
                 }
             }
 
             override fun onFailure(call: Call<PostCurrentWeatherAndAirResponse>, t: Throwable) {
-                responseErrorMessage.postValue(
-                    t.localizedMessage?.toString() ?: t.message.toString()
-                )
+                onError(t.localizedMessage?.toString() ?: t.message.toString())
             }
         })
     }

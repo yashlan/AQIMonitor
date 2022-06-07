@@ -591,48 +591,43 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     private fun loadAllData() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         getLocation(onGetLocation = { lat, lon ->
-
-            currentWeatherConditionViewModel.currentWeather.observe(requireActivity()) {
-                if (it != null) {
-                    dataCurrentWeather = it[0]
-                    getForecastData(lat, lon)
-                    isCurrentWeatherConditionLoaded = true
-                }
-            }
-
-            currentWeatherConditionViewModel.errorMessage.observe(requireActivity()) {
-                if (it != null) {
-                    if (BuildConfig.DEBUG) {
-                        Timber.e(it)
-                    }
-                }
-            }
-
             currentWeatherConditionViewModel.getCurrentWeatherCondition(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT
-            )
-
-            currentAirQualityViewModel.currentAirQuality.observe(requireActivity()) {
-                if (it != null) {
-                    dataCurrentAirQuality = it.data[0]
-                    isCurrentAirQualityLoaded = true
-                }
-            }
-
-            currentAirQualityViewModel.errorMessage.observe(requireActivity()) {
-                if (it != null) {
-                    if (BuildConfig.DEBUG) {
-                        Timber.e(it)
+                BuildConfig.API_KEY_WEATHERBIT,
+                onSuccess = {
+                    if (it != null) {
+                        dataCurrentWeather = it[0]
+                        getForecastData(lat, lon)
+                        isCurrentWeatherConditionLoaded = true
+                    }
+                },
+                onError = { errorMsg ->
+                    if (errorMsg != null) {
+                        if (BuildConfig.DEBUG) {
+                            Timber.e(errorMsg)
+                        }
                     }
                 }
-            }
+            )
 
             currentAirQualityViewModel.getCurrentAirQuality(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT
+                BuildConfig.API_KEY_WEATHERBIT,
+                onSuccess = {
+                    if (it != null) {
+                        dataCurrentAirQuality = it.data[0]
+                        isCurrentAirQualityLoaded = true
+                    }
+                },
+                onError = { errorMsg ->
+                    if (errorMsg != null) {
+                        if (BuildConfig.DEBUG) {
+                            Timber.e(errorMsg)
+                        }
+                    }
+                }
             )
         })
     }
@@ -640,110 +635,106 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     private fun convertWindSpeedToKmh(speedMs: Int): Int = (speedMs * 3.6).toInt()
 
     private fun getForecastData(lat: Double, lon: Double) {
-        airQualityForecastAndHistoryByHourViewModel.listForecast.observe(requireActivity()) {
-            if (it != null) {
-                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
-                val formatter = SimpleDateFormat("ha", Locale("id"))
-                var total = 0
-                it.history.forEach { historyData ->
-/*                    val hour =
-                        formatter.format(parser.parse(Date().toString())!!).lowercase()*/
-                    val currentHour = formatter.format(Date()).lowercase()
-                    listHistoryAndForecastAir.add(
-                        AirQualityHistoryAndForecastByHour(
-                            hour = "his",
-                            iconAQISrc = getIconItem(historyData.aqi.toInt()),
-                            aqi = historyData.aqi.toInt(),
-                            pm10 = historyData.pm10.toInt(),
-                            pm25 = historyData.pm25.toInt(),
-                            o3 = historyData.o3.toInt(),
-                            so2 = historyData.so2.toInt(),
-                            no2 = historyData.no2.toInt(),
-                            co = historyData.co.toInt()
-                        )
-                    )
-                    total++
-                }
-
-                it.forecast.forEach { forecastData ->
-                    val currentHour = formatter.format(Date()).lowercase()
-                    listHistoryAndForecastAir.add(
-                        AirQualityHistoryAndForecastByHour(
-                            hour = "for",
-                            iconAQISrc = getIconItem(forecastData.aqi.toInt()),
-                            aqi = forecastData.aqi.toInt(),
-                            pm10 = forecastData.pm10.toInt(),
-                            pm25 = forecastData.pm25.toInt(),
-                            o3 = forecastData.o3.toInt(),
-                            so2 = forecastData.so2.toInt(),
-                            no2 = forecastData.no2.toInt(),
-                            co = forecastData.co.toInt()
-                        )
-                    )
-                    total++
-                }
-
-                isAirQualityForecastByHourLoaded = listHistoryAndForecastAir.size == total
-            }
-        }
-
-        airQualityForecastAndHistoryByHourViewModel.errorMessage.observe(requireActivity()) {
-            if (it != null) {
-                if (BuildConfig.DEBUG) {
-                    Timber.e(it)
-                }
-            }
-        }
-
         airQualityForecastAndHistoryByHourViewModel.getAirQualityForecastByHour(
             lat,
             lon,
-            BuildConfig.API_KEY_WEATHERBIT
-        )
-
-        weatherForecastByHourViewModel.listForecast.observe(requireActivity()) {
-            if (it != null) {
-                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
-                val formatter = SimpleDateFormat("ha", Locale("id"))
-                it.forEach { data ->
-                    val hour =
-                        formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
-                    val currentHour = formatter.format(Date()).lowercase()
-                    if (hour.equals(currentHour, true)) {
-                        listForecastWeather.add(
-                            WeatherForecastByHour(
-                                windSpeed = dataCurrentWeather.windSpeed.toInt(),
-                                humidity = dataCurrentWeather.humidity.toInt(),
-                                temperature = dataCurrentWeather.temperature.toInt()
+            BuildConfig.API_KEY_WEATHERBIT,
+            onSuccess = {
+                if (it != null) {
+                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
+                    val formatter = SimpleDateFormat("ha", Locale("id"))
+                    var total = 0
+                    it.history.forEach { historyData ->
+/*                    val hour =
+                        formatter.format(parser.parse(Date().toString())!!).lowercase()*/
+                        val currentHour = formatter.format(Date()).lowercase()
+                        listHistoryAndForecastAir.add(
+                            AirQualityHistoryAndForecastByHour(
+                                hour = "his",
+                                iconAQISrc = getIconItem(historyData.aqi.toInt()),
+                                aqi = historyData.aqi.toInt(),
+                                pm10 = historyData.pm10.toInt(),
+                                pm25 = historyData.pm25.toInt(),
+                                o3 = historyData.o3.toInt(),
+                                so2 = historyData.so2.toInt(),
+                                no2 = historyData.no2.toInt(),
+                                co = historyData.co.toInt()
                             )
                         )
-                    } else {
-                        listForecastWeather.add(
-                            WeatherForecastByHour(
-                                windSpeed = data.windSpeed.toInt(),
-                                humidity = data.humidity.toInt(),
-                                temperature = data.temperature.toInt()
-                            )
-                        )
+                        total++
                     }
-                    isWeatherForecastByHourLoaded = it.size == listForecastWeather.size
-                }
-            }
-        }
 
-        weatherForecastByHourViewModel.errorMessage.observe(requireActivity()) {
-            if (it != null) {
-                if (BuildConfig.DEBUG) {
-                    Timber.e(it)
+                    it.forecast.forEach { forecastData ->
+                        val currentHour = formatter.format(Date()).lowercase()
+                        listHistoryAndForecastAir.add(
+                            AirQualityHistoryAndForecastByHour(
+                                hour = "for",
+                                iconAQISrc = getIconItem(forecastData.aqi.toInt()),
+                                aqi = forecastData.aqi.toInt(),
+                                pm10 = forecastData.pm10.toInt(),
+                                pm25 = forecastData.pm25.toInt(),
+                                o3 = forecastData.o3.toInt(),
+                                so2 = forecastData.so2.toInt(),
+                                no2 = forecastData.no2.toInt(),
+                                co = forecastData.co.toInt()
+                            )
+                        )
+                        total++
+                    }
+
+                    isAirQualityForecastByHourLoaded = listHistoryAndForecastAir.size == total
+                }
+            },
+            onError = { errorMsg ->
+                if (errorMsg != null) {
+                    if (BuildConfig.DEBUG) {
+                        Timber.e(errorMsg)
+                    }
                 }
             }
-        }
+        )
 
         weatherForecastByHourViewModel.getWeatherForecastByHour(
             lat,
             lon,
             BuildConfig.API_KEY_WEATHERBIT,
-            TOTAL_LIST_FORECAST_AND_HISTORY_SIZE
+            TOTAL_LIST_FORECAST_AND_HISTORY_SIZE,
+            onSuccess = {
+                if (it != null) {
+                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
+                    val formatter = SimpleDateFormat("ha", Locale("id"))
+                    it.forEach { data ->
+                        val hour =
+                            formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
+                        val currentHour = formatter.format(Date()).lowercase()
+                        if (hour.equals(currentHour, true)) {
+                            listForecastWeather.add(
+                                WeatherForecastByHour(
+                                    windSpeed = dataCurrentWeather.windSpeed.toInt(),
+                                    humidity = dataCurrentWeather.humidity.toInt(),
+                                    temperature = dataCurrentWeather.temperature.toInt()
+                                )
+                            )
+                        } else {
+                            listForecastWeather.add(
+                                WeatherForecastByHour(
+                                    windSpeed = data.windSpeed.toInt(),
+                                    humidity = data.humidity.toInt(),
+                                    temperature = data.temperature.toInt()
+                                )
+                            )
+                        }
+                        isWeatherForecastByHourLoaded = it.size == listForecastWeather.size
+                    }
+                }
+            },
+            onError = { errorMsg ->
+                if (errorMsg != null) {
+                    if (BuildConfig.DEBUG) {
+                        Timber.e(errorMsg)
+                    }
+                }
+            }
         )
     }
 

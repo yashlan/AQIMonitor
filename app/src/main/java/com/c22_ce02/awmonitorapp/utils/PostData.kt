@@ -2,6 +2,7 @@ package com.c22_ce02.awmonitorapp.utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.ui.view.model.PostCurrentWeatherAndAirDataViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.PostCurrentWeatherAndAirDataViewModelFactory
 
@@ -25,19 +26,6 @@ class PostData(private val fragment: Fragment) {
         temperature: Double,
         windSpeed: Double
     ) {
-
-        postCurrentWeatherAndAirDataViewModel.responseSuccessMessage.observe(fragment.requireActivity()) { successMsg ->
-            if (successMsg != null) {
-                fragment.requireContext().showToast(successMsg.toString())
-            }
-        }
-
-        postCurrentWeatherAndAirDataViewModel.responseErrorMessage.observe(fragment.requireActivity()) { errorMsg ->
-            if (errorMsg != null) {
-                fragment.requireContext().showToast(errorMsg.toString())
-            }
-        }
-
         postCurrentWeatherAndAirDataViewModel.postCurrentWeatherAndAirData(
             location = location,
             date = date,
@@ -51,6 +39,16 @@ class PostData(private val fragment: Fragment) {
             humidity = humidity,
             temperature = temperature,
             windSpeed = windSpeed,
+            onSuccess = { successMsg ->
+                if (successMsg != null && BuildConfig.DEBUG) {
+                    fragment.requireContext().showToast(successMsg.toString())
+                }
+            },
+            onError = { errorMsg ->
+                if (errorMsg != null && BuildConfig.DEBUG) {
+                    fragment.requireContext().showToast(errorMsg.toString())
+                }
+            }
         )
     }
 }
