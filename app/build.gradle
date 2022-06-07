@@ -27,7 +27,7 @@ android {
         buildConfigField("String", "GOOGLE_API", GOOGLE_API)
 
 
-        manifestPlaceholders = [GOOGLE_API_MANIFEST: GOOGLE_API]
+        manifestPlaceholders = [GOOGLE_API_MANIFEST: MAPS_API]
 
     }
 
