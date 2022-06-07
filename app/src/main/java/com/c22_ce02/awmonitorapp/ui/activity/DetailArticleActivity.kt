@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import com.c22_ce02.awmonitorapp.ui.fragment.ArticleFragment
+import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
 import com.c22_ce02.awmonitorapp.utils.forcePortraitScreenOrientation
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
 
@@ -20,7 +21,7 @@ class DetailArticleActivity : AppCompatActivity() {
         val myWebView = WebView(applicationContext)
         myWebView.settings.javaScriptEnabled = true
         setContentView(myWebView)
-        val url = intent?.getStringExtra(ArticleFragment.URL_EXTRA)
+        val url = intent?.getStringExtra(ArticleFragment.URL_EXTRA) ?: intent?.getStringExtra(HomeFragment.URL_EXTRA)
         myWebView.loadUrl(url.toString())
     }
 }
