@@ -17,7 +17,7 @@ object Injection {
     }
 
     fun provideAirQualityForecastAndHistoryByHourRepository(): AirQualityForecastAndHistoryByHourRepository {
-        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_HEROKU)
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor_GET)
         return AirQualityForecastAndHistoryByHourRepository(apiService)
     }
 
@@ -27,17 +27,17 @@ object Injection {
     }
 
     fun providePostCurrentWeatherAndAirDataRepository(): PostCurrentWeatherAndAirDataRepository {
-        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor)
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor_POST)
         return PostCurrentWeatherAndAirDataRepository(apiService)
     }
 
     fun provideRegisterRepository(): RegisterRepository {
-        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor)
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor_POST)
         return RegisterRepository(apiService)
     }
 
     fun provideLoginRepository(): LoginRepository {
-        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor)
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor_POST)
         return LoginRepository(apiService)
     }
 
