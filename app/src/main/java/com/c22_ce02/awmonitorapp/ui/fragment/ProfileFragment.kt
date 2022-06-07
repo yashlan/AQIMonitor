@@ -29,8 +29,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
             btnLogout.setOnClickListener {
                 createCustomAlertDialog(
-                    "Konfirmasi",
-                    "apakah anda yakin ingin keluar?",
+                    title = "Konfirmasi",
+                    message = "apakah anda yakin ingin keluar?",
+                    gifRes = R.drawable.exit_app,
                     actionPositiveButton = {
                         logout()
                     }
