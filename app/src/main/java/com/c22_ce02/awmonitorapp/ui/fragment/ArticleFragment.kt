@@ -47,6 +47,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private fun refreshFragment() {
         val refreshFragmentHandler = Handler(Looper.getMainLooper())
         refreshFragmentHandler.postDelayed({
+            if(view == null) return@postDelayed
             binding.swipeRefresh.isRefreshing = false
             if (!binding.swipeRefresh.isRefreshing) {
                 val navHostFragment =
