@@ -72,4 +72,9 @@ interface ApiService {
         @Query("key") key: String,
         @Query("fetchImages") fetchImages: Boolean
     ):Call<ArticleResponse>
+
+    @GET("/current")
+    fun getCurrent(
+        @Query("key") key: String
+    ): Call<MapsCurrentResponse>
 }
