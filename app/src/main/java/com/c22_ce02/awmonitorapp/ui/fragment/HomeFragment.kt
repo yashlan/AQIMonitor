@@ -17,11 +17,13 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
@@ -31,6 +33,7 @@ import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
+import com.c22_ce02.awmonitorapp.ui.activity.DetailArticleActivity
 import com.c22_ce02.awmonitorapp.ui.view.model.AirQualityForecastAndHistoryByHourViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentWeatherConditionViewModel
@@ -156,7 +159,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                         if (isAllDataLoaded()) {
                             showUI()
                             updateUI()
-                            //postDataWeatherAndAirQuality()
+                            postDataWeatherAndAirQuality()
                             setupGuide()
                             cancel()
                         }
@@ -232,12 +235,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         refreshFragmentHandler?.postDelayed({
             binding.swipeRefresh.isRefreshing = false
             if (!binding.swipeRefresh.isRefreshing) {
-                requireActivity().apply {
-                    finish()
-                    overridePendingTransition(0, 0)
-                    startActivity(intent)
-                    overridePendingTransition(0, 0)
-                }
+                val navHostFragment =
+                    requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_home_activity)
+                navHostFragment?.findNavController()?.navigate(R.id.navigation_home)
             }
         }, DELAY_REFRESH)
     }
@@ -342,6 +342,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 startIncrementTextAnimation(dataA.o3.toInt(), tvO3)
                 iconStatusO3.setImageResource(getIconItem(dataA.o3.toInt()))
                 tvStatusO3.text = getStatusName(dataA.o3.toInt())
+            }
+
+            itemPanelHomeInfo.itemStatusAirMessage.root.setOnClickListener {
+                it.startAnimation(AlphaAnimation(1f, .5f))
+                val url =
+                    "https://aqimonitorblogs.blogspot.com/2022/06/10-cara-mengurangi-polusi-udara-yang.html"
+                val i = Intent(requireContext(), DetailArticleActivity::class.java)
+                i.putExtra(URL_EXTRA, url)
+                startActivity(i)
             }
 
             for (i in 0 until TOTAL_LIST_FORECAST_AND_HISTORY_SIZE) {
@@ -828,5 +837,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         private const val PERIOD_TIMER: Long = 500
         private const val TOTAL_LIST_FORECAST_AND_HISTORY_SIZE = 6
         const val FORECAST_EXTRA = "FORECAST_EXTRA"
+        const val URL_EXTRA = "URL_EXTRA"
     }
 }
