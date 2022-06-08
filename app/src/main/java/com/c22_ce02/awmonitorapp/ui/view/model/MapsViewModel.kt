@@ -1,6 +1,7 @@
 package com.c22_ce02.awmonitorapp.ui.view.model
 
 
+
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

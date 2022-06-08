@@ -112,6 +112,7 @@
         <entry key="app/src/main/res/layout/action_bar_detail_forecast.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_get_started.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1569620253164557" />
+        <entry key="app/src/main/res/layout/bottom_sheet_layout.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_article.xml" value="0.15897435897435896" />
         <entry key="app/src/main/res/layout/fragment_glossary.xml" value="0.15897435897435896" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.2" />
