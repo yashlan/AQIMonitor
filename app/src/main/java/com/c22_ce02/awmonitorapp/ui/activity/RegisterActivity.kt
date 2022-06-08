@@ -64,32 +64,32 @@ class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
                 handler.postDelayed({
                     register()
                 }, DELAY_REGISTER)
+            }
 
-                tvLogin.setOnClickListener {
-                    it.startAnimation(AlphaAnimation(1f, .5f))
-                    startActivity(
-                        Intent(
-                            this@RegisterActivity,
-                            LoginActivity::class.java
-                        )
+            tvLogin.setOnClickListener {
+                it.startAnimation(AlphaAnimation(1f, .5f))
+                startActivity(
+                    Intent(
+                        this@RegisterActivity,
+                        LoginActivity::class.java
                     )
-                    finish()
-                }
+                )
+                finish()
+            }
 
-                editTextName.doOnTextChanged { it, _, _, _ ->
-                    name = it.toString()
-                    checkAllFieldCorrect()
-                }
+            editTextName.doOnTextChanged { it, _, _, _ ->
+                name = it.toString()
+                checkAllFieldCorrect()
+            }
 
-                editTextEmail.doOnTextChanged { it, _, _, _ ->
-                    email = it.toString()
-                    checkAllFieldCorrect()
-                }
+            editTextEmail.doOnTextChanged { it, _, _, _ ->
+                email = it.toString()
+                checkAllFieldCorrect()
+            }
 
-                editTextPassword.doOnTextChanged { it, _, _, _ ->
-                    password = it.toString()
-                    checkAllFieldCorrect()
-                }
+            editTextPassword.doOnTextChanged { it, _, _, _ ->
+                password = it.toString()
+                checkAllFieldCorrect()
             }
         }
     }
