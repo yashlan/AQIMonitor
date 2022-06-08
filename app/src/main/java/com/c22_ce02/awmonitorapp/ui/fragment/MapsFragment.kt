@@ -41,7 +41,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
 
         mapsViewModel.currentData.observe(this){
             for( (index) in it.withIndex()){
-                val location = LatLng(it[index].lat.toDouble(), it[index].lon.toDouble())
+                val location = LatLng(it[index].lat, it[index].lon)
                 mMap.addMarker(MarkerOptions().position(location).title(it[index].city))
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
             }
