@@ -30,7 +30,7 @@ class FirstSlideFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_started){
-            v.startAnimation(AlphaAnimation(1f, .5f))
+            v.startAnimation(AlphaAnimation(1f, .7f))
             val mSecondSlideFragment = SecondSlideFragment()
             val mFragmentManager = parentFragmentManager
             mFragmentManager.beginTransaction().apply {

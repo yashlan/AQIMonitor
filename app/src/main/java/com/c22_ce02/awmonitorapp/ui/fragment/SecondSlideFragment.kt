@@ -46,7 +46,7 @@ class SecondSlideFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_next) {
-            v.startAnimation(AlphaAnimation(1f, .5f))
+            v.startAnimation(AlphaAnimation(1f, .7f))
             val mThirdSlideFragment = ThirdSlideFragment()
             val mFragmentManager = parentFragmentManager
             mFragmentManager.beginTransaction().apply {

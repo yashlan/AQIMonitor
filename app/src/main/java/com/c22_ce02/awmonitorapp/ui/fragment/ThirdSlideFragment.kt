@@ -45,7 +45,7 @@ class ThirdSlideFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_finish) {
-            v.startAnimation(AlphaAnimation(1f, .5f))
+            v.startAnimation(AlphaAnimation(1f, .7f))
             savePref()
             val user = UserPreference(requireContext())
             if (user.isSessionEmpty()) {
