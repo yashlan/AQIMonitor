@@ -14,9 +14,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -28,7 +26,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.AirQualityAndWeatherForecastByHourAdapter
-import com.c22_ce02.awmonitorapp.data.model.*
+import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.AirQualityHistoryAndForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.WeatherForecastByHour
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
@@ -140,6 +140,23 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         if (!isNetworkAvailable(requireContext(), showNotAvailableInfo = true)) {
             hideUI()
             binding.shimmerFragmentHome.hideShimmer()
+            return
+        }
+
+        locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(GPS_PROVIDER)) {
+            hideUI()
+            binding.shimmerFragmentHome.hideShimmer()
+            showSnackBar(
+                binding.root,
+                R.string.msg_permission_gps,
+                R.string.yes,
+                onClickOkAction = {
+                    allowRefresh = true
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                }
+            )
             return
         }
 
@@ -345,12 +362,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             }
 
             itemPanelHomeInfo.itemStatusAirMessage.root.setOnClickListener {
-                it.startAnimation(AlphaAnimation(1f, .5f))
-                val url =
-                    "https://aqimonitorblogs.blogspot.com/2022/06/10-cara-mengurangi-polusi-udara-yang.html"
-                val i = Intent(requireContext(), DetailArticleActivity::class.java)
-                i.putExtra(URL_EXTRA, url)
-                startActivity(i)
+                val checkPreference = CheckPreference(requireContext())
+                val checkHelper = checkPreference.getCheckGuide()
+                if (dataCurrentAirQuality.aqi.toInt() > 100 && checkHelper.isUserFinishGuide) {
+                    it.startAnimation(AlphaAnimation(1f, .5f))
+                    val url =
+                        "https://aqimonitorblogs.blogspot.com/2022/06/10-cara-mengurangi-polusi-udara-yang.html"
+                    val i = Intent(requireContext(), DetailArticleActivity::class.java)
+                    i.putExtra(URL_EXTRA, url)
+                    startActivity(i)
+                }
             }
 
             for (i in 0 until TOTAL_LIST_FORECAST_AND_HISTORY_SIZE) {
@@ -578,7 +599,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             binding.shimmerFragmentHome.stopShimmer()
             showSnackBar(
                 binding.root,
-                R.string.msg_permission_maps,
+                R.string.msg_permission_gps,
                 R.string.yes,
                 onClickOkAction = {
                     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
@@ -623,9 +644,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 },
                 onError = { errorMsg ->
                     if (errorMsg != null) {
-                        if (BuildConfig.DEBUG) {
-                            Timber.e(errorMsg)
-                        }
+                        showToast(errorMsg)
                     }
                 }
             )
@@ -687,9 +706,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             },
             onError = { errorMsg ->
                 if (errorMsg != null) {
-                    if (BuildConfig.DEBUG) {
-                        Timber.e(errorMsg)
-                    }
+                    showToast(errorMsg)
                 }
             }
         )
@@ -730,9 +747,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             },
             onError = { errorMsg ->
                 if (errorMsg != null) {
-                    if (BuildConfig.DEBUG) {
-                        Timber.e(errorMsg)
-                    }
+                    showToast(errorMsg)
                 }
             }
         )
