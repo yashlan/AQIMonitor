@@ -60,68 +60,75 @@ class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
                 editTextPassword.hideSoftKeyboard()
                 showLoadingDialog()
                 it.startAnimation(AlphaAnimation(1f, .5f))
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                    register()
+                }, DELAY_REGISTER)
 
-                name?.let { name ->
-                    email?.let { email ->
-                        password?.let { password ->
-                            registerViewModel.register(
-                                name,
-                                email,
-                                password,
-                                onSuccess = { data ->
-                                    hideLoadingDialog()
-                                    if (data != null) {
-                                        showToast("Akun berhasil dibuat!")
-                                        startActivity(
-                                            Intent(
-                                                this@RegisterActivity,
-                                                LoginActivity::class.java
-                                            )
-                                        )
-                                        finish()
-                                    }
-                                },
-                                onError = { errorMsg ->
-                                    hideLoadingDialog()
-                                    if (errorMsg != null) {
-                                        showToast(errorMsg)
-                                    }
-                                }
-                            )
-                        }
-                    }
+                tvLogin.setOnClickListener {
+                    it.startAnimation(AlphaAnimation(1f, .5f))
+                    startActivity(
+                        Intent(
+                            this@RegisterActivity,
+                            LoginActivity::class.java
+                        )
+                    )
+                    finish()
+                }
+
+                editTextName.doOnTextChanged { it, _, _, _ ->
+                    name = it.toString()
+                    checkAllFieldCorrect()
+                }
+
+                editTextEmail.doOnTextChanged { it, _, _, _ ->
+                    email = it.toString()
+                    checkAllFieldCorrect()
+                }
+
+                editTextPassword.doOnTextChanged { it, _, _, _ ->
+                    password = it.toString()
+                    checkAllFieldCorrect()
                 }
             }
+        }
+    }
 
-            tvLogin.setOnClickListener {
-                it.startAnimation(AlphaAnimation(1f, .5f))
-                startActivity(
-                    Intent(
-                        this@RegisterActivity,
-                        LoginActivity::class.java
+    private fun register() {
+        name?.let { name ->
+            email?.let { email ->
+                password?.let { password ->
+                    registerViewModel.register(
+                        name,
+                        email,
+                        password,
+                        onSuccess = { data ->
+                            hideLoadingDialog()
+                            if (data != null) {
+                                showToast("Akun berhasil dibuat!")
+                                startActivity(
+                                    Intent(
+                                        this@RegisterActivity,
+                                        LoginActivity::class.java
+                                    )
+                                )
+                                finish()
+                            }
+                        },
+                        onError = { errorMsg ->
+                            hideLoadingDialog()
+                            if (errorMsg != null) {
+                                showToast(errorMsg)
+                            }
+                        }
                     )
-                )
-                finish()
-            }
-
-            editTextName.doOnTextChanged { it, _, _, _ ->
-                name = it.toString()
-                checkAllFieldCorrect()
-            }
-
-            editTextEmail.doOnTextChanged { it, _, _, _ ->
-                email = it.toString()
-                checkAllFieldCorrect()
-            }
-
-            editTextPassword.doOnTextChanged { it, _, _, _ ->
-                password = it.toString()
-                checkAllFieldCorrect()
+                }
             }
         }
     }
 
     companion object {
         private const val DELAY_CHECK_FIELD: Long = 200
+        private const val DELAY_REGISTER: Long = 2000
     }
 }

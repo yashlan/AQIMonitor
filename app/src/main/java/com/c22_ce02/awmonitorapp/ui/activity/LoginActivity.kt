@@ -50,40 +50,10 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
                 editTextEmail.hideSoftKeyboard()
                 showLoadingDialog()
                 it.startAnimation(AlphaAnimation(1f, .5f))
-                email?.let { email ->
-                    password?.let { pw ->
-                        loginViewModel.login(
-                            email,
-                            pw,
-                            onSuccess = { data ->
-                                if (data != null) {
-                                    hideLoadingDialog()
-                                    val userPref = UserPreference(this@LoginActivity)
-                                    userPref.saveSession(
-                                        data.data.name,
-                                        data.data.email,
-                                        onSave = { savedName, savedEmail ->
-                                            if (savedName != null && savedEmail != null) {
-                                                startActivity(
-                                                    Intent(
-                                                        this@LoginActivity,
-                                                        HomeActivity::class.java
-                                                    )
-                                                )
-                                                finish()
-                                            }
-                                        }
-                                    )
-                                }
-                            },
-                            onError = { errorMsg ->
-                                hideLoadingDialog()
-                                if (errorMsg != null) {
-                                    showToast(errorMsg)
-                                }
-                            })
-                    }
-                }
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                    login()
+                }, DELAY_LOGIN)
             }
 
             tvRegister.setOnClickListener {
@@ -122,7 +92,45 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
                     editTextPassword.isNotError() && !password.isNullOrEmpty()
         }
 
+    private fun login() {
+        email?.let { email ->
+            password?.let { pw ->
+                loginViewModel.login(
+                    email,
+                    pw,
+                    onSuccess = { data ->
+                        if (data != null) {
+                            hideLoadingDialog()
+                            val userPref = UserPreference(this@LoginActivity)
+                            userPref.saveSession(
+                                data.data.name,
+                                data.data.email,
+                                onSave = { savedName, savedEmail ->
+                                    if (savedName != null && savedEmail != null) {
+                                        startActivity(
+                                            Intent(
+                                                this@LoginActivity,
+                                                HomeActivity::class.java
+                                            )
+                                        )
+                                        finish()
+                                    }
+                                }
+                            )
+                        }
+                    },
+                    onError = { errorMsg ->
+                        hideLoadingDialog()
+                        if (errorMsg != null) {
+                            showToast(errorMsg)
+                        }
+                    })
+            }
+        }
+    }
+
     companion object {
         private const val DELAY_CHECK_FIELD: Long = 200
+        private const val DELAY_LOGIN: Long = 2000
     }
 }
