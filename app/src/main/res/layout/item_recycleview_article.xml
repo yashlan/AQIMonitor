@@ -27,7 +27,7 @@
                 android:layout_height="150dp"
                 android:scaleType="fitXY"
                 tools:ignore="ContentDescription"
-                tools:src="@drawable/ic_star_4" />
+                tools:src="@drawable/ic_start_2" />
 
             <TextView
                 android:id="@+id/tvItemTitle"
@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvItemTitle"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="8dp"
                 android:gravity="center|start"
                 android:paddingHorizontal="4dp"
