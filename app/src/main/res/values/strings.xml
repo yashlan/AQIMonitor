@@ -4,6 +4,7 @@
     <string name="yes">Ya</string>
     <string name="tidak">Tidak</string>
     <string name="msg_permission_maps">Anda harus mengizinkan izin Lokasi, Tekan Ya untuk menyetel.</string>
+    <string name="msg_permission_gps">Anda harus mengaktifkan GPS, Tekan Ya untuk menyetel.</string>
     <string name="title_home">Dashboard</string>
     <string name="title_discover">Discover</string>
     <string name="title_article">Artikel</string>
