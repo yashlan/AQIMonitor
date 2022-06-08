@@ -7,8 +7,8 @@
     tools:context=".ui.fragment.FirstSlideFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/first_slide_container"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
@@ -51,13 +51,13 @@
             android:id="@+id/btn_started"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_with_gradient"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_btn_get_started"
             android:text="@string/get_started"
+            app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="@+id/first_slide_desc"
             app:layout_constraintStart_toStartOf="@+id/first_slide_desc"
-            app:layout_constraintTop_toBottomOf="@+id/first_slide_desc"
-            android:layout_marginTop="40dp"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/first_slide_desc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
