@@ -11,11 +11,10 @@ class CurrentAirQualityViewModel(private val repository: CurrentAirQualityReposi
     fun getCurrentAirQuality(
         lat: Double,
         lon: Double,
-        apikey: String,
         onSuccess: (CurrentAirQualityResponse?) -> Unit,
         onError: (String?) -> Unit
     ) {
-        val call = repository.getCurrentAirQuality(lat, lon, apikey)
+        val call = repository.getCurrentAirQuality(lat, lon)
         call.enqueue(object : Callback<CurrentAirQualityResponse> {
             override fun onResponse(
                 call: Call<CurrentAirQualityResponse>,
@@ -24,7 +23,7 @@ class CurrentAirQualityViewModel(private val repository: CurrentAirQualityReposi
                 if (response.isSuccessful) {
                     onSuccess(response.body())
                 } else {
-                    onError(response.errorBody().toString())
+                    onError("Terjadi Kesalahan")
                 }
             }
 

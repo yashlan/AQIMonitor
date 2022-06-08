@@ -11,12 +11,11 @@ class WeatherForecastByHourViewModel(private val repository: WeatherForecastByHo
     fun getWeatherForecastByHour(
         lat: Double,
         lon: Double,
-        apiKey: String,
         hours: Int,
         onSuccess: (List<WeatherForecastByHourResponse.Data>?) -> Unit,
         onError: (String?) -> Unit
     ) {
-        val call = repository.getWeatherForecastByHour(lat, lon, apiKey, hours)
+        val call = repository.getWeatherForecastByHour(lat, lon, hours)
         call.enqueue(object : Callback<WeatherForecastByHourResponse> {
             override fun onResponse(
                 call: Call<WeatherForecastByHourResponse>,
@@ -25,7 +24,7 @@ class WeatherForecastByHourViewModel(private val repository: WeatherForecastByHo
                 if (response.isSuccessful) {
                     onSuccess(response.body()?.data)
                 } else {
-                    onError(response.errorBody().toString())
+                    onError("Terjadi Kesalahan")
                 }
             }
 

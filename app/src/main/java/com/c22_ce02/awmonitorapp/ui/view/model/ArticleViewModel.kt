@@ -10,12 +10,10 @@ import retrofit2.Response
 class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() {
 
     fun getArticle(
-        key: String,
-        fetchImage: Boolean,
         onSuccess: (List<ArticleResponse.ItemsItem>?) -> Unit,
         onError: (String?) -> Unit
     ) {
-        val call = repository.getArticle(key, fetchImage)
+        val call = repository.getArticle()
         call.enqueue(object : Callback<ArticleResponse> {
             override fun onResponse(
                 call: Call<ArticleResponse>,
@@ -24,7 +22,7 @@ class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() 
                 if (response.isSuccessful)
                     onSuccess(response.body()?.items)
                 else
-                    onError(response.errorBody().toString())
+                    onError("Terjadi Kesalahan")
             }
 
             override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {

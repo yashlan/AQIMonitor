@@ -13,11 +13,10 @@ class CurrentWeatherConditionViewModel(private val repository: CurrentWeatherCon
     fun getCurrentWeatherCondition(
         lat: Double,
         lon: Double,
-        apiKey: String,
         onSuccess: (List<CurrentWeatherConditionResponse.Data>?) -> Unit,
         onError: (String?) -> Unit
     ) {
-        val call = repository.getCurrentWeatherCondition(lat, lon, apiKey)
+        val call = repository.getCurrentWeatherCondition(lat, lon)
         call.enqueue(object : Callback<CurrentWeatherConditionResponse> {
             override fun onResponse(
                 call: Call<CurrentWeatherConditionResponse>,
@@ -26,7 +25,7 @@ class CurrentWeatherConditionViewModel(private val repository: CurrentWeatherCon
                 if (response.isSuccessful) {
                     onSuccess(response.body()?.data)
                 } else {
-                    onError(response.errorBody().toString())
+                    onError("Terjadi Kesalahan")
                 }
             }
 

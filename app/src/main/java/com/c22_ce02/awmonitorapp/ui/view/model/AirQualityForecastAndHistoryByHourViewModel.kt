@@ -11,11 +11,10 @@ class AirQualityForecastAndHistoryByHourViewModel(private val repository: AirQua
     fun getAirQualityForecastByHour(
         lat: Double,
         lon: Double,
-        apiKey: String,
         onSuccess: (AirQualityForecastAndHistoryByHourResponse.Data?) -> Unit,
         onError: (String?) -> Unit
     ) {
-        val call = repository.getAirQualityForecastAndHistoryByHour(lat, lon, apiKey)
+        val call = repository.getAirQualityForecastAndHistoryByHour(lat, lon)
         call.enqueue(object : Callback<AirQualityForecastAndHistoryByHourResponse> {
             override fun onResponse(
                 call: Call<AirQualityForecastAndHistoryByHourResponse>,
@@ -24,7 +23,7 @@ class AirQualityForecastAndHistoryByHourViewModel(private val repository: AirQua
                 if (response.isSuccessful) {
                     onSuccess(response.body()?.data)
                 } else {
-                    onError(response.errorBody().toString())
+                    onError("Terjadi Kesalahan")
                 }
             }
 
