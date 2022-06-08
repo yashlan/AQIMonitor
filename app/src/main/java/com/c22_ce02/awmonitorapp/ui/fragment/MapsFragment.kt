@@ -15,12 +15,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
 
     private lateinit var mMap : GoogleMap
+    lateinit var bottomSheetDialog : BottomSheetDialog
     private val mapsViewModel: MapsViewModel by viewModels()
     private val binding by viewBinding(FragmentMapsBinding::bind, onViewDestroyed = {
         stopHandler()
@@ -31,22 +33,37 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         super.onCreate(savedInstanceState)
         mapsViewModel.getCurrentData()
 
+
+
         mapsViewModel.showLoading.observe(this){
             showLoading(it)
         }
+        bottomSheetDialog = BottomSheetDialog()
+
+
     }
 
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
 
+        mMap.setOnMarkerClickListener(
+            bottomSheetDialog.show(activity.supportFragmentManager(),"modal")
+        )
+
         mapsViewModel.currentData.observe(this){
             for( (index) in it.withIndex()){
-                val location = LatLng(it[index].lat.toDouble(), it[index].lon.toDouble())
+                val location = LatLng(it[index].lat, it[index].lon)
                 mMap.addMarker(MarkerOptions().position(location).title(it[index].city))
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+
+
+
             }
         }
+
+
     }
+
 
     private fun stopHandler() {
         handler.removeCallbacksAndMessages(null)
@@ -67,7 +84,5 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
             binding.map.visibility = View.VISIBLE
         }
     }
-
-
 
 }
