@@ -2,6 +2,8 @@ package com.c22_ce02.awmonitorapp.utils
 
 import android.graphics.Color
 import android.view.View
+import androidx.core.app.ActivityCompat
+import com.c22_ce02.awmonitorapp.R
 import com.google.android.material.snackbar.Snackbar
 
 fun showSnackBar(
@@ -19,7 +21,7 @@ fun showSnackBar(
             onClickOkAction.invoke()
         }
         .setActionTextColor(Color.WHITE)
-        .setBackgroundTint(Color.BLACK)
+        .setBackgroundTint(ActivityCompat.getColor(layout.context, R.color.colorPrimary))
         .setTextColor(Color.WHITE)
         .show()
 }
