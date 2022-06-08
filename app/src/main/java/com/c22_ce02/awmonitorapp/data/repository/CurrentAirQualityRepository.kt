@@ -6,11 +6,9 @@ class CurrentAirQualityRepository(private val apiService: ApiService) {
     fun getCurrentAirQuality(
         lat: Double,
         lon: Double,
-        apiKey: String
     ) =
         apiService.getCurrentAirQuality(
             lat,
             lon,
-            apiKey
         )
 }

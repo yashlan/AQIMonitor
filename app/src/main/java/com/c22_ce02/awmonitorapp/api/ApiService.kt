@@ -1,39 +1,39 @@
 package com.c22_ce02.awmonitorapp.api
 
+import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.data.response.*
 import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
 
-    @GET("current/airquality")
+    @GET("current/airquality?key=${BuildConfig.API_KEY_WEATHERBIT_1}")
     fun getCurrentAirQuality(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("key") apiKey: String,
     ): Call<CurrentAirQualityResponse>
 
-    @GET("current")
+    @GET("current?key=${BuildConfig.API_KEY_WEATHERBIT_2}")
     fun getCurrentWeatherCondition(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("key") apiKey: String,
     ): Call<CurrentWeatherConditionResponse>
 
-    @GET("by_location")
+    @GET("by_location?key=${BuildConfig.API_KEY_WEATHERBIT_3}")
     fun getAirQualityForecastAndHistoryByHour(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("key") apiKey: String,
     ): Call<AirQualityForecastAndHistoryByHourResponse>
 
-    @GET("forecast/hourly")
+    @GET("forecast/hourly?key=${BuildConfig.API_KEY_WEATHERBIT_4}")
     fun getWeatherForecastByHour(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("key") apiKey: String,
         @Query("hours") hours: Int,
     ): Call<WeatherForecastByHourResponse>
+
+    @GET("2957848512475559337/posts?key=${BuildConfig.GOOGLE_API}&fetchImages=true")
+    fun getArticle():Call<ArticleResponse>
 
     @FormUrlEncoded
     @POST("history/input")
@@ -66,10 +66,4 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): Call<LoginResponse>
-
-    @GET("2957848512475559337/posts")
-    fun getArticle(
-        @Query("key") key: String,
-        @Query("fetchImages") fetchImages: Boolean
-    ):Call<ArticleResponse>
 }

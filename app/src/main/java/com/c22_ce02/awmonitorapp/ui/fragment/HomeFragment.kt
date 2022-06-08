@@ -615,7 +615,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             currentWeatherConditionViewModel.getCurrentWeatherCondition(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT,
                 onSuccess = {
                     if (it != null) {
                         dataCurrentWeather = it[0]
@@ -635,7 +634,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             currentAirQualityViewModel.getCurrentAirQuality(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT,
                 onSuccess = {
                     if (it != null) {
                         dataCurrentAirQuality = it.data[0]
@@ -657,7 +655,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         airQualityForecastAndHistoryByHourViewModel.getAirQualityForecastByHour(
             lat,
             lon,
-            BuildConfig.API_KEY_WEATHERBIT,
             onSuccess = {
                 if (it != null) {
                     val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
@@ -714,7 +711,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         weatherForecastByHourViewModel.getWeatherForecastByHour(
             lat,
             lon,
-            BuildConfig.API_KEY_WEATHERBIT,
             TOTAL_LIST_FORECAST_AND_HISTORY_SIZE,
             onSuccess = {
                 if (it != null) {

@@ -6,10 +6,8 @@ class CurrentWeatherConditionRepository(private val apiService: ApiService) {
     fun getCurrentWeatherCondition(
         lat: Double,
         lon: Double,
-        apiKey: String
     ) = apiService.getCurrentWeatherCondition(
         lat,
         lon,
-        apiKey
     )
 }

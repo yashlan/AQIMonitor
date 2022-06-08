@@ -6,12 +6,10 @@ class WeatherForecastByHourRepository(private val apiService: ApiService) {
     fun getWeatherForecastByHour(
         lat: Double,
         lon: Double,
-        apiKey: String,
         hours: Int
     ) = apiService.getWeatherForecastByHour(
         lat,
         lon,
-        apiKey,
         hours
     )
 }

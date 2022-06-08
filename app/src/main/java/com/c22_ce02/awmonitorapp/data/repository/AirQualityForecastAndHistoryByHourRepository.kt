@@ -6,10 +6,8 @@ class AirQualityForecastAndHistoryByHourRepository(private val apiService: ApiSe
     fun getAirQualityForecastAndHistoryByHour(
         lat: Double,
         lon: Double,
-        apiKey: String,
     ) = apiService.getAirQualityForecastAndHistoryByHour(
         lat,
         lon,
-        apiKey
     )
 }

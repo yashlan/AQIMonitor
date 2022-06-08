@@ -47,7 +47,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private fun refreshFragment() {
         val refreshFragmentHandler = Handler(Looper.getMainLooper())
         refreshFragmentHandler.postDelayed({
-            if(view == null) return@postDelayed
+            if (view == null) return@postDelayed
             binding.swipeRefresh.isRefreshing = false
             if (!binding.swipeRefresh.isRefreshing) {
                 val navHostFragment =
@@ -60,8 +60,6 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private fun loadData() {
         showLoading(true)
         articleViewModel.getArticle(
-            BuildConfig.GOOGLE_API,
-            true,
             onSuccess = { list ->
                 if (list != null && list.isNotEmpty()) {
                     listArticle = ArrayList()
