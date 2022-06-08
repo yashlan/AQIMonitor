@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.FragmentFirstSlideBinding
 
@@ -29,6 +30,7 @@ class FirstSlideFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_started){
+            v.startAnimation(AlphaAnimation(1f, .5f))
             val mSecondSlideFragment = SecondSlideFragment()
             val mFragmentManager = parentFragmentManager
             mFragmentManager.beginTransaction().apply {

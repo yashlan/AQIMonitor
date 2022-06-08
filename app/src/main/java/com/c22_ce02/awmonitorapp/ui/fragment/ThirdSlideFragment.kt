@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.preference.CheckHelper
@@ -44,6 +45,7 @@ class ThirdSlideFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_finish) {
+            v.startAnimation(AlphaAnimation(1f, .5f))
             savePref()
             val user = UserPreference(requireContext())
             if (user.isSessionEmpty()) {
