@@ -62,6 +62,7 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_profile_selector.xml" value="0.106" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_test.xml" value="0.136" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_wind.xml" value="0.1555" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/next_button.xml" value="0.23" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/panel_info_air_today_baik.xml" value="0.136" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/window_bg_baik.xml" value="0.1375" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/window_bg_berbahaya.xml" value="0.1375" />
@@ -90,8 +91,8 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_maps.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_notifications.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
-        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_second_slide.xml" value="0.536" />
-        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_third_slide.xml" value="0.1" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_second_slide.xml" value="0.264" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_third_slide.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/item_info_air_today.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/item_info_forecast_air_today.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/item_info_list_air_today.xml" value="0.264" />

@@ -20,7 +20,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.254" />
+            app:layout_constraintVertical_bias="0.254"
+            tools:ignore="ContentDescription" />
 
 
         <TextView
@@ -49,10 +50,10 @@
 
         <Button
             android:id="@+id/btn_next"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/next_button"
-            android:text="@string/btn_next"
+            android:background="@drawable/button_next_boarding"
+            app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -60,9 +61,12 @@
             android:id="@+id/second_btn_skip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@android:color/transparent"
             android:text="@string/btn_skip"
             android:textColor="@color/end_color"
+            app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
