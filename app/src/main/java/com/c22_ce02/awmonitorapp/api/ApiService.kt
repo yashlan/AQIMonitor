@@ -4,6 +4,7 @@ import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.data.response.*
 import retrofit2.Call
 import retrofit2.http.*
+import com.c22_ce02.awmonitorapp.BuildConfig
 
 interface ApiService {
 
@@ -31,6 +32,10 @@ interface ApiService {
         @Query("lon") lon: Double,
         @Query("hours") hours: Int,
     ): Call<WeatherForecastByHourResponse>
+
+    @GET("/current?key=${BuildConfig.API_KEY_WEATHERBIT_5}")
+    fun getCurrent(
+    ): Call<CurrentResponse>
 
     @GET("2957848512475559337/posts?key=${BuildConfig.GOOGLE_API}&fetchImages=true")
     fun getArticle():Call<ArticleResponse>

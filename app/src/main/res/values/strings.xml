@@ -55,6 +55,7 @@
     <string name="no2">NO2</string>
     <string name="o3">O3</string>
     <string name="co">CO</string>
+    <string name="city_condition">Lampung - Baik</string>
     <string name="get_started">Get Started</string>
     <string name="description">Description</string>
     <string name="create_at">created at</string>
