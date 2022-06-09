@@ -36,16 +36,17 @@
                     android:layout_height="wrap_content"
                     android:text="AQI"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textAlignment="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     tools:text="39"
                     android:id="@+id/tv_aqi_bottom"
                     android:textColor="@color/black"
-                    android:textSize="45sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -66,17 +67,18 @@
                     android:layout_height="wrap_content"
                     android:text="PM10"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textAlignment="center"
                     />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     tools:text="39"
                     android:id="@+id/tv_pm10"
                     android:textColor="@color/black"
-                    android:textSize="45sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"
                     />
             </LinearLayout>
@@ -97,19 +99,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="PM25"
+                    android:text="PM25"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textAlignment="center"
                     />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     tools:text="39"
                     android:id="@+id/tv_pm25"
                     android:textColor="@color/black"
-                    android:textSize="45sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"
                     />
             </LinearLayout>
@@ -138,16 +141,17 @@
                     android:layout_height="wrap_content"
                     android:text="NO2"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textAlignment="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     tools:text="39"
                     android:id="@+id/tv_no2"
                     android:textColor="@color/black"
-                    android:textSize="45sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -168,17 +172,18 @@
                     android:layout_height="wrap_content"
                     android:text="O3"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textAlignment="center"
                     />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     tools:text="39"
                     android:id="@+id/tv_o3"
                     android:textColor="@color/black"
-                    android:textSize="45sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"
                     />
             </LinearLayout>
@@ -199,19 +204,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="SO2"
+                    android:text="SO2"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textAlignment="center"
                     />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     tools:text="39"
                     android:id="@+id/tv_so2"
                     android:textColor="@color/black"
-                    android:textSize="45sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"
                     />
             </LinearLayout>
@@ -242,16 +248,17 @@
                     android:layout_height="wrap_content"
                     android:text="CO"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textAlignment="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     tools:text="39"
                     android:id="@+id/tv_co"
                     android:textColor="@color/black"
-                    android:textSize="45sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

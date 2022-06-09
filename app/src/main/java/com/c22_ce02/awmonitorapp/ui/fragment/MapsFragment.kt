@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -17,7 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
-import com.c22_ce02.awmonitorapp.databinding.BottomSheetLayoutBinding
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -49,6 +50,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         }
     }
 
+    @SuppressLint("InflateParams")
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
 
@@ -68,12 +70,14 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                                         R.drawable.ic_baseline_location_on_24,
                                         Color.parseColor("#32C090")
                                     )
-                                )
+                                ).rotation(index.toFloat())
                         )
 
                         mMap.setOnInfoWindowClickListener {
                             val dialog = BottomSheetDialog(requireContext())
                             val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
+
+
 
                             // deklarasi komponen view
                             val tvCity = view.findViewById<TextView>(R.id.tv_city)
@@ -85,15 +89,16 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
                             val tvCo = view.findViewById<TextView>(R.id.tv_co)
 
-
+                            // get title index > diakalin biar dapet index
+                            val q = it.rotation.toInt()
                             tvCity.text = it.title
-                            tvAqi.text = "${current[index].aqi}"
-                            tvPm10.text = "${current[index].pm10}"
-                            tvPm25.text = "${current[index].pm25}"
-                            tvNo2.text = "${current[index].no2}"
-                            tvO3.text = "${current[index].o3}"
-                            tvSo2.text = "${current[index].so2}"
-                            tvCo.text = "${current[index].co}"
+                            tvAqi.text = "${current[q].aqi}"
+                            tvPm10.text = "${current[q].pm10}"
+                            tvPm25.text = "${current[q].pm25}"
+                            tvNo2.text = "${current[q].no2}"
+                            tvO3.text = "${current[q].o3}"
+                            tvSo2.text = "${current[q].so2}"
+                            tvCo.text = "${current[q].co}"
 
                             dialog.setContentView(view)
                             dialog.show()
@@ -117,6 +122,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val dialog = BottomSheetDialog(requireContext())
                             val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
 
+
+
                             // deklarasi komponen view
                             val tvCity = view.findViewById<TextView>(R.id.tv_city)
                             val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
@@ -128,14 +135,15 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val tvCo = view.findViewById<TextView>(R.id.tv_co)
 
 
+                            val q = it.rotation.toInt()
                             tvCity.text = it.title
-                            tvAqi.text = "${current[index].aqi}"
-                            tvPm10.text = "${current[index].pm10}"
-                            tvPm25.text = "${current[index].pm25}"
-                            tvNo2.text = "${current[index].no2}"
-                            tvO3.text = "${current[index].o3}"
-                            tvSo2.text = "${current[index].so2}"
-                            tvCo.text = "${current[index].co}"
+                            tvAqi.text = "${current[q].aqi}"
+                            tvPm10.text = "${current[q].pm10}"
+                            tvPm25.text = "${current[q].pm25}"
+                            tvNo2.text = "${current[q].no2}"
+                            tvO3.text = "${current[q].o3}"
+                            tvSo2.text = "${current[q].so2}"
+                            tvCo.text = "${current[q].co}"
 
                             dialog.setContentView(view)
                             dialog.show()
@@ -158,6 +166,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val dialog = BottomSheetDialog(requireContext())
                             val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
 
+
+
                             // deklarasi komponen view
                             val tvCity = view.findViewById<TextView>(R.id.tv_city)
                             val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
@@ -168,15 +178,15 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
                             val tvCo = view.findViewById<TextView>(R.id.tv_co)
 
-
+                            val q = it.rotation.toInt()
                             tvCity.text = it.title
-                            tvAqi.text = "${current[index].aqi}"
-                            tvPm10.text = "${current[index].pm10}"
-                            tvPm25.text = "${current[index].pm25}"
-                            tvNo2.text = "${current[index].no2}"
-                            tvO3.text = "${current[index].o3}"
-                            tvSo2.text = "${current[index].so2}"
-                            tvCo.text = "${current[index].co}"
+                            tvAqi.text = "${current[q].aqi}"
+                            tvPm10.text = "${current[q].pm10}"
+                            tvPm25.text = "${current[q].pm25}"
+                            tvNo2.text = "${current[q].no2}"
+                            tvO3.text = "${current[q].o3}"
+                            tvSo2.text = "${current[q].so2}"
+                            tvCo.text = "${current[q].co}"
 
                             dialog.setContentView(view)
                             dialog.show()
@@ -210,14 +220,15 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val tvCo = view.findViewById<TextView>(R.id.tv_co)
 
 
+                            val q = it.rotation.toInt()
                             tvCity.text = it.title
-                            tvAqi.text = "${current[index].aqi}"
-                            tvPm10.text = "${current[index].pm10}"
-                            tvPm25.text = "${current[index].pm25}"
-                            tvNo2.text = "${current[index].no2}"
-                            tvO3.text = "${current[index].o3}"
-                            tvSo2.text = "${current[index].so2}"
-                            tvCo.text = "${current[index].co}"
+                            tvAqi.text = "${current[q].aqi}"
+                            tvPm10.text = "${current[q].pm10}"
+                            tvPm25.text = "${current[q].pm25}"
+                            tvNo2.text = "${current[q].no2}"
+                            tvO3.text = "${current[q].o3}"
+                            tvSo2.text = "${current[q].so2}"
+                            tvCo.text = "${current[q].co}"
 
                             dialog.setContentView(view)
                             dialog.show()
@@ -240,6 +251,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val dialog = BottomSheetDialog(requireContext())
                             val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
 
+
+
                             // deklarasi komponen view
                             val tvCity = view.findViewById<TextView>(R.id.tv_city)
                             val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
@@ -251,14 +264,15 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val tvCo = view.findViewById<TextView>(R.id.tv_co)
 
 
+                            val q = it.rotation.toInt()
                             tvCity.text = it.title
-                            tvAqi.text = "${current[index].aqi}"
-                            tvPm10.text = "${current[index].pm10}"
-                            tvPm25.text = "${current[index].pm25}"
-                            tvNo2.text = "${current[index].no2}"
-                            tvO3.text = "${current[index].o3}"
-                            tvSo2.text = "${current[index].so2}"
-                            tvCo.text = "${current[index].co}"
+                            tvAqi.text = "${current[q].aqi}"
+                            tvPm10.text = "${current[q].pm10}"
+                            tvPm25.text = "${current[q].pm25}"
+                            tvNo2.text = "${current[q].no2}"
+                            tvO3.text = "${current[q].o3}"
+                            tvSo2.text = "${current[q].so2}"
+                            tvCo.text = "${current[q].co}"
 
                             dialog.setContentView(view)
                             dialog.show()
@@ -267,8 +281,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
 
                 }
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-
-
 
             }
         }
