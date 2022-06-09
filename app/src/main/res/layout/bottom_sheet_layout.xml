@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_city"
-        tools:text="Lampung"
+        android:fontFamily="@font/poppins_medium"
+        tools:text="@string/city_condition"
         android:textColor="@color/black"
         android:gravity="center"
         android:textSize="20sp"
@@ -25,6 +26,7 @@
             android:layout_width="100dp"
             android:layout_height="130dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/shimmer_color_bg"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="10dp">
             <LinearLayout
@@ -34,7 +36,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="AQI"
+                    android:text="@string/aqi"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textAlignment="center"/>
@@ -55,6 +57,7 @@
             android:layout_width="100dp"
             android:layout_height="130dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/shimmer_color_bg"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="10dp">
 
@@ -65,7 +68,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PM10"
+                    android:text="@string/pm10"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textAlignment="center"
@@ -90,6 +93,7 @@
             android:layout_height="130dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
+            android:backgroundTint="@color/shimmer_color_bg"
             android:layout_marginBottom="10dp">
 
             <LinearLayout
@@ -99,7 +103,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PM25"
+                    android:text="@string/pm25"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textAlignment="center"
@@ -129,6 +133,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="130dp"
+            android:backgroundTint="@color/shimmer_color_bg"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="10dp">
@@ -139,7 +144,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="NO2"
+                    android:text="@string/no2"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textAlignment="center"/>
@@ -159,6 +164,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="130dp"
+            android:backgroundTint="@color/shimmer_color_bg"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="10dp">
@@ -170,7 +176,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="O3"
+                    android:text="@string/o3"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textAlignment="center"
@@ -194,6 +200,7 @@
             android:layout_width="100dp"
             android:layout_height="130dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/shimmer_color_bg"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="10dp">
 
@@ -204,7 +211,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SO2"
+                    android:text="@string/so2"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textAlignment="center"
@@ -236,8 +243,10 @@
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="130dp"
+            android:backgroundTint="@color/shimmer_color_bg"
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
+
             android:layout_marginBottom="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -246,7 +255,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CO"
+                    android:text="@string/co"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textAlignment="center"/>
@@ -255,6 +264,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
                     tools:text="39"
+                    android:backgroundTint="@color/shimmer_color_bg"
                     android:id="@+id/tv_co"
                     android:textColor="@color/black"
                     android:textSize="25sp"

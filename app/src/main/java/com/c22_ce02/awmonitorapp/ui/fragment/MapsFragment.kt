@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
+import com.c22_ce02.awmonitorapp.data.response.CurrentItem
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -77,8 +78,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val dialog = BottomSheetDialog(requireContext())
                             val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
 
-
-
                             // deklarasi komponen view
                             val tvCity = view.findViewById<TextView>(R.id.tv_city)
                             val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
@@ -89,7 +88,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                             val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
                             val tvCo = view.findViewById<TextView>(R.id.tv_co)
 
-                            // get title index > diakalin biar dapet index
+                            // get title index
                             val q = it.rotation.toInt()
                             tvCity.text = it.title
                             tvAqi.text = "${current[q].aqi}"
@@ -305,6 +304,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
             binding.map.visibility = View.VISIBLE
         }
     }
+
+
 
     private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
         val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)

@@ -115,6 +115,7 @@
         <entry key="app/src/main/res/layout/bottom_sheet_layout.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_article.xml" value="0.15897435897435896" />
         <entry key="app/src/main/res/layout/fragment_glossary.xml" value="0.15897435897435896" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.2" />
         <entry key="app/src/main/res/layout/shimmer_item_info_air_today.xml" value="0.15897435897435896" />
         <entry key="app/src/main/res/layout/shimmer_item_info_list_air_today.xml" value="0.15897435897435896" />
