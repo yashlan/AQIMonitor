@@ -154,7 +154,7 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
             setPolicy()
             val client = SyncHttpClient()
             val url =
-                "${BuildConfig.BASE_URL_WEATHERBIT}current/airquality?lat=$lat&lon=$lon&key=${BuildConfig.API_KEY_WEATHERBIT}"
+                "${BuildConfig.BASE_URL_WEATHERBIT}current/airquality?lat=$lat&lon=$lon&key=${BuildConfig.API_KEY_WEATHERBIT_5}"
             client.post(url, object : AsyncHttpResponseHandler() {
                 override fun onSuccess(
                     statusCode: Int,

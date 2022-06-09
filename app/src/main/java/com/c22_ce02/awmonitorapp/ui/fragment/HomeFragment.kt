@@ -602,7 +602,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             currentWeatherConditionViewModel.getCurrentWeatherCondition(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT
+                BuildConfig.API_KEY_WEATHERBIT_1
             )
 
             currentAirQualityViewModel.currentAirQuality.observe(requireActivity()) {
@@ -623,7 +623,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             currentAirQualityViewModel.getCurrentAirQuality(
                 lat,
                 lon,
-                BuildConfig.API_KEY_WEATHERBIT
+                BuildConfig.API_KEY_WEATHERBIT_2
             )
         })
     }
@@ -689,7 +689,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         airQualityForecastAndHistoryByHourViewModel.getAirQualityForecastByHour(
             lat,
             lon,
-            BuildConfig.API_KEY_WEATHERBIT
+            BuildConfig.API_KEY_WEATHERBIT_3
         )
 
         weatherForecastByHourViewModel.listForecast.observe(requireActivity()) {
@@ -733,7 +733,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         weatherForecastByHourViewModel.getWeatherForecastByHour(
             lat,
             lon,
-            BuildConfig.API_KEY_WEATHERBIT,
+            BuildConfig.API_KEY_WEATHERBIT_4,
             TOTAL_LIST_FORECAST_AND_HISTORY_SIZE
         )
     }

@@ -74,7 +74,7 @@ interface ApiService {
         @Query("fetchImages") fetchImages: Boolean
     ):Call<ArticleResponse>
 
-    @GET("/current?key=${BuildConfig.API_KEY_ML_DEPLOYMENT2}")
+    @GET("/current?key=${BuildConfig.API_KEY_WEATHERBIT_5}")
     fun getCurrent(
     ): Call<CurrentResponse>
 }

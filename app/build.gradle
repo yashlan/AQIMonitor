@@ -19,19 +19,18 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY_WEATHERBIT", API_KEY_WEATHERBIT)
-        buildConfigField("String", "API_KEY_HEROKU", API_KEY_HEROKU)
-        buildConfigField("String", "API_KEY_ML_DEPLOYMENT", API_KEY_ML_DEPLOYMENT)
-        buildConfigField("String", "API_KEY_ML_DEPLOYMENT2", API_KEY_ML_DEPLOYMENT2)
+        buildConfigField("String", "API_KEY_WEATHERBIT_1", API_KEY_WEATHERBIT_1)
+        buildConfigField("String", "API_KEY_WEATHERBIT_2", API_KEY_WEATHERBIT_2)
+        buildConfigField("String", "API_KEY_WEATHERBIT_3", API_KEY_WEATHERBIT_3)
+        buildConfigField("String", "API_KEY_WEATHERBIT_4", API_KEY_WEATHERBIT_4)
+        buildConfigField("String", "API_KEY_WEATHERBIT_5", API_KEY_WEATHERBIT_5)
         buildConfigField("String", "BASE_URL_WEATHERBIT", BASE_URL_WEATHERBIT)
-        buildConfigField("String", "BASE_URL_AQIMonitor", BASE_URL_AQIMonitor)
-        buildConfigField("String", "BASE_URL_HEROKU", BASE_URL_HEROKU)
+        buildConfigField("String", "BASE_URL_AQIMonitor_POST", BASE_URL_AQIMonitor_POST)
+        buildConfigField("String", "BASE_URL_AQIMonitor_GET", BASE_URL_AQIMonitor_GET)
         buildConfigField("String", "BASE_URL_BLOGGER", BASE_URL_BLOGGER)
-        buildConfigField("String", "BASE_URL_ML_DEPLOYMENT", BASE_URL_ML_DEPLOYMENT)
         buildConfigField("String", "GOOGLE_API", GOOGLE_API)
 
-
-        manifestPlaceholders = [GOOGLE_API_MANIFEST: MAPS_API]
+        manifestPlaceholders = [GOOGLE_API_MANIFEST: GOOGLE_API_MANIFEST]
 
     }
 

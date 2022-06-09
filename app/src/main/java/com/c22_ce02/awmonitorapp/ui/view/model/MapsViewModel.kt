@@ -28,7 +28,7 @@ class MapsViewModel: ViewModel() {
 
     fun getCurrentData(){
         _showLoading.value = true
-        val client = ApiConfig.getApiService(BuildConfig.BASE_URL_ML_DEPLOYMENT).getCurrent()
+        val client = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor_GET).getCurrent()
         client.enqueue(object: Callback<CurrentResponse> {
             override fun onResponse(
                 call: Call<CurrentResponse>,
