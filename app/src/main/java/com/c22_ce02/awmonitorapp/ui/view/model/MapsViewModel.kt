@@ -28,7 +28,7 @@ class MapsViewModel: ViewModel() {
 
     fun getCurrentData(){
         _showLoading.value = true
-        val client = ApiConfig.getApiService(BuildConfig.BASE_URL_HEROKU).getCurrent(BuildConfig.API_KEY_ML_DEPLOYMENT)
+        val client = ApiConfig.getApiService(BuildConfig.BASE_URL_ML_DEPLOYMENT).getCurrent(BuildConfig.API_KEY_ML_DEPLOYMENT2)
         client.enqueue(object: Callback<MapsCurrentResponse> {
             override fun onResponse(
                 call: Call<MapsCurrentResponse>,
