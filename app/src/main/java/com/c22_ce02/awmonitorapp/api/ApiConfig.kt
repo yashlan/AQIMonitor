@@ -1,10 +1,14 @@
 package com.c22_ce02.awmonitorapp.api
 
+
+
+
 import com.c22_ce02.awmonitorapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class ApiConfig {
 
@@ -19,6 +23,9 @@ class ApiConfig {
 
             val client = OkHttpClient
                 .Builder()
+                .connectTimeout(2, TimeUnit.MINUTES)
+                .writeTimeout(2,TimeUnit.MINUTES)
+                .readTimeout(2,TimeUnit.MINUTES)
                 .addInterceptor { chain ->
                     val newRequest = chain.request()
                         .newBuilder()
@@ -27,6 +34,7 @@ class ApiConfig {
                 }
                 .addInterceptor(loggingInterceptor)
                 .build()
+
 
             val retrofit = Retrofit.Builder()
                 .client(client)

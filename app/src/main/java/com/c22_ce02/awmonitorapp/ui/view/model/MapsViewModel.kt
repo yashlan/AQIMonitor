@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import com.c22_ce02.awmonitorapp.api.ApiConfig
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.data.response.CurrentItem
-import com.c22_ce02.awmonitorapp.data.response.MapsCurrentResponse
+import com.c22_ce02.awmonitorapp.data.response.CurrentResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,23 +28,23 @@ class MapsViewModel: ViewModel() {
 
     fun getCurrentData(){
         _showLoading.value = true
-        val client = ApiConfig.getApiService(BuildConfig.BASE_URL_ML_DEPLOYMENT).getCurrent(BuildConfig.API_KEY_ML_DEPLOYMENT2)
-        client.enqueue(object: Callback<MapsCurrentResponse> {
+        val client = ApiConfig.getApiService(BuildConfig.BASE_URL_ML_DEPLOYMENT).getCurrent()
+        client.enqueue(object: Callback<CurrentResponse> {
             override fun onResponse(
-                call: Call<MapsCurrentResponse>,
-                response: Response<MapsCurrentResponse>
+                call: Call<CurrentResponse>,
+                response: Response<CurrentResponse>
             ) {
                 if (response.isSuccessful){
                     _showLoading.value = false
                     _currentData.value = response.body()?.data?.current
                 }else {
-                    Log.d("MapsFragment", "Error: ${response.message()}")
+                    Log.d("MapsFragment", "Error Response: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<MapsCurrentResponse>, t: Throwable) {
+            override fun onFailure(call: Call<CurrentResponse>, t: Throwable) {
                 _showLoading.value = false
-                Log.d("onFailure", "Error: ${t.message}")
+                Log.d("onFailure", "OnFailure: ${t.message}")
             }
 
         })

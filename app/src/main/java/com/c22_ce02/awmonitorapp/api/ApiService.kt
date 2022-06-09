@@ -3,6 +3,7 @@ package com.c22_ce02.awmonitorapp.api
 import com.c22_ce02.awmonitorapp.data.response.*
 import retrofit2.Call
 import retrofit2.http.*
+import com.c22_ce02.awmonitorapp.BuildConfig
 
 interface ApiService {
 
@@ -73,8 +74,7 @@ interface ApiService {
         @Query("fetchImages") fetchImages: Boolean
     ):Call<ArticleResponse>
 
-    @GET("/current")
+    @GET("/current?key=${BuildConfig.API_KEY_ML_DEPLOYMENT2}")
     fun getCurrent(
-        @Query("key") key: String
-    ): Call<MapsCurrentResponse>
+    ): Call<CurrentResponse>
 }
