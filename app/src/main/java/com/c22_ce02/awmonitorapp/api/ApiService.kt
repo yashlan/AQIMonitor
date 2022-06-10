@@ -25,16 +25,8 @@ interface ApiService {
         @Query("lon") lon: Double,
     ): Call<AirQualityForecastAndHistoryByHourResponse>
 
-    @GET("forecast/hourly?key=${BuildConfig.API_KEY_WEATHERBIT_4}")
-    fun getWeatherForecastByHour(
-        @Query("lat") lat: Double,
-        @Query("lon") lon: Double,
-        @Query("hours") hours: Int,
-    ): Call<WeatherForecastByHourResponse>
-
-    @GET("/current?key=${BuildConfig.API_KEY_WEATHERBIT_5}")
-    fun getCurrent(
-    ): Call<CurrentResponse>
+    @GET("/current?key=${BuildConfig.API_KEY_WEATHERBIT_4}")
+    fun getCurrentAirQuality34Province(): Call<CurrentAirQuality34ProvinceResponse>
 
     @GET("2957848512475559337/posts?key=${BuildConfig.GOOGLE_API}&fetchImages=true")
     fun getArticle():Call<ArticleResponse>

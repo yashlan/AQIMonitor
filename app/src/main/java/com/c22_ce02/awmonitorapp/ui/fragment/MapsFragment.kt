@@ -1,298 +1,56 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.R
-import com.c22_ce02.awmonitorapp.data.response.CurrentItem
+import com.c22_ce02.awmonitorapp.data.model.AirQualityMaps
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
+import com.c22_ce02.awmonitorapp.ui.view.modelfactory.MapsViewModelFactory
+import com.c22_ce02.awmonitorapp.utils.showToast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
 
-    private lateinit var mMap : GoogleMap
-    private val mapsViewModel: MapsViewModel by viewModels()
-    private val binding by viewBinding(FragmentMapsBinding::bind, onViewDestroyed = {
-        stopHandler()
-    })
-    private val handler = Handler(Looper.getMainLooper())
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mapsViewModel.getCurrentData()
-
-        mapsViewModel.showLoading.observe(this){
-            showLoading(it)
-        }
+    private lateinit var mMap: GoogleMap
+    private val mapsViewModel: MapsViewModel by viewModels {
+        MapsViewModelFactory()
     }
-
-    @SuppressLint("InflateParams")
+    private var callApiHandler: Handler? = null
+    private val binding by viewBinding(FragmentMapsBinding::bind, onViewDestroyed = {
+        callApiHandler?.removeCallbacksAndMessages(null)
+    })
+    private var listMarkerMaps: List<MutableMap<Marker?, String?>> = listOf(HashMap())
+    private var listDataAirQuality: List<MutableMap<String?, AirQualityMaps?>> = listOf(HashMap())
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
-
-        mapsViewModel.currentData.observe(this){ current ->
-
-            for( (index) in current.withIndex()){
-                val location = LatLng(current[index].lat, current[index].lon)
-
-                when{
-
-                    current[index].aqi < 50 -> {
-                        mMap.addMarker(
-                            MarkerOptions().position(location).title("${current[index].city} - Baik")
-                                .snippet("AQI: ${current[index].aqi}, o3: ${current[index].o3}, PM10: ${current[index].pm10}, PM25: ${current[index].pm25}, S02: ${current[index].so2}, CO: ${current[index].co}")
-                                .icon(
-                                    vectorToBitmap(
-                                        R.drawable.ic_baseline_location_on_24,
-                                        Color.parseColor("#32C090")
-                                    )
-                                ).rotation(index.toFloat())
-                        )
-
-                        mMap.setOnInfoWindowClickListener {
-                            val dialog = BottomSheetDialog(requireContext())
-                            val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
-
-                            // deklarasi komponen view
-                            val tvCity = view.findViewById<TextView>(R.id.tv_city)
-                            val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
-                            val tvPm10 = view.findViewById<TextView>(R.id.tv_pm10)
-                            val tvPm25 = view.findViewById<TextView>(R.id.tv_pm25)
-                            val tvNo2 = view.findViewById<TextView>(R.id.tv_no2)
-                            val tvO3 = view.findViewById<TextView>(R.id.tv_o3)
-                            val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
-                            val tvCo = view.findViewById<TextView>(R.id.tv_co)
-
-                            // get title index
-                            val q = it.rotation.toInt()
-                            tvCity.text = it.title
-                            tvAqi.text = "${current[q].aqi}"
-                            tvPm10.text = "${current[q].pm10}"
-                            tvPm25.text = "${current[q].pm25}"
-                            tvNo2.text = "${current[q].no2}"
-                            tvO3.text = "${current[q].o3}"
-                            tvSo2.text = "${current[q].so2}"
-                            tvCo.text = "${current[q].co}"
-
-                            dialog.setContentView(view)
-                            dialog.show()
-                        }
-
-                    }
-
-                    current[index].aqi < 100 -> {
-                        mMap.addMarker(
-                            MarkerOptions().position(location).title("${current[index].city} - Sedang")
-                                .snippet("AQI: ${current[index].aqi}, o3: ${current[index].o3}, PM10: ${current[index].pm10}, PM25: ${current[index].pm25}, S02: ${current[index].so2}, CO: ${current[index].co}")
-                                .icon(
-                                    vectorToBitmap(
-                                        R.drawable.ic_baseline_location_on_24,
-                                        Color.parseColor("#004CE8")
-                                    )
-                                )
-                        )
-
-                        mMap.setOnInfoWindowClickListener {
-                            val dialog = BottomSheetDialog(requireContext())
-                            val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
-
-
-
-                            // deklarasi komponen view
-                            val tvCity = view.findViewById<TextView>(R.id.tv_city)
-                            val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
-                            val tvPm10 = view.findViewById<TextView>(R.id.tv_pm10)
-                            val tvPm25 = view.findViewById<TextView>(R.id.tv_pm25)
-                            val tvNo2 = view.findViewById<TextView>(R.id.tv_no2)
-                            val tvO3 = view.findViewById<TextView>(R.id.tv_o3)
-                            val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
-                            val tvCo = view.findViewById<TextView>(R.id.tv_co)
-
-
-                            val q = it.rotation.toInt()
-                            tvCity.text = it.title
-                            tvAqi.text = "${current[q].aqi}"
-                            tvPm10.text = "${current[q].pm10}"
-                            tvPm25.text = "${current[q].pm25}"
-                            tvNo2.text = "${current[q].no2}"
-                            tvO3.text = "${current[q].o3}"
-                            tvSo2.text = "${current[q].so2}"
-                            tvCo.text = "${current[q].co}"
-
-                            dialog.setContentView(view)
-                            dialog.show()
-                        }
-                    }
-
-                    current[index].aqi < 150 -> {
-                        mMap.addMarker(
-                            MarkerOptions().position(location).title("${current[index].city} - Tidak Sehat")
-                                .snippet("AQI: ${current[index].aqi}, o3: ${current[index].o3}, PM10: ${current[index].pm10}, PM25: ${current[index].pm25}, S02: ${current[index].so2}, CO: ${current[index].co}")
-                                .icon(
-                                    vectorToBitmap(
-                                        R.drawable.ic_baseline_location_on_24,
-                                        Color.parseColor("#FFE37E")
-                                    )
-                                )
-                        )
-
-                        mMap.setOnInfoWindowClickListener {
-                            val dialog = BottomSheetDialog(requireContext())
-                            val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
-
-
-
-                            // deklarasi komponen view
-                            val tvCity = view.findViewById<TextView>(R.id.tv_city)
-                            val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
-                            val tvPm10 = view.findViewById<TextView>(R.id.tv_pm10)
-                            val tvPm25 = view.findViewById<TextView>(R.id.tv_pm25)
-                            val tvNo2 = view.findViewById<TextView>(R.id.tv_no2)
-                            val tvO3 = view.findViewById<TextView>(R.id.tv_o3)
-                            val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
-                            val tvCo = view.findViewById<TextView>(R.id.tv_co)
-
-                            val q = it.rotation.toInt()
-                            tvCity.text = it.title
-                            tvAqi.text = "${current[q].aqi}"
-                            tvPm10.text = "${current[q].pm10}"
-                            tvPm25.text = "${current[q].pm25}"
-                            tvNo2.text = "${current[q].no2}"
-                            tvO3.text = "${current[q].o3}"
-                            tvSo2.text = "${current[q].so2}"
-                            tvCo.text = "${current[q].co}"
-
-                            dialog.setContentView(view)
-                            dialog.show()
-                        }
-                    }
-
-                    current[index].aqi < 200 -> {
-                        mMap.addMarker(
-                            MarkerOptions().position(location).title("${current[index].city} - Sangat Tidak Sehat")
-                                .snippet("AQI: ${current[index].aqi}, o3: ${current[index].o3}, PM10: ${current[index].pm10}, PM25: ${current[index].pm25}, S02: ${current[index].so2}, CO: ${current[index].co}")
-                                .icon(
-                                    vectorToBitmap(
-                                        R.drawable.ic_baseline_location_on_24,
-                                        Color.parseColor("#FF3333")
-                                    )
-                                )
-                        )
-
-                        mMap.setOnInfoWindowClickListener {
-                            val dialog = BottomSheetDialog(requireContext())
-                            val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
-
-                            // deklarasi komponen view
-                            val tvCity = view.findViewById<TextView>(R.id.tv_city)
-                            val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
-                            val tvPm10 = view.findViewById<TextView>(R.id.tv_pm10)
-                            val tvPm25 = view.findViewById<TextView>(R.id.tv_pm25)
-                            val tvNo2 = view.findViewById<TextView>(R.id.tv_no2)
-                            val tvO3 = view.findViewById<TextView>(R.id.tv_o3)
-                            val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
-                            val tvCo = view.findViewById<TextView>(R.id.tv_co)
-
-
-                            val q = it.rotation.toInt()
-                            tvCity.text = it.title
-                            tvAqi.text = "${current[q].aqi}"
-                            tvPm10.text = "${current[q].pm10}"
-                            tvPm25.text = "${current[q].pm25}"
-                            tvNo2.text = "${current[q].no2}"
-                            tvO3.text = "${current[q].o3}"
-                            tvSo2.text = "${current[q].so2}"
-                            tvCo.text = "${current[q].co}"
-
-                            dialog.setContentView(view)
-                            dialog.show()
-                        }
-                    }
-
-                    current[index].aqi < 300 -> {
-                        mMap.addMarker(
-                            MarkerOptions().position(location).title("${current[index].city} - Berbahaya!")
-                                .snippet("AQI: ${current[index].aqi}, o3: ${current[index].o3}, PM10: ${current[index].pm10}, PM25: ${current[index].pm25}, S02: ${current[index].so2}, CO: ${current[index].co}")
-                                .icon(
-                                    vectorToBitmap(
-                                        R.drawable.ic_baseline_location_on_24,
-                                        Color.parseColor("#181A20")
-                                    )
-                                )
-                        )
-
-                        mMap.setOnInfoWindowClickListener {
-                            val dialog = BottomSheetDialog(requireContext())
-                            val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
-
-
-
-                            // deklarasi komponen view
-                            val tvCity = view.findViewById<TextView>(R.id.tv_city)
-                            val tvAqi = view.findViewById<TextView>(R.id.tv_aqi_bottom)
-                            val tvPm10 = view.findViewById<TextView>(R.id.tv_pm10)
-                            val tvPm25 = view.findViewById<TextView>(R.id.tv_pm25)
-                            val tvNo2 = view.findViewById<TextView>(R.id.tv_no2)
-                            val tvO3 = view.findViewById<TextView>(R.id.tv_o3)
-                            val tvSo2 = view.findViewById<TextView>(R.id.tv_so2)
-                            val tvCo = view.findViewById<TextView>(R.id.tv_co)
-
-
-                            val q = it.rotation.toInt()
-                            tvCity.text = it.title
-                            tvAqi.text = "${current[q].aqi}"
-                            tvPm10.text = "${current[q].pm10}"
-                            tvPm25.text = "${current[q].pm25}"
-                            tvNo2.text = "${current[q].no2}"
-                            tvO3.text = "${current[q].o3}"
-                            tvSo2.text = "${current[q].so2}"
-                            tvCo.text = "${current[q].co}"
-
-                            dialog.setContentView(view)
-                            dialog.show()
-                        }
-                    }
-
-                }
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-
-            }
-        }
-    }
-
-    private fun stopHandler() {
-        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        showLoading(true)
+        callApiHandler = Handler(Looper.getMainLooper())
+        callApiHandler?.postDelayed({
+            getCurrentAirQuality34Province()
+        }, DELAY_CALL_API)
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -305,26 +63,131 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         }
     }
 
+    private fun showBottomSheetDialogMaps(
+        item: MutableMap<String?, AirQualityMaps?>,
+        idItem: String?,
+    ) {
+        val sheet = BottomSheetDialog(requireContext())
+        sheet.setContentView(R.layout.bottom_sheet_layout)
 
+        val tvCity = sheet.findViewById<TextView>(R.id.tv_city)
+        val tvAqi = sheet.findViewById<TextView>(R.id.tv_aqi_bottom)
+        val tvPm10 = sheet.findViewById<TextView>(R.id.tv_pm10)
+        val tvPm25 = sheet.findViewById<TextView>(R.id.tv_pm25)
+        val tvNo2 = sheet.findViewById<TextView>(R.id.tv_no2)
+        val tvO3 = sheet.findViewById<TextView>(R.id.tv_o3)
+        val tvSo2 = sheet.findViewById<TextView>(R.id.tv_so2)
+        val tvCo = sheet.findViewById<TextView>(R.id.tv_co)
 
-    private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
-        val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)
-        if (vectorDrawable == null) {
-            Log.e("BitmapHelper", "Resource not found")
-            return BitmapDescriptorFactory.defaultMarker()
+        val city = item[idItem]?.city
+        val aqi = item[idItem]?.aqi?.toInt().toString()
+        val pm10 = item[idItem]?.pm10?.toInt().toString()
+        val pm25 = item[idItem]?.pm25?.toInt().toString()
+        val no2 = item[idItem]?.no2?.toInt().toString()
+        val o3 = item[idItem]?.o3?.toInt().toString()
+        val so2 = item[idItem]?.so2?.toInt().toString()
+        val co = item[idItem]?.co?.toInt().toString()
+
+        tvCity?.text = city
+        tvAqi?.text = aqi
+        tvPm10?.text = pm10
+        tvPm25?.text = pm25
+        tvNo2?.text = no2
+        tvO3?.text = o3
+        tvSo2?.text = so2
+        tvCo?.text = co
+
+        if (!sheet.isShowing) {
+            sheet.show()
         }
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
+    private fun getMarkerBitmapFromView(aqi: Int): BitmapDescriptor {
+        val customMarkerView = View.inflate(requireContext(), R.layout.view_custom_marker, null)
+        val markerTvAQI = customMarkerView?.findViewById<View>(R.id.tvAQI) as TextView
+        markerTvAQI.text = aqi.toString()
+        customMarkerView.rootView.setBackgroundResource(
+            when (aqi) {
+                in 0..50 -> R.drawable.ic_marker_baik
+                in 51..100 -> R.drawable.ic_marker_sedang
+                in 101..150 -> R.drawable.ic_marker_tidak_sehat
+                in 151..300 -> R.drawable.ic_marker_sanget_tidak_sehat
+                else -> R.drawable.ic_marker_berbahaya
+            }
+        )
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        customMarkerView.layout(
+            0,
+            0,
+            customMarkerView.measuredWidth,
+            customMarkerView.measuredHeight
+        )
+        val returnedBitmap = Bitmap.createBitmap(
+            customMarkerView.width,
+            customMarkerView.height,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(returnedBitmap)
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        val drawable = customMarkerView.background
+        drawable?.draw(canvas)
+        customMarkerView.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(returnedBitmap)
+    }
 
+    private fun getCurrentAirQuality34Province() {
+        mapsViewModel.getCurrentAirQuality34Province(
+            onSuccess = { list ->
+                showLoading(false)
+                list?.forEach { item ->
+                    val location = LatLng(item.lat, item.lon)
+                    val city = item.city
+                    val aqi = item.aqi.toInt()
+                    listDataAirQuality.forEach { dataAir ->
 
+                        dataAir[city] = AirQualityMaps(
+                            aqi = item.aqi,
+                            pm10 = item.pm10,
+                            pm25 = item.pm25,
+                            no2 = item.no2,
+                            o3 = item.o3,
+                            so2 = item.so2,
+                            co = item.co,
+                            city = city
+                        )
+
+                        val marker = mMap.addMarker(
+                            MarkerOptions()
+                                .title(city)
+                                .position(location)
+                                .icon(getMarkerBitmapFromView(aqi))
+                        )
+
+                        listMarkerMaps.forEach { map ->
+                            map[marker] = marker?.title
+                            mMap.setOnMarkerClickListener {
+                                if (it.title.equals(map[it], ignoreCase = true)) {
+                                    showBottomSheetDialogMaps(dataAir, map[it])
+                                }
+                                false
+                            }
+                        }
+                    }
+
+                    val firstCameraPos = LatLng(-1.845549, 120.513968)
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(5.5f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(firstCameraPos))
+                }
+            },
+            onError = { errorMsg ->
+                showLoading(false)
+                if (errorMsg != null) {
+                    showToast(errorMsg)
+                }
+            }
+        )
+    }
+    companion object {
+        private const val DELAY_CALL_API: Long = 2000
+    }
 }
