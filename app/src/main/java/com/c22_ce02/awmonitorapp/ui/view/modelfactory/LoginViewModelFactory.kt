@@ -12,5 +12,6 @@ class LoginViewModelFactory : ViewModelProvider.Factory {
             LoginViewModel(Injection.provideLoginRepository()) as T
         } else {
             throw IllegalArgumentException("ViewModel of ${modelClass.simpleName} Not Found")
-        }    }
+        }
+    }
 }
