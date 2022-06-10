@@ -22,8 +22,8 @@ import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.ui.splash.SplashActivity
 import com.c22_ce02.awmonitorapp.utils.isNetworkAvailable
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
@@ -59,7 +59,7 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
             return
         } else {
             fusedLocationClient.getCurrentLocation(
-                LocationRequest.PRIORITY_HIGH_ACCURACY,
+                Priority.PRIORITY_HIGH_ACCURACY,
                 object : CancellationToken() {
                     override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
                         return CancellationTokenSource().token
@@ -169,8 +169,12 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                         val aqi = data.getJSONObject(0).getString("aqi")
                         val title = "Indeks Kualitas Udara saat ini sebesar ${aqi.toInt()}"
                         val message =
-                            "Kualitas udara di $locationName saat ini berada di kategori ${getCategoryName(aqi.toInt())}, " +
-                            "jadi jangan lupa pakai masker saat keluar rumah ya!"
+                            "Kualitas udara di $locationName saat ini berada di kategori ${
+                                getCategoryName(
+                                    aqi.toInt()
+                                )
+                            }, " +
+                                    "jadi jangan lupa pakai masker saat keluar rumah ya!"
                         onSuccess(title, message, aqi.toInt())
                     } catch (e: Exception) {
                         Timber.e(e.message)
