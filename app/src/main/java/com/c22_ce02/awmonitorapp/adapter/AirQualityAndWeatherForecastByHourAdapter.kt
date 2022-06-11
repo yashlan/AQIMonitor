@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastByHour
 import com.c22_ce02.awmonitorapp.databinding.ItemRecycleviewAirQualityForecastBinding
-import com.c22_ce02.awmonitorapp.ui.activity.DetailsForecastActivity
+import com.c22_ce02.awmonitorapp.ui.activity.DetailsHistoryAndForecastActivity
 import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
 import com.c22_ce02.awmonitorapp.utils.startIncrementTextAnimation
 import java.text.SimpleDateFormat
@@ -37,7 +37,7 @@ class AirQualityAndWeatherForecastByHourAdapter(
                 tvLabelAQI.text = itemView.context.getString(R.string.aqi)
                 iconStatusAQI.setImageResource(f.historyAndForecastAirQuality.iconAQISrc)
 
-/*                if (f.historyAndForecastAirQuality.hour.equals(currentHour, true)) {
+                if (f.historyAndForecastAirQuality.hour.equals(currentHour, true)) {
                     tvHour.text = itemView.context.getString(R.string.now)
                     tvHour.setTextColor(Color.WHITE)
                     tvForecastAQI.setTextColor(Color.WHITE)
@@ -54,12 +54,12 @@ class AirQualityAndWeatherForecastByHourAdapter(
                             }
                         )
                     )
-                }*/
+                }
 
                 itemView.apply {
                     setOnClickListener {
                         startAnimation(AlphaAnimation(1f, 0.5f))
-                        val i = Intent(context, DetailsForecastActivity::class.java)
+                        val i = Intent(context, DetailsHistoryAndForecastActivity::class.java)
                         i.putExtra(HomeFragment.FORECAST_EXTRA, f)
                         context.startActivity(i)
                     }
