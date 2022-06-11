@@ -18,7 +18,7 @@ import com.c22_ce02.awmonitorapp.utils.startIncrementTextAnimation
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_forecast) {
+class DetailsHistoryAndForecastActivity : AppCompatActivity(R.layout.activity_details_forecast) {
 
     private val binding by viewBinding(ActivityDetailsForecastBinding::bind)
     private val currentHour = SimpleDateFormat("ha", Locale("id")).format(Date()).lowercase()
@@ -56,17 +56,17 @@ class DetailsForecastActivity : AppCompatActivity(R.layout.activity_details_fore
                     with(itemInfoAirForecast) {
                         startIncrementTextAnimation(it.historyAndForecastAirQuality.aqi, tvAQI)
                         startIncrementTextAnimation(
-                            convertWindSpeedToKmh(it.forecastWeather.windSpeed),
+                            convertWindSpeedToKmh(it.historyAndForecastWeather.windSpeed),
                             " km/h",
                             tvWindSpeed
                         )
                         startIncrementTextAnimation(
-                            it.forecastWeather.temperature,
+                            it.historyAndForecastWeather.temperature,
                             " C",
                             tvTemperature
                         )
                         startIncrementTextAnimation(
-                            it.forecastWeather.humidity,
+                            it.historyAndForecastWeather.humidity,
                             "%",
                             tvHumidity
                         )
