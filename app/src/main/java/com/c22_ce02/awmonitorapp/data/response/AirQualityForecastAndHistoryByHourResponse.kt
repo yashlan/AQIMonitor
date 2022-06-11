@@ -28,6 +28,8 @@ data class AirQualityForecastAndHistoryByHourResponse(
         val pm25: Double,
         @SerializedName("so2")
         val so2: Double,
+        @SerializedName("datetime")
+        val datetime: String
     )
 
     data class History(
@@ -45,5 +47,7 @@ data class AirQualityForecastAndHistoryByHourResponse(
         val pm25: Double,
         @SerializedName("so2")
         val so2: Double,
+        @SerializedName("datetime")
+        val datetime: String
     )
 }
