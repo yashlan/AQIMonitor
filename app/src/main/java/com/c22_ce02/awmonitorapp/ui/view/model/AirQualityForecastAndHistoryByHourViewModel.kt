@@ -8,7 +8,7 @@ import retrofit2.*
 class AirQualityForecastAndHistoryByHourViewModel(private val repository: AirQualityForecastAndHistoryByHourRepository) :
     ViewModel() {
 
-    fun getAirQualityForecastByHour(
+    fun getAirQualityForecastAndHistoryByHour(
         lat: Double,
         lon: Double,
         onSuccess: (AirQualityForecastAndHistoryByHourResponse.Data?) -> Unit,
