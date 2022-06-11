@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="warna_baik">#32C090</color>
     <color name="warna_sedang">#004CE8</color>
-    <color name="warna_tidak_sehat">#FFE37E</color>
+    <color name="warna_tidak_sehat">#F2BC51</color>
     <color name="warna_sangat_tidak_sehat">#FF3333</color>
     <color name="warna_berbahaya">#181A20</color>
     <color name="background_get_started">#2E335A</color>
