@@ -222,11 +222,11 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val mBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentIntent(notifyPendingIntent)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setSmallIcon(R.drawable.logo_no_background_leaf)
                 .setLargeIcon(
                     BitmapFactory.decodeResource(
                         context.resources,
-                        R.drawable.ic_notifications_black_24dp
+                        R.drawable.logo_no_background_leaf
                     )
                 )
                 .setContentTitle(title)
