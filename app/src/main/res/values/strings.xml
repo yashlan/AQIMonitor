@@ -21,7 +21,7 @@
 
     <string name="btn_next">Next >></string>
     <string name="btn_finish">Finish</string>
-    <string name="btn_skip">Skip</string>
+    <string name="btn_skip">Lewati</string>
     <string name="finish">Finish</string>
     <string name="title_activity_discover">DiscoverActivity</string>
 
@@ -56,7 +56,7 @@
     <string name="o3">O3</string>
     <string name="co">CO</string>
     <string name="city_condition">Lampung - Baik</string>
-    <string name="get_started">Get Started</string>
+    <string name="get_started">Mulai Sekarang</string>
     <string name="description">Description</string>
     <string name="create_at">created at</string>
     <string name="created_by">created by</string>

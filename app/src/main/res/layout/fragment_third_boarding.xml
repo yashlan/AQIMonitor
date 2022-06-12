@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.ThirdSlideFragment">
+    tools:context=".ui.fragment.ThirdBoardingFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/first_slide_container"
@@ -15,7 +15,7 @@
             android:id="@+id/first_slide_logo"
             android:layout_width="275dp"
             android:layout_height="282dp"
-            android:src="@drawable/ic_start_3"
+            android:src="@drawable/ic_start_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="64dp"
             android:layout_marginEnd="20dp"
-            android:text="@string/title_slide_3"
+            android:text="@string/title_slide_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,22 +43,23 @@
             style="@style/desc_slide"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/desc_slide_3"
+            android:text="@string/desc_slide_1"
             app:layout_constraintEnd_toEndOf="@+id/first_slide_title"
             app:layout_constraintStart_toStartOf="@+id/first_slide_title"
             app:layout_constraintTop_toBottomOf="@+id/first_slide_title" />
 
         <Button
-            android:id="@+id/btn_finish"
-            android:layout_width="150dp"
+            android:id="@+id/btn_started"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_finish_boarding"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_btn_get_started"
+            android:text="@string/get_started"
             app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            app:layout_constraintEnd_toEndOf="@+id/first_slide_desc"
+            app:layout_constraintStart_toStartOf="@+id/first_slide_desc"
+            app:layout_constraintTop_toBottomOf="@+id/first_slide_desc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </FrameLayout>

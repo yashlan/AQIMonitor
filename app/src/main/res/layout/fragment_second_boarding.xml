@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.SecondSlideFragment">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/first_slide_container"
@@ -15,7 +14,7 @@
             android:id="@+id/first_slide_logo"
             android:layout_width="275dp"
             android:layout_height="282dp"
-            android:src="@drawable/ic_start_2"
+            android:src="@drawable/ic_start_3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +31,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="64dp"
             android:layout_marginEnd="20dp"
-            android:text="@string/title_slide_2"
+            android:text="@string/title_slide_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,32 +42,20 @@
             style="@style/desc_slide"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/desc_slide_2"
+            android:text="@string/desc_slide_3"
             app:layout_constraintEnd_toEndOf="@+id/first_slide_title"
             app:layout_constraintStart_toStartOf="@+id/first_slide_title"
             app:layout_constraintTop_toBottomOf="@+id/first_slide_title" />
 
         <Button
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_finish"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_next_boarding"
+            android:background="@drawable/button_finish_boarding"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/second_btn_skip"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@android:color/transparent"
-            android:text="@string/btn_skip"
-            android:textColor="@color/end_color"
-            app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

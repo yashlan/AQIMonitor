@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.databinding.ActivityOnBoardingBinding
-import com.c22_ce02.awmonitorapp.ui.fragment.FirstSlideFragment
+import com.c22_ce02.awmonitorapp.ui.fragment.FirstBoardingFragment
 import com.c22_ce02.awmonitorapp.utils.forcePortraitScreenOrientation
 import com.c22_ce02.awmonitorapp.utils.setFullscreen
 
@@ -21,7 +21,7 @@ class OnBoardingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val mFragmentManager = supportFragmentManager
-        val mFirstSlideFragment = FirstSlideFragment()
+        val mFirstSlideFragment = FirstBoardingFragment()
 
         mFragmentManager
             .beginTransaction()
