@@ -28,7 +28,7 @@ import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.AirQualityAndWeatherForecastByHourAdapter
 import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastByHour
 import com.c22_ce02.awmonitorapp.data.model.AirQualityHistoryAndForecastByHour
-import com.c22_ce02.awmonitorapp.data.model.WeatherForecastByHour
+import com.c22_ce02.awmonitorapp.data.model.WeatherHistoryAndForecastByHour
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
@@ -37,15 +37,13 @@ import com.c22_ce02.awmonitorapp.ui.activity.DetailArticleActivity
 import com.c22_ce02.awmonitorapp.ui.view.model.AirQualityForecastAndHistoryByHourViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentWeatherConditionViewModel
-import com.c22_ce02.awmonitorapp.ui.view.model.WeatherForecastByHourViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.AirQualityForecastAndHistoryByHourViewModelFactory
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentAirQualityViewModelFactory
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentWeatherConditionViewModelFactory
-import com.c22_ce02.awmonitorapp.ui.view.modelfactory.WeatherForecastByHourViewModelFactory
 import com.c22_ce02.awmonitorapp.utils.*
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
@@ -57,8 +55,7 @@ import java.util.*
 class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     private var isCurrentWeatherConditionLoaded = false
-    private var isAirQualityForecastByHourLoaded = false
-    private var isWeatherForecastByHourLoaded = false
+    private var isAirQualityHistoryAndForecastByHourLoaded = false
     private var isCurrentAirQualityLoaded = false
     private var isLocationChanged = false
     private var allowRefresh = false
@@ -69,9 +66,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     private lateinit var dataCurrentWeather: CurrentWeatherConditionResponse.Data
     private lateinit var dataCurrentAirQuality: CurrentAirQualityResponse.Data
     private val listHistoryAndForecastAir = ArrayList<AirQualityHistoryAndForecastByHour>()
-    private val listForecastWeather = ArrayList<WeatherForecastByHour>()
-    private val listForecastAirAndWeather = ArrayList<AirQualityAndWeatherHistoryForecastByHour>()
-
+    private val listForecastAndHistoryWeather = ArrayList<WeatherHistoryAndForecastByHour>()
+    private val listHistoryForecastAirAndWeather =
+        ArrayList<AirQualityAndWeatherHistoryForecastByHour>()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationManager: LocationManager
     private var refreshUITimer: Timer? = null
@@ -92,9 +89,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     }
     private val airQualityForecastAndHistoryByHourViewModel: AirQualityForecastAndHistoryByHourViewModel by viewModels {
         AirQualityForecastAndHistoryByHourViewModelFactory()
-    }
-    private val weatherForecastByHourViewModel: WeatherForecastByHourViewModel by viewModels {
-        WeatherForecastByHourViewModelFactory()
     }
     private val currentAirQualityViewModel: CurrentAirQualityViewModel by viewModels {
         CurrentAirQualityViewModelFactory()
@@ -224,18 +218,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     }
 
     private fun resetAll(onReset: () -> Unit) {
-        listForecastAirAndWeather.clear()
-        listForecastAirAndWeather.removeAll(listForecastAirAndWeather)
+        listHistoryForecastAirAndWeather.clear()
+        listHistoryForecastAirAndWeather.removeAll(listHistoryForecastAirAndWeather)
 
-        listForecastWeather.clear()
-        listForecastWeather.removeAll(listForecastWeather)
+        listForecastAndHistoryWeather.clear()
+        listForecastAndHistoryWeather.removeAll(listForecastAndHistoryWeather)
 
         listHistoryAndForecastAir.clear()
         listHistoryAndForecastAir.removeAll(listHistoryAndForecastAir)
 
         if (listHistoryAndForecastAir.isEmpty() &&
-            listForecastWeather.isEmpty() &&
-            listForecastAirAndWeather.isEmpty()
+            listForecastAndHistoryWeather.isEmpty() &&
+            listHistoryForecastAirAndWeather.isEmpty()
         ) {
             onReset.invoke()
         }
@@ -243,9 +237,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     private fun isAllDataLoaded(): Boolean =
         isCurrentAirQualityLoaded &&
-                isAirQualityForecastByHourLoaded &&
-                isCurrentWeatherConditionLoaded &&
-                isWeatherForecastByHourLoaded
+                isAirQualityHistoryAndForecastByHourLoaded &&
+                isCurrentWeatherConditionLoaded
 
     private fun refreshFragment() {
         refreshFragmentHandler = Handler(Looper.getMainLooper())
@@ -374,22 +367,27 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 }
             }
 
+            //dummy dulu
+            for (i in 0..TOTAL_LIST_FORECAST_AND_HISTORY_SIZE) {
+                listForecastAndHistoryWeather.add(WeatherHistoryAndForecastByHour(1, 1, 1))
+            }
+
             for (i in 0 until TOTAL_LIST_FORECAST_AND_HISTORY_SIZE) {
-                listForecastAirAndWeather.add(
+                listHistoryForecastAirAndWeather.add(
                     AirQualityAndWeatherHistoryForecastByHour(
                         listHistoryAndForecastAir[i],
-                        listForecastWeather[i]
+                        listForecastAndHistoryWeather[i]
                     )
                 )
 
-                if (listForecastAirAndWeather.size == TOTAL_LIST_FORECAST_AND_HISTORY_SIZE) {
+                if (listHistoryForecastAirAndWeather.size == TOTAL_LIST_FORECAST_AND_HISTORY_SIZE) {
                     setupAdapter(
                         binding.itemPanelHomeInfo.rvListAirForecast,
                         false,
                         addAdapterValue = {
                             binding.itemPanelHomeInfo.rvListAirForecast.adapter =
                                 AirQualityAndWeatherForecastByHourAdapter(
-                                    listForecastAirAndWeather,
+                                    listHistoryForecastAirAndWeather,
                                     canPlayAnim = isAllDataLoaded()
                                 )
                         }
@@ -534,7 +532,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         ) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
         } else {
-            fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,
+            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY,
                 object : CancellationToken() {
                     override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
                         return CancellationTokenSource().token
@@ -618,7 +616,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 onSuccess = {
                     if (it != null) {
                         dataCurrentWeather = it[0]
-                        getForecastData(lat, lon)
+                        getForecastAndHistoryData(lat, lon)
                         isCurrentWeatherConditionLoaded = true
                     }
                 },
@@ -651,22 +649,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     private fun convertWindSpeedToKmh(speedMs: Int): Int = (speedMs * 3.6).toInt()
 
-    private fun getForecastData(lat: Double, lon: Double) {
-        airQualityForecastAndHistoryByHourViewModel.getAirQualityForecastByHour(
+    private fun getForecastAndHistoryData(lat: Double, lon: Double) {
+        airQualityForecastAndHistoryByHourViewModel.getAirQualityForecastAndHistoryByHour(
             lat,
             lon,
             onSuccess = {
                 if (it != null) {
-                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
+                    val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("id"))
                     val formatter = SimpleDateFormat("ha", Locale("id"))
                     var total = 0
                     it.history.forEach { historyData ->
-/*                    val hour =
-                        formatter.format(parser.parse(Date().toString())!!).lowercase()*/
+                        val hour =
+                            formatter.format(parser.parse(historyData.datetime)!!).lowercase()
                         val currentHour = formatter.format(Date()).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
-                                hour = "his",
+                                hour = "his " + hour,
                                 iconAQISrc = getIconItem(historyData.aqi.toInt()),
                                 aqi = historyData.aqi.toInt(),
                                 pm10 = historyData.pm10.toInt(),
@@ -681,10 +679,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     }
 
                     it.forecast.forEach { forecastData ->
+                        val hour =
+                            formatter.format(parser.parse(forecastData.datetime)!!).lowercase()
                         val currentHour = formatter.format(Date()).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
-                                hour = "for",
+                                hour = "for " + hour,
                                 iconAQISrc = getIconItem(forecastData.aqi.toInt()),
                                 aqi = forecastData.aqi.toInt(),
                                 pm10 = forecastData.pm10.toInt(),
@@ -697,48 +697,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                         )
                         total++
                     }
-
-                    isAirQualityForecastByHourLoaded = listHistoryAndForecastAir.size == total
-                }
-            },
-            onError = { errorMsg ->
-                if (errorMsg != null) {
-                    showToast(errorMsg)
-                }
-            }
-        )
-
-        weatherForecastByHourViewModel.getWeatherForecastByHour(
-            lat,
-            lon,
-            TOTAL_LIST_FORECAST_AND_HISTORY_SIZE,
-            onSuccess = {
-                if (it != null) {
-                    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("id"))
-                    val formatter = SimpleDateFormat("ha", Locale("id"))
-                    it.forEach { data ->
-                        val hour =
-                            formatter.format(parser.parse(data.timestamp_local)!!).lowercase()
-                        val currentHour = formatter.format(Date()).lowercase()
-                        if (hour.equals(currentHour, true)) {
-                            listForecastWeather.add(
-                                WeatherForecastByHour(
-                                    windSpeed = dataCurrentWeather.windSpeed.toInt(),
-                                    humidity = dataCurrentWeather.humidity.toInt(),
-                                    temperature = dataCurrentWeather.temperature.toInt()
-                                )
-                            )
-                        } else {
-                            listForecastWeather.add(
-                                WeatherForecastByHour(
-                                    windSpeed = data.windSpeed.toInt(),
-                                    humidity = data.humidity.toInt(),
-                                    temperature = data.temperature.toInt()
-                                )
-                            )
-                        }
-                        isWeatherForecastByHourLoaded = it.size == listForecastWeather.size
-                    }
+                    isAirQualityHistoryAndForecastByHourLoaded =
+                        listHistoryAndForecastAir.size == total
                 }
             },
             onError = { errorMsg ->
