@@ -3,14 +3,16 @@ package com.c22_ce02.awmonitorapp.ui.view.model
 import androidx.lifecycle.ViewModel
 import com.c22_ce02.awmonitorapp.data.repository.MapsRepository
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQuality34ProvinceResponse
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class MapsViewModel(private val repository: MapsRepository) : ViewModel() {
 
     fun getCurrentAirQuality34Province(
-        onSuccess: (List<CurrentAirQuality34ProvinceResponse.CurrentItem>?) -> Unit,
+        onSuccess: (String?) -> Unit,
         onError: (String?) -> Unit
     ) {
         val call = repository.getCurrentAirQuality34Province()
@@ -20,7 +22,7 @@ class MapsViewModel(private val repository: MapsRepository) : ViewModel() {
                 response: Response<CurrentAirQuality34ProvinceResponse>
             ) {
                 if (response.isSuccessful) {
-                    onSuccess(response.body()?.data?.current)
+                    onSuccess(Gson().toJson(response.body(), CurrentAirQuality34ProvinceResponse::class.java))
                 } else {
                     onError("Terjadi Kesalahan")
                 }
