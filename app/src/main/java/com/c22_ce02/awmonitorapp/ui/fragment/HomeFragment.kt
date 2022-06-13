@@ -122,6 +122,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        refreshUITimer?.cancel()
+        refreshLocationTimer?.cancel()
+        refreshFragmentHandler?.removeCallbacksAndMessages(null)
+        guide1Handler?.removeCallbacksAndMessages(null)
+        guide2Handler?.removeCallbacksAndMessages(null)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
