@@ -7,6 +7,7 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,17 +15,17 @@ import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityMaps
+import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQuality34ProvinceResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.MapsViewModelFactory
-import com.c22_ce02.awmonitorapp.utils.loadJSONFromAsset
-import com.c22_ce02.awmonitorapp.utils.showToast
-import com.c22_ce02.awmonitorapp.utils.spannableStringBuilder
+import com.c22_ce02.awmonitorapp.utils.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,6 +34,9 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
@@ -45,25 +49,32 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     private val binding by viewBinding(FragmentMapsBinding::bind, onViewDestroyed = {
         callApiHandler?.removeCallbacksAndMessages(null)
     })
-    private val listDummy = ArrayList<CurrentAirQuality34ProvinceResponse.CurrentItem>()
+    private val listDataCurrentLocal = ArrayList<CurrentAirQuality34ProvinceResponse.CurrentItem>()
     private var listMarkerMaps: List<MutableMap<Marker?, String?>> = listOf(HashMap())
     private var listDataAirQuality: List<MutableMap<String?, AirQualityMaps?>> = listOf(HashMap())
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
-        if (BuildConfig.DEBUG) {
-            showLoading(false)
-            getListDummy()
-            return@OnMapReadyCallback
-        }
         showLoading(true)
         callApiHandler = Handler(Looper.getMainLooper())
         callApiHandler?.postDelayed({
-            getCurrentAirQuality34Province()
+            requireActivity().runOnUiThread {
+                getCurrentAirQuality34Province()
+            }
         }, DELAY_CALL_API)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        callApiHandler?.removeCallbacksAndMessages(null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (!isNetworkAvailable(requireContext(), true)) {
+            return
+        }
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
     }
@@ -204,49 +215,36 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     }
 
     private fun getCurrentAirQuality34Province() {
+        val isFilePresent = isFilePresent(requireContext())
+        if (isFilePresent) {
+/*            if (BuildConfig.DEBUG) {
+                showToastInThread("file sudah ada di storage, load via local")
+            }*/
+            val mapsJson = readResponse(requireContext())
+            mapsJson?.let { getListDataLocal(it) }
+            return
+        }
+
         mapsViewModel.getCurrentAirQuality34Province(
-            onSuccess = { list ->
-                showLoading(false)
-                list?.forEach { item ->
-                    val location = LatLng(item.lat, item.lon)
-                    val city = item.city
-                    val aqi = item.aqi.toInt()
-                    listDataAirQuality.forEach { dataAir ->
-
-                        dataAir[city] = AirQualityMaps(
-                            aqi = item.aqi,
-                            pm10 = item.pm10,
-                            pm25 = item.pm25,
-                            no2 = item.no2,
-                            o3 = item.o3,
-                            so2 = item.so2,
-                            co = item.co,
-                            city = city
-                        )
-
-                        val marker = mMap.addMarker(
-                            MarkerOptions()
-                                .position(location)
-                                .icon(getMarkerBitmapFromView(aqi))
-                        )
-
-                        marker?.tag = city
-
-                        listMarkerMaps.forEach { map ->
-                            map[marker] = marker?.tag as String
-                            mMap.setOnMarkerClickListener {
-                                val tag = it.tag as String
-                                if (tag.equals(map[it], ignoreCase = true)) {
-                                    showBottomSheetDialogMaps(dataAir, map[it])
-                                }
-                                false
-                            }
+            onSuccess = { json ->
+                val isFileCreated = saveResponse(requireContext(), json)
+                if (isFileCreated) {
+/*                    if (BuildConfig.DEBUG) {
+                        showToastInThread("file tersimpan di storagemu!!")
+                    }*/
+                    val mapsJson = readResponse(requireContext())
+                    mapsJson?.let { getListDataLocal(it) }
+                } else {
+                    showSnackBar(
+                        binding.root,
+                        R.string.errorMsg,
+                        R.string.yes,
+                        onClickOkAction = {
+                            val navHostFragment =
+                                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_home_activity)
+                            navHostFragment?.findNavController()?.navigate(R.id.navigation_maps)
                         }
-                    }
-
-                    val firstCameraPos = LatLng(-1.845549, 120.513968)
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(5.5f))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(firstCameraPos))
+                    )
                 }
             },
             onError = { errorMsg ->
@@ -258,14 +256,14 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         )
     }
 
-    private fun getListDummy() {
+    private fun getListDataLocal(json: String) {
+        showLoading(false)
         try {
-            val fileName = "response_maps.json"
-            val jsonObject = JSONObject(requireContext().loadJSONFromAsset(fileName)!!)
+            val jsonObject = JSONObject(json)
             val data = jsonObject.getJSONObject("data")
             val current = data.getJSONArray("current")
 
-            for (i in 0..current.length()) {
+            for (i in 0 until current.length()) {
                 val obj = current.getJSONObject(i)
 
                 val aqi = obj.getString("aqi")
@@ -291,9 +289,9 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                     pm25 = pm25.toDouble(),
                     so2 = so2.toDouble(),
                 )
-                listDummy.add(item)
+                listDataCurrentLocal.add(item)
 
-                listDummy.forEach {
+                listDataCurrentLocal.forEach {
                     val location = LatLng(it.lat, it.lon)
                     listDataAirQuality.forEach { dataAir ->
                         dataAir[city] = AirQualityMaps(
@@ -324,12 +322,12 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                                 }
                                 false
                             }
+
+                            val firstCameraPos = LatLng(-1.845549, 120.513968)
+                            mMap.moveCamera(CameraUpdateFactory.zoomTo(5.5f))
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(firstCameraPos))
                         }
                     }
-
-                    val firstCameraPos = LatLng(-1.845549, 120.513968)
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(5.5f))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(firstCameraPos))
                 }
             }
         } catch (e: JSONException) {
