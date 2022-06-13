@@ -76,6 +76,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     private var refreshFragmentHandler: Handler? = null
     private var guide1Handler: Handler? = null
     private var guide2Handler: Handler? = null
+    private var callApiHandler: Handler? = null
 
     private val binding by viewBinding(FragmentHomeBinding::bind, onViewDestroyed = {
         refreshUITimer?.cancel()
@@ -83,6 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         refreshFragmentHandler?.removeCallbacksAndMessages(null)
         guide1Handler?.removeCallbacksAndMessages(null)
         guide2Handler?.removeCallbacksAndMessages(null)
+        callApiHandler?.removeCallbacksAndMessages(null)
     })
     private val currentWeatherConditionViewModel: CurrentWeatherConditionViewModel by viewModels {
         CurrentWeatherConditionViewModelFactory()
@@ -129,6 +131,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         refreshFragmentHandler?.removeCallbacksAndMessages(null)
         guide1Handler?.removeCallbacksAndMessages(null)
         guide2Handler?.removeCallbacksAndMessages(null)
+        callApiHandler?.removeCallbacksAndMessages(null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -165,8 +168,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
         resetAll()
         {
-            loadAllData()
             hideUI()
+            callApiHandler = Handler(Looper.getMainLooper())
+            callApiHandler?.postDelayed({
+                loadAllData()
+            }, DELAY_CALL_API)
         }
 
         refreshUITimer = Timer()
@@ -803,6 +809,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
+        private const val DELAY_CALL_API: Long = 2000
         private const val DELAY_REFRESH: Long = 1000
         private const val DELAY_GUIDE: Long = 500
         private const val PERIOD_TIMER: Long = 500
