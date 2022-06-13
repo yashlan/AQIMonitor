@@ -23,11 +23,20 @@ import timber.log.Timber
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
-    private val binding by viewBinding(FragmentArticleBinding::bind)
+    private var callApiHandler: Handler? = null
+    private val binding by viewBinding(FragmentArticleBinding::bind, onViewDestroyed = {
+        callApiHandler?.removeCallbacksAndMessages(null)
+    })
     private val articleViewModel: ArticleViewModel by viewModels {
         ArticleViewModelFactory()
     }
     private lateinit var listArticle: ArrayList<Article>
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        callApiHandler?.removeCallbacksAndMessages(null)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,7 +50,11 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         }
 
         initializeTime4A()
-        loadData()
+
+        callApiHandler = Handler(Looper.getMainLooper())
+        callApiHandler?.postDelayed({
+            loadData()
+        }, DELAY_CALL_API)
     }
 
     private fun refreshFragment() {
@@ -123,5 +136,6 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         const val URL_EXTRA = "URL_EXTRA"
         private const val MAX_CHAR = 120
         private const val DELAY_REFRESH: Long = 500
+        private const val DELAY_CALL_API: Long = 2000
     }
 }
