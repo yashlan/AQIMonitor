@@ -6,7 +6,7 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 
 ## Other Repository
 - Machine Learning : https://github.com/muhammadraflij/company-capstone
-- Cloud Computing : https://github.com/catherineelfrida/AWMonitor/tree/main/Cloud%20Computing
+- Cloud Computing : https://github.com/prakosodwika/api-awmonitor-nodejs
 
 ## Team Member
 |     ID     |        Role        |            Nama             |
