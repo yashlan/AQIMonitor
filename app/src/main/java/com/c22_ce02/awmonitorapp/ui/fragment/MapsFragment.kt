@@ -16,8 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityMaps
+import com.c22_ce02.awmonitorapp.data.preference.MapsPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQuality34ProvinceResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
@@ -31,6 +33,10 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.json.JSONException
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
@@ -220,8 +226,15 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
             onSuccess = { json ->
                 val isFileCreated = saveResponse(requireContext(), json)
                 if (isFileCreated) {
+                    val mapsPref = MapsPreference(requireContext())
+                    mapsPref.setLastUpdateMaps(Date().time)
+
                     val mapsJson = readResponse(requireContext())
                     mapsJson?.let { getListDataLocal(it) }
+
+                    if(BuildConfig.DEBUG) {
+                        showToast("json maps file saved on your storage!")
+                    }
                 } else {
                     showSnackBar(
                         binding.root,
