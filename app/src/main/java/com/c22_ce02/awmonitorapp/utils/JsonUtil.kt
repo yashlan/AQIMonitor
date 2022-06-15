@@ -1,9 +1,10 @@
 package com.c22_ce02.awmonitorapp.utils
 
 import android.content.Context
-import android.util.Log
 import com.c22_ce02.awmonitorapp.BuildConfig
+import com.c22_ce02.awmonitorapp.data.preference.MapsPreference
 import java.io.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val fileName = "maps_response.json"
@@ -47,10 +48,16 @@ fun saveResponse(context: Context, jsonString: String?): Boolean {
 fun isFilePresent(context: Context): Boolean {
     val path = context.getExternalFilesDir(null)?.absolutePath
     val file = File(path, fileName)
-    val time = Calendar.getInstance()
-    time.add(Calendar.HOUR, -1)
-    val lastModified = Date(file.lastModified())
-    if (lastModified.before(time.time)) {
+
+    val mapsPref = MapsPreference(context)
+    val diff = Date().time - mapsPref.getLastUpdateMaps()
+    val seconds = diff / 1000
+    val minutes = seconds / 60
+    val hours = minutes / 60
+
+    val canUpdateMaps = hours >= 1
+
+    if (canUpdateMaps) {
         file.delete()
         if (BuildConfig.DEBUG) {
             context.showToastInThread("file sudah expired, donwload ulang dulu")
