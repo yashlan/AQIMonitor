@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/avatar_1.xml" value="0.164" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/avatar_2.xml" value="0.164" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/avatar_3.xml" value="0.164" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/avatar_4.xml" value="0.164" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/avatar_5.xml" value="0.2065" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/avatar_6.xml" value="0.164" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/avatar_image.xml" value="0.1585" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/background_img_thumbnail.xml" value="0.1555" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/bg_btn_get_started.xml" value="0.1555" />
@@ -32,6 +38,7 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_item_status_sedang.xml" value="0.156" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_air_quality_item_status_tidak_sehat.xml" value="0.156" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_article_selector.xml" value="0.106" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_avatar_5.xml" value="0.164" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_bottom_nav_bg.xml" value="0.1845" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_home.xml" value="0.136" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/drawable/ic_card_info_air_today.xml" value="0.169" />
@@ -94,6 +101,7 @@
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_qqactivity.xml" value="0.21927083333333333" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_register.xml" value="0.1799145299145299" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/activity_splash.xml" value="0.2" />
+        <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/bottom_sheet_choose_avatar.xml" value="0.4" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/dialog_custom.xml" value="0.264" />
         <entry key="..\:/GitHub/AWMonitor/app/src/main/res/layout/fragment_article.xml" value="0.2" />
