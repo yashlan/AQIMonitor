@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastByHour
+import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.databinding.ItemRecycleviewAirQualityForecastBinding
 import com.c22_ce02.awmonitorapp.ui.activity.DetailsHistoryAndForecastActivity
 import com.c22_ce02.awmonitorapp.ui.fragment.HomeFragment
@@ -58,6 +59,12 @@ class AirQualityAndWeatherForecastByHourAdapter(
 
                 itemView.apply {
                     setOnClickListener {
+                        val checkPreference = CheckPreference(itemView.context)
+                        val checkHelper = checkPreference.getCheckGuide()
+
+                        if (!checkHelper.isUserFinishGuide)
+                            return@setOnClickListener
+
                         startAnimation(AlphaAnimation(1f, 0.5f))
                         val i = Intent(context, DetailsHistoryAndForecastActivity::class.java)
                         i.putExtra(HomeFragment.FORECAST_EXTRA, f)
