@@ -58,16 +58,16 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 ## Additional Libraries
 |           Android             |        Machine Learing        |    Cloud Computing          |
 |-------------------------------|-------------------------------|-----------------------------|
-|Retrofit + Logging interceptor |                               |                             |
-|Timber                         |                               |                             |
-|Loopj                          |                               |                             |
-|Kirich1409 ViewModel Delegate  |                               |                             |
-|Shimmer                        |                               |                             |
-|Lottie                         |                               |                             |
-|Glide                          |                               |                             |
-|Jitpack.io                     |                               |                             |
-|ShowcaseView                   |                               |                             |
-|CircleImageView                |                               |                             |
-|Jsoup                          |                               |                             |
-|time4j-android                 |                               |                             |
+|Retrofit + Logging interceptor |Sklearn                        |                             |
+|Timber                         |Flask                          |                             |
+|Loopj                          |Glom                           |                             |
+|Kirich1409 ViewModel Delegate  |Numpy                          |                             |
+|Shimmer                        |Pandas                         |                             |
+|Lottie                         |Matplotlib                     |                             |
+|Glide                          |DateTime                       |                             |
+|Jitpack.io                     |seaborn                        |                             |
+|ShowcaseView                   |Scikit-learn                   |                             |
+|CircleImageView                |Tensorflow                     |                             |
+|Jsoup                          |Keras                          |                             |
+|time4j-android                 |TFLite                         |                             |
 |fancy alert dialog             |                               |                             |
