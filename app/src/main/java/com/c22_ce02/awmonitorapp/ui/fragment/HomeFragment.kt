@@ -30,6 +30,7 @@ import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastB
 import com.c22_ce02.awmonitorapp.data.model.AirQualityHistoryAndForecastByHour
 import com.c22_ce02.awmonitorapp.data.model.WeatherHistoryAndForecastByHour
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
+import com.c22_ce02.awmonitorapp.data.preference.PostDataPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
@@ -50,6 +51,7 @@ import com.google.android.gms.tasks.OnTokenCanceledListener
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.time.hours
 
 
 class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
@@ -212,6 +214,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
     }
 
     private fun postDataWeatherAndAirQuality() {
+        val postPref = PostDataPreference(requireContext())
+        val diff = Date().time - postPref.getLastPost()
+        val seconds = diff / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+
+        val canPostData = hours >= 1
+
+        if(!canPostData) return
+
         getLocation(onGetLocation = { lat, lon ->
             getCurrentLocationName(lat, lon, onGetLocationName = { locationName ->
                 PostData(this@HomeFragment).postCurrentWeatherAndAirData(
@@ -226,7 +238,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     pm25 = dataCurrentAirQuality.pm25,
                     temperature = dataCurrentWeather.temperature,
                     humidity = dataCurrentWeather.humidity,
-                    windSpeed = dataCurrentWeather.windSpeed
+                    windSpeed = dataCurrentWeather.windSpeed,
+                    onSuccessCallback = {
+                        if(BuildConfig.DEBUG) {
+                            showToast("post data history success!")
+                        }
+                        postPref.setLastPost(Date().time)
+                    }
                 )
             })
         })
@@ -676,7 +694,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     it.history.forEach { historyData ->
                         val hour =
                             formatter.format(parser.parse(historyData.datetime)!!).lowercase()
-                        val currentHour = formatter.format(Date()).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
                                 hour = hour,
@@ -696,10 +713,26 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                         }
                     }
 
+                    val currentHour = formatter.format(Date()).lowercase()
+                    listHistoryAndForecastAir.add(
+                        AirQualityHistoryAndForecastByHour(
+                            hour = currentHour,
+                            iconAQISrc = getIconItem(dataCurrentAirQuality.aqi.toInt()),
+                            aqi = dataCurrentAirQuality.aqi.toInt(),
+                            pm10 = dataCurrentAirQuality.pm10.toInt(),
+                            pm25 = dataCurrentAirQuality.pm25.toInt(),
+                            o3 = dataCurrentAirQuality.o3.toInt(),
+                            so2 = dataCurrentAirQuality.so2.toInt(),
+                            no2 = dataCurrentAirQuality.no2.toInt(),
+                            co = dataCurrentAirQuality.co.toInt()
+                        )
+                    )
+
+                    total++
+
                     it.forecast.forEach { forecastData ->
                         val hour =
                             formatter.format(parser.parse(forecastData.datetime)!!).lowercase()
-                        val currentHour = formatter.format(Date()).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
                                 hour = hour,
@@ -776,7 +809,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                                             binding.itemPanelHomeInfo.rvListAirForecast,
                                             "Riwayat dan Prediksi Kualitas Udara, " +
                                                     "anda dapat mengklik item untuk melihat halaman detail" +
-                                                    " dan menggeser untuk melihat prediksi lainnya"
+                                                    " dan menggeser untuk melihat item lainnya"
                                         ) {
                                             binding.scrollView.smoothScrollTo(
                                                 0,
@@ -816,7 +849,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         private const val DELAY_REFRESH: Long = 1000
         private const val DELAY_GUIDE: Long = 500
         private const val PERIOD_TIMER: Long = 500
-        private const val TOTAL_LIST_FORECAST_AND_HISTORY_SIZE = 6
+        private const val TOTAL_LIST_FORECAST_AND_HISTORY_SIZE = 7
         const val FORECAST_EXTRA = "FORECAST_EXTRA"
         const val URL_EXTRA = "URL_EXTRA"
     }
