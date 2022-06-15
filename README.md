@@ -38,8 +38,8 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 ## Task And Schedule
 - link :
 
-## Class Diagram
-- gambar
+## User Flow Diagram
+![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjhbT-dmnlEQxIYZ0kx1HwMTsfad61K37mF5WiTbcEMFxj4AJ1HIomlwgkCUCa-5LB6KkvB-Xc9W4hVL8gBOYWWuwsZQqU2fOA0NU2rokZkeF_r0vbR_DEOMDlb-obP1vMvDIuYivqXWY8mNB5fC5WBjbg4v4a4CZmJCgcaazlvk-AlkkOLY2qmYkou/s1830/user%20flow%20AQIMonitor.png)
 
 ## Technologies
 - Android Studio
