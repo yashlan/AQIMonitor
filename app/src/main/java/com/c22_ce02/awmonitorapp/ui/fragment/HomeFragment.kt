@@ -679,7 +679,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                         val currentHour = formatter.format(Date()).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
-                                hour = "his " + hour,
+                                hour = hour,
                                 iconAQISrc = getIconItem(historyData.aqi.toInt()),
                                 aqi = historyData.aqi.toInt(),
                                 pm10 = historyData.pm10.toInt(),
@@ -691,6 +691,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                             )
                         )
                         total++
+                        if(total > 2) {
+                            listHistoryAndForecastAir.reverse()
+                        }
                     }
 
                     it.forecast.forEach { forecastData ->
@@ -699,7 +702,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                         val currentHour = formatter.format(Date()).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
-                                hour = "for " + hour,
+                                hour = hour,
                                 iconAQISrc = getIconItem(forecastData.aqi.toInt()),
                                 aqi = forecastData.aqi.toInt(),
                                 pm10 = forecastData.pm10.toInt(),
