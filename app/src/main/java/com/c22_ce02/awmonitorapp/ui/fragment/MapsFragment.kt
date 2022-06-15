@@ -7,7 +7,6 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,10 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityMaps
-import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQuality34ProvinceResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
@@ -34,9 +31,6 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
@@ -107,7 +101,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
         idItem: String?,
     ) {
         val sheet = BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialog)
-        sheet.setContentView(R.layout.bottom_sheet_layout)
+        sheet.setContentView(R.layout.bottom_sheet_detail_maps)
 
         val tvPm10Title = sheet.findViewById<TextView>(R.id.tvPm10Title)
         val tvPm25Title = sheet.findViewById<TextView>(R.id.tvPm25Title)
@@ -217,9 +211,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     private fun getCurrentAirQuality34Province() {
         val isFilePresent = isFilePresent(requireContext())
         if (isFilePresent) {
-/*            if (BuildConfig.DEBUG) {
-                showToastInThread("file sudah ada di storage, load via local")
-            }*/
             val mapsJson = readResponse(requireContext())
             mapsJson?.let { getListDataLocal(it) }
             return
@@ -229,9 +220,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
             onSuccess = { json ->
                 val isFileCreated = saveResponse(requireContext(), json)
                 if (isFileCreated) {
-/*                    if (BuildConfig.DEBUG) {
-                        showToastInThread("file tersimpan di storagemu!!")
-                    }*/
                     val mapsJson = readResponse(requireContext())
                     mapsJson?.let { getListDataLocal(it) }
                 } else {
