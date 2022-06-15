@@ -24,7 +24,8 @@ class PostData(private val fragment: Fragment) {
         pm25: Double,
         humidity: Double,
         temperature: Double,
-        windSpeed: Double
+        windSpeed: Double,
+        onSuccessCallback: () -> Unit
     ) {
         postCurrentWeatherAndAirDataViewModel.postCurrentWeatherAndAirData(
             location = location,
@@ -40,8 +41,8 @@ class PostData(private val fragment: Fragment) {
             temperature = temperature,
             windSpeed = windSpeed,
             onSuccess = { successMsg ->
-                if (successMsg != null && BuildConfig.DEBUG) {
-                    fragment.requireContext().showToast(successMsg.toString())
+                if (successMsg != null) {
+                    onSuccessCallback.invoke()
                 }
             },
             onError = { errorMsg ->
