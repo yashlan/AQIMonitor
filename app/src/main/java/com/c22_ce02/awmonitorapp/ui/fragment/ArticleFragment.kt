@@ -112,9 +112,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             onError = { errorMsg ->
                 showLoading(false)
                 if (errorMsg != null) {
-                    if (BuildConfig.DEBUG) {
-                        Timber.e(errorMsg)
-                    }
+                    showToast(errorMsg)
                 }
             }
         )
