@@ -5,6 +5,7 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
@@ -26,10 +27,10 @@ fun Context.loadImageViaGlide(uri: Uri?, target: ImageView) {
         .into(target)
 }
 
-fun AppCompatActivity.loadImageViaGlide(drawable: Int, target: ImageView) {
+fun Fragment.loadImageViaGlide(drawable: Int, target: ImageView) {
     Glide
         .with(this)
-        .load(ContextCompat.getDrawable(this, drawable))
+        .load(ContextCompat.getDrawable(requireContext(), drawable))
         .diskCacheStrategy(DiskCacheStrategy.NONE)
         .into(target)
 }

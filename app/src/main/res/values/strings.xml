@@ -79,4 +79,5 @@
     <string name="loading">Sedang Proses...</string>
     <string name="published">Published</string>
     <string name="errorMsg">Terjadi kesalahan, silakan muat ulang</string>
+    <string name="pilih_avatar">Pilih Avatar</string>
 </resources>
