@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat
 import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.ui.splash.SplashActivity
+import com.c22_ce02.awmonitorapp.utils.getCurrentAQIISPU
 import com.c22_ce02.awmonitorapp.utils.isNetworkAvailable
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -166,16 +167,29 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                         val locationName = getCurrentLocationName(context, lat, lon)
                         val responseObject = JSONObject(result)
                         val data = responseObject.getJSONArray("data")
-                        val aqi = data.getJSONObject(0).getString("aqi")
-                        val title = "Indeks Kualitas Udara saat ini sebesar ${aqi.toInt()}"
+                        val pm10 = data.getJSONObject(0).getString("pm10").toDouble()
+                        val pm25 = data.getJSONObject(0).getString("pm25").toDouble()
+                        val o3 = data.getJSONObject(0).getString("o3").toDouble()
+                        val so2 = data.getJSONObject(0).getString("so2").toDouble()
+                        val no2 = data.getJSONObject(0).getString("no2").toDouble()
+                        val co = data.getJSONObject(0).getString("co").toDouble()
+
+                        val aqi = getCurrentAQIISPU(
+                            pm10 = pm10,
+                            pm25 = pm25,
+                            o3 = o3,
+                            so2 = so2,
+                            no2 = no2,
+                            co = co
+                        )
+
+                        val title = "Indeks Kualitas Udara saat ini sebesar $aqi"
                         val message =
                             "Kualitas udara di $locationName saat ini berada di kategori ${
-                                getCategoryName(
-                                    aqi.toInt()
-                                )
+                                getCategoryName(aqi)
                             }, " +
                                     "jadi jangan lupa pakai masker saat keluar rumah ya!"
-                        onSuccess(title, message, aqi.toInt())
+                        onSuccess(title, message, aqi)
                     } catch (e: Exception) {
                         Timber.e(e.message)
                     }
