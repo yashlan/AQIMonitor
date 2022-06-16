@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-parcelize'
     id 'kotlin-android'
@@ -24,6 +23,7 @@ android {
         buildConfigField("String", "API_KEY_WEATHERBIT_3", API_KEY_WEATHERBIT_3)
         buildConfigField("String", "API_KEY_WEATHERBIT_4", API_KEY_WEATHERBIT_4)
         buildConfigField("String", "API_KEY_WEATHERBIT_5", API_KEY_WEATHERBIT_5)
+        buildConfigField("String", "API_KEY_WEATHERBIT_6", API_KEY_WEATHERBIT_6)
         buildConfigField("String", "BASE_URL_WEATHERBIT", BASE_URL_WEATHERBIT)
         buildConfigField("String", "BASE_URL_AQIMonitor_POST", BASE_URL_AQIMonitor_POST)
         buildConfigField("String", "BASE_URL_AQIMonitor_GET", BASE_URL_AQIMonitor_GET)
