@@ -10,7 +10,8 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 
 ## ScreenShoot
 
-- 
+<img src="https://github.com/yashlan/AWMonitor/blob/main/scrennShoot/_1_dasboard.gif" width="200" /> <img src="https://github.com/yashlan/AWMonitor/blob/main/scrennShoot/_1_dasboard_2.gif" width="200" /> <img src="https://github.com/yashlan/AWMonitor/blob/main/scrennShoot/_2_maps.gif" width="200" /> <img src="https://github.com/yashlan/AWMonitor/blob/main/scrennShoot/_3_article_2.gif" width="200" /> <img src="https://github.com/yashlan/AWMonitor/blob/main/scrennShoot/_4_profile.gif" width="200" /> <img src="https://github.com/yashlan/AWMonitor/blob/main/scrennShoot/_4_profile_2.gif" width="200" /> <img src="https://github.com/yashlan/AWMonitor/blob/main/scrennShoot/_6_login.gif" width="200" />
+
 
 ## Team Member
 |     ID     |        Role        |            Nama             |
