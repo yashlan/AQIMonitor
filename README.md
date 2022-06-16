@@ -58,13 +58,13 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 ## Additional Libraries
 |           Android             |        Machine Learing        |    Cloud Computing          |
 |-------------------------------|-------------------------------|-----------------------------|
-|Retrofit + Logging interceptor |Sklearn                        |                             |
-|Timber                         |Flask                          |                             |
-|Loopj                          |Glom                           |                             |
-|Kirich1409 ViewModel Delegate  |Numpy                          |                             |
-|Shimmer                        |Pandas                         |                             |
-|Lottie                         |Matplotlib                     |                             |
-|Glide                          |DateTime                       |                             |
+|Retrofit + Logging interceptor |Sklearn                        |bcrypt                       |
+|Timber                         |Flask                          |cookie-parser                |
+|Loopj                          |Glom                           |express                      |
+|Kirich1409 ViewModel Delegate  |Numpy                          |fastest-validator            |
+|Shimmer                        |Pandas                         |morgan                       |
+|Lottie                         |Matplotlib                     |mysql2                       |
+|Glide                          |DateTime                       |sequelize                    |
 |Jitpack.io                     |seaborn                        |                             |
 |ShowcaseView                   |Scikit-learn                   |                             |
 |CircleImageView                |Tensorflow                     |                             |
