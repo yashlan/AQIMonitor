@@ -8,6 +8,10 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 - Machine Learning : https://github.com/muhammadraflij/company-capstone
 - Cloud Computing : https://github.com/prakosodwika/api-awmonitor-nodejs
 
+## ScreenShoot
+
+- 
+
 ## Team Member
 |     ID     |        Role        |            Nama             |
 |------------|--------------------|-----------------------------|
@@ -28,35 +32,28 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 - Notifikasi jika kualitas udara di lokasi anda lebih dari 100 atau berstatus tidak sehat
 - Autentikasi user, mendaftar dan login
 - Artikel untuk mengedukasi tentang cara menanggulangi kualitas udara yang tidak sehat
-- Halaman Maps untuk melihat kualitas udara saat ini di seluruh wilayah Indonesia
+- Halaman Maps untuk melihat kualitas udara saat ini di 33 kota wilayah Indonesia
 
 ## User Interface
-- wireframe : <br>
 - mock up : https://www.figma.com/file/5n40uEMiJn3y17nkadhsp3/?node-id=118%3A647 <br>
-- prototype : 
-
-## Task And Schedule
-- link :
 
 ## User Flow Diagram
 ![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOKLHKhZIlCwLgJ0OitwrdMrGoYIBJJcMC-OWnyPK4WPqX3Hy3SXR_SwwYuzGIAgNGy8kk16LpfRLLzQcaSUX0yXdSbInS5ExjYHswufxZcJL1DsgRoD9wFJiYF5hUTKIVIMdHHfQYttQ7OXX-jZz-5JCqi8CXeJ64YP9s0vKnb5QROL3B0A77143T/s1829/user%20flow%20AQIMonitor.png)
 
-## Technologies
+## Software Used
 - Android Studio
 - Visual Studio Code
 - Node.js
+- Figma
+- Github Desktop
 
 ## Languanges
 - Kotlin
 - JavaScript
 - Python
 
-## Platforms
-- Google Cloud
-- Flask
-
 ## Additional Libraries
-|           Android             |        Machine Learing        |    Cloud Computing          |
+|           Android             |        Machine Learning       |    Cloud Computing          |
 |-------------------------------|-------------------------------|-----------------------------|
 |Retrofit + Logging interceptor |Sklearn                        |bcrypt                       |
 |Timber                         |Flask                          |cookie-parser                |
