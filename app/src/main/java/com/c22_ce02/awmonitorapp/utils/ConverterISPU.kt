@@ -1,6 +1,6 @@
 package com.c22_ce02.awmonitorapp.utils
 
-fun convertPM10ToISPU(pm10: Double): Int {
+private fun convertPM10ToISPU(pm10: Double): Int {
     val result: Int
     val k: Double
     val t: Double
@@ -34,7 +34,7 @@ fun convertPM10ToISPU(pm10: Double): Int {
     return result
 }
 
-fun convertPM25ToISPU(pm25: Double): Int {
+private fun convertPM25ToISPU(pm25: Double): Int {
     val result: Int
     val k: Double
     val t: Double
@@ -68,7 +68,7 @@ fun convertPM25ToISPU(pm25: Double): Int {
     return result
 }
 
-fun convertO3ToISPU(o3: Double): Int {
+private fun convertO3ToISPU(o3: Double): Int {
     val result: Int
     val k: Double
     val t: Double
@@ -102,7 +102,7 @@ fun convertO3ToISPU(o3: Double): Int {
     return result
 }
 
-fun convertSO2toISPU(so2: Double): Int {
+private fun convertSO2toISPU(so2: Double): Int {
     val result: Int
     val k: Double
     val t: Double
@@ -136,7 +136,7 @@ fun convertSO2toISPU(so2: Double): Int {
     return result
 }
 
-fun convertNO2toISPU(no2: Double): Int {
+private fun convertNO2toISPU(no2: Double): Int {
     val result: Int
     val k: Double
     val t: Double
@@ -170,7 +170,7 @@ fun convertNO2toISPU(no2: Double): Int {
     return result
 }
 
-fun convertCOtoISPU(co: Double): Int {
+private fun convertCOtoISPU(co: Double): Int {
     val result: Int
     val k: Double
     val t: Double
@@ -204,14 +204,26 @@ fun convertCOtoISPU(co: Double): Int {
     return result
 }
 
-fun convertAQItoISPU(
-    pm10: Int,
-    pm25: Int,
-    o3: Int,
-    so2: Int,
-    no2: Int,
-    co: Int,
+fun getCurrentAQIISPU(
+    pm10: Double,
+    pm25: Double,
+    o3: Double,
+    so2: Double,
+    no2: Double,
+    co: Double,
 ): Int {
-    val list = listOf(pm10, pm25, o3, so2, no2, co)
+    var list: List<Int> = listOf()
+    try {
+        list = listOf(
+            convertPM10ToISPU(pm10),
+            convertPM25ToISPU(pm25),
+            convertO3ToISPU(o3),
+            convertSO2toISPU(so2),
+            convertNO2toISPU(no2),
+            convertCOtoISPU(co)
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
     return list.maxByOrNull { it } ?: 0
 }
