@@ -45,4 +45,9 @@ object Injection {
         val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor_GET)
         return MapsRepository(apiService)
     }
+
+    fun provideWeatherForecastAndHistoryByHourRepository(): WeatherForecastAndHistoryByHourRepository {
+        val apiService = ApiConfig.getApiService(BuildConfig.BASE_URL_AQIMonitor_GET)
+        return WeatherForecastAndHistoryByHourRepository(apiService)
+    }
 }
