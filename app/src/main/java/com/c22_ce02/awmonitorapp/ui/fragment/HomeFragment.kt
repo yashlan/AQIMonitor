@@ -53,7 +53,6 @@ import com.google.android.gms.tasks.OnTokenCanceledListener
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.time.hours
 
 
 class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
@@ -219,6 +218,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         }
     }
 
+    private fun currentAQi() : Int {
+        return getCurrentAQIISPU(
+            pm10 = dataCurrentAirQuality.pm10,
+            pm25 = dataCurrentAirQuality.pm25,
+            o3 = dataCurrentAirQuality.o3,
+            so2 = dataCurrentAirQuality.so2,
+            no2 = dataCurrentAirQuality.no2,
+            co = dataCurrentAirQuality.co
+        )
+    }
+
     private fun postDataWeatherAndAirQuality() {
         val postPref = PostDataPreference(requireContext())
         val diff = Date().time - postPref.getLastPost()
@@ -235,7 +245,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 PostData(this@HomeFragment).postCurrentWeatherAndAirData(
                     location = locationName,
                     date = dataCurrentWeather.obTime,
-                    aqi = dataCurrentAirQuality.aqi,
+                    aqi = currentAQi().toDouble(),
                     o3 = dataCurrentAirQuality.o3,
                     so2 = dataCurrentAirQuality.so2,
                     no2 = dataCurrentAirQuality.no2,
@@ -294,7 +304,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     private fun updateUI() {
 
-        val currentAQI = dataCurrentWeather.aqi.toInt()
+        val currentAQI = currentAQi()
         val itemListAirInfo = binding.itemPanelHomeInfo.itemInfoListAirToday
 
         changeWindowBackgroundResource(currentAQI)
@@ -315,9 +325,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 getAirStatusMessage(currentAQI)
             itemInfoAirToday.tvToday.text = getString(R.string.hari_ini)
             itemInfoAirToday.imgLabelAir.setImageResource(
-                getAQILabelStatus(
-                    currentAQI
-                )
+                getAQILabelStatus(currentAQI)
             )
             itemInfoAirToday.root.setBackgroundResource(
                 getCardBgItemAirTodayResource(currentAQI)
@@ -348,50 +356,56 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     '1',
                     0.7f
                 )
-                startIncrementTextAnimation(dataA.pm10.toInt(), tvPm10)
-                iconStatusPM10.setImageResource(getIconItem(dataA.pm10.toInt()))
-                tvStatusPM10.text = getStatusName(dataA.pm10.toInt())
+                val pm10 = dataA.pm10.toInt()
+                startIncrementTextAnimation(pm10, tvPm10)
+                iconStatusPM10.setImageResource(getIconItem(pm10))
+                tvStatusPM10.text = getStatusName(pm10)
 
                 tvLabelPM25.text = spannableStringBuilder(
                     getString(R.string.pm25),
                     '2',
                     0.7f
                 )
-                startIncrementTextAnimation(dataA.pm25.toInt(), tvPM25)
-                iconStatusPM25.setImageResource(getIconItem(dataA.pm25.toInt()))
-                tvStatusPM25.text = getStatusName(dataA.pm25.toInt())
+                val pm25 = dataA.pm25.toInt()
+                startIncrementTextAnimation(pm25, tvPM25)
+                iconStatusPM25.setImageResource(getIconItem(pm25))
+                tvStatusPM25.text = getStatusName(pm25)
 
                 tvLabelSO2.text = spannableStringBuilder(
                     getString(R.string.so2),
                     '2',
                     0.7f
                 )
-                startIncrementTextAnimation(dataA.so2.toInt(), tvSO2)
-                iconStatusSO2.setImageResource(getIconItem(dataA.so2.toInt()))
-                tvStatusSO2.text = getStatusName(dataA.so2.toInt())
+                val so2 = dataA.so2.toInt()
+                startIncrementTextAnimation(so2, tvSO2)
+                iconStatusSO2.setImageResource(getIconItem(so2))
+                tvStatusSO2.text = getStatusName(so2)
 
                 tvLabelCO.text = getString(R.string.co)
-                startIncrementTextAnimation(dataA.co.toInt(), tvCO)
-                iconStatusCO.setImageResource(getIconItem(dataA.co.toInt()))
-                tvStatusCO.text = getStatusName(dataA.co.toInt())
+                val co = dataA.co.toInt()
+                startIncrementTextAnimation(co, tvCO)
+                iconStatusCO.setImageResource(getIconItem(co))
+                tvStatusCO.text = getStatusName(co)
 
                 tvLabelNO2.text = spannableStringBuilder(
                     getString(R.string.no2),
                     '2',
                     0.7f
                 )
-                startIncrementTextAnimation(dataA.no2.toInt(), tvNO2)
-                iconStatusNO2.setImageResource(getIconItem(dataA.no2.toInt()))
-                tvStatusNO2.text = getStatusName(dataA.no2.toInt())
+                val no2 = dataA.no2.toInt()
+                startIncrementTextAnimation(no2, tvNO2)
+                iconStatusNO2.setImageResource(getIconItem(no2))
+                tvStatusNO2.text = getStatusName(no2)
 
                 tvLabelO3.text = spannableStringBuilder(
                     getString(R.string.o3),
                     '3',
                     0.7f
                 )
-                startIncrementTextAnimation(dataA.o3.toInt(), tvO3)
-                iconStatusO3.setImageResource(getIconItem(dataA.o3.toInt()))
-                tvStatusO3.text = getStatusName(dataA.o3.toInt())
+                val o3 = dataA.o3.toInt()
+                startIncrementTextAnimation(o3, tvO3)
+                iconStatusO3.setImageResource(getIconItem(o3))
+                tvStatusO3.text = getStatusName(o3)
             }
 
             itemPanelHomeInfo.itemStatusAirMessage.root.setOnClickListener {
@@ -690,6 +704,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             lon,
             onSuccess = {
                 if (it != null) {
+
                     val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("id"))
                     val formatter = SimpleDateFormat("ha", Locale("id"))
                     var total = 0
@@ -715,12 +730,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                         }
                     }
 
+                    val currentAQI = currentAQi()
                     val currentHour = formatter.format(Date()).lowercase()
                     listHistoryAndForecastAir.add(
                         AirQualityHistoryAndForecastByHour(
                             hour = currentHour,
-                            iconAQISrc = getIconItem(dataCurrentAirQuality.aqi.toInt()),
-                            aqi = dataCurrentAirQuality.aqi.toInt(),
+                            iconAQISrc = getIconItem(currentAQI),
+                            aqi = currentAQI,
                             pm10 = dataCurrentAirQuality.pm10.toInt(),
                             pm25 = dataCurrentAirQuality.pm25.toInt(),
                             o3 = dataCurrentAirQuality.o3.toInt(),
