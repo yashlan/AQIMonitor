@@ -33,7 +33,7 @@ Pertanyaan yang perlu kita jawab adalah :<br>
 - Notifikasi jika kualitas udara di lokasi anda lebih dari 100 atau berstatus tidak sehat
 - Autentikasi user, mendaftar dan login
 - Artikel untuk mengedukasi tentang cara menanggulangi kualitas udara yang tidak sehat
-- Halaman Maps untuk melihat kualitas udara saat ini di 33 kota wilayah Indonesia
+- Halaman Maps untuk melihat kualitas udara saat ini di 34 kota wilayah Indonesia
 
 ## User Interface
 - mock up : https://www.figma.com/file/5n40uEMiJn3y17nkadhsp3/?node-id=118%3A647 <br>
