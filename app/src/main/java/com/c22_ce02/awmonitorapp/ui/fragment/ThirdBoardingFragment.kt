@@ -61,8 +61,5 @@ class ThirdBoardingFragment : Fragment(), View.OnClickListener {
         val checkPreference = CheckPreference(requireContext())
         checkHelper.isUserFinishBoarding = true
         checkPreference.setCheckBoarding(checkHelper)
-        if (BuildConfig.DEBUG) {
-            showToast("Selamat Datang")
-        }
     }
 }

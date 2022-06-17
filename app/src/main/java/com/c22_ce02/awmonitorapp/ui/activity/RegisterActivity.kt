@@ -105,7 +105,6 @@ class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
                         onSuccess = { data ->
                             hideLoadingDialog()
                             if (data != null) {
-                                showToast("Akun berhasil dibuat!")
                                 startActivity(
                                     Intent(
                                         this@RegisterActivity,

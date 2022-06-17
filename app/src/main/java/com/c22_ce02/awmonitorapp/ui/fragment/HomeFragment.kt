@@ -256,9 +256,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     humidity = dataCurrentWeather.humidity,
                     windSpeed = dataCurrentWeather.windSpeed,
                     onSuccessCallback = {
-                        if (BuildConfig.DEBUG) {
-                            showToast("post data history success!")
-                        }
                         postPref.setLastPost(Date().time)
                     }
                 )

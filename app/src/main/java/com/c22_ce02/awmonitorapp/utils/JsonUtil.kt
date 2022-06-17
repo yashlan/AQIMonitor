@@ -59,9 +59,6 @@ fun isFilePresent(context: Context): Boolean {
 
     if (canUpdateMaps) {
         file.delete()
-        if (BuildConfig.DEBUG) {
-            context.showToastInThread("file sudah expired, donwload ulang dulu")
-        }
         return false
     }
     return file.exists()

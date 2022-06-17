@@ -231,10 +231,6 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
 
                     val mapsJson = readResponse(requireContext())
                     mapsJson?.let { getListDataLocal(it) }
-
-                    if(BuildConfig.DEBUG) {
-                        showToast("json maps file saved on your storage!")
-                    }
                 } else {
                     showSnackBar(
                         binding.root,
