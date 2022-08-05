@@ -287,10 +287,11 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
                 context,
                 ID_REPEATING,
                 intent,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    PendingIntent.FLAG_IMMUTABLE
-                else
-                    0
+                when {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_IMMUTABLE
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> PendingIntent.FLAG_MUTABLE
+                    else -> 0
+                }
             )
 
         alarmManager?.cancel(pendingIntent)
@@ -312,10 +313,11 @@ class AirQualityNotificationReceiver : BroadcastReceiver(), LocationListener {
             context,
             requestCode,
             intent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                PendingIntent.FLAG_NO_CREATE
-            else
-                0
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_IMMUTABLE
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> PendingIntent.FLAG_MUTABLE
+                else -> 0
+            }
         ) != null
     }
 
