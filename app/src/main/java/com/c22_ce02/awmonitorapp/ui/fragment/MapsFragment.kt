@@ -1,5 +1,6 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
+import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -14,12 +15,9 @@ import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.data.model.AirQualityMaps
-import com.c22_ce02.awmonitorapp.data.preference.MapsPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQuality34ProvinceResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentMapsBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.MapsViewModel
@@ -33,10 +31,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.json.JSONException
 import org.json.JSONObject
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class MapsFragment : Fragment(R.layout.fragment_maps) {
@@ -54,13 +49,15 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     private var listDataAirQuality: List<MutableMap<String?, AirQualityMaps?>> = listOf(HashMap())
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
-        showLoading(true)
-        callApiHandler = Handler(Looper.getMainLooper())
-        callApiHandler?.postDelayed({
-            requireActivity().runOnUiThread {
-                getCurrentAirQuality34Province()
-            }
-        }, DELAY_CALL_API)
+        if (activity != null) {
+            showLoading(true)
+            callApiHandler = Handler(Looper.getMainLooper())
+            callApiHandler?.postDelayed({
+                activity?.runOnUiThread {
+                    getCurrentAirQuality34Province()
+                }
+            }, DELAY_CALL_API)
+        }
     }
 
     override fun onDestroy() {
@@ -70,10 +67,10 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+/*
         if (!isNetworkAvailable(requireContext(), true)) {
             return
-        }
+        }*/
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
@@ -215,42 +212,9 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
     }
 
     private fun getCurrentAirQuality34Province() {
-        val isFilePresent = isFilePresent(requireContext())
-        if (isFilePresent) {
-            val mapsJson = readResponse(requireContext())
-            mapsJson?.let { getListDataLocal(it) }
-            return
-        }
-
-        mapsViewModel.getCurrentAirQuality34Province(
-            onSuccess = { json ->
-                val isFileCreated = saveResponse(requireContext(), json)
-                if (isFileCreated) {
-                    val mapsPref = MapsPreference(requireContext())
-                    mapsPref.setLastUpdateMaps(Date().time)
-
-                    val mapsJson = readResponse(requireContext())
-                    mapsJson?.let { getListDataLocal(it) }
-                } else {
-                    showSnackBar(
-                        binding.root,
-                        R.string.errorMsg,
-                        R.string.yes,
-                        onClickOkAction = {
-                            val navHostFragment =
-                                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_home_activity)
-                            navHostFragment?.findNavController()?.navigate(R.id.navigation_maps)
-                        }
-                    )
-                }
-            },
-            onError = { errorMsg ->
-                showLoading(false)
-                if (errorMsg != null) {
-                    showToast(errorMsg)
-                }
-            }
-        )
+        val json =
+            resources.openRawResource(R.raw.response_maps).bufferedReader().use { it.readText() }
+        getListDataLocal(json)
     }
 
     private fun getListDataLocal(json: String) {
@@ -288,41 +252,43 @@ class MapsFragment : Fragment(R.layout.fragment_maps) {
                 )
                 listDataCurrentLocal.add(item)
 
-                listDataCurrentLocal.forEach {
-                    val location = LatLng(it.lat, it.lon)
-                    listDataAirQuality.forEach { dataAir ->
-                        dataAir[city] = AirQualityMaps(
-                            aqi = it.aqi,
-                            pm10 = it.pm10,
-                            pm25 = it.pm25,
-                            no2 = it.no2,
-                            o3 = it.o3,
-                            so2 = it.so2,
-                            co = it.co,
-                            city = it.city
-                        )
+                if(listDataCurrentLocal.size == current.length()) {
+                    listDataCurrentLocal.forEach {
+                        val location = LatLng(it.lat, it.lon)
+                        listDataAirQuality.forEach { dataAir ->
+                            dataAir[it.city] = AirQualityMaps(
+                                aqi = it.aqi,
+                                pm10 = it.pm10,
+                                pm25 = it.pm25,
+                                no2 = it.no2,
+                                o3 = it.o3,
+                                so2 = it.so2,
+                                co = it.co,
+                                city = it.city
+                            )
 
-                        val marker = mMap.addMarker(
-                            MarkerOptions()
-                                .position(location)
-                                .icon(getMarkerBitmapFromView(it.aqi.toInt()))
-                        )
+                            val marker = mMap.addMarker(
+                                MarkerOptions()
+                                    .position(location)
+                                    .icon(getMarkerBitmapFromView(it.aqi.toInt()))
+                            )
 
-                        marker?.tag = city
+                            marker?.tag = it.city
 
-                        listMarkerMaps.forEach { map ->
-                            map[marker] = marker?.tag as String
-                            mMap.setOnMarkerClickListener { m ->
-                                val tag = m.tag as String
-                                if (tag.equals(map[m], ignoreCase = true)) {
-                                    showBottomSheetDialogMaps(dataAir, map[m])
+                            listMarkerMaps.forEach { map ->
+                                map[marker] = marker?.tag as String
+                                mMap.setOnMarkerClickListener { m ->
+                                    val tag = m.tag as String
+                                    if (tag.equals(map[m], ignoreCase = true)) {
+                                        showBottomSheetDialogMaps(dataAir, map[m])
+                                    }
+                                    false
                                 }
-                                false
-                            }
 
-                            val firstCameraPos = LatLng(-1.845549, 120.513968)
-                            mMap.moveCamera(CameraUpdateFactory.zoomTo(5.5f))
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(firstCameraPos))
+                                val firstCameraPos = LatLng(-1.845549, 120.513968)
+                                mMap.moveCamera(CameraUpdateFactory.zoomTo(5.5f))
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(firstCameraPos))
+                            }
                         }
                     }
                 }
