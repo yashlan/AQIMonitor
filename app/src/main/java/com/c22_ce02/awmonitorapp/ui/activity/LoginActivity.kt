@@ -15,6 +15,9 @@ import com.c22_ce02.awmonitorapp.databinding.ActivityLoginBinding
 import com.c22_ce02.awmonitorapp.ui.view.model.LoginViewModel
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.LoginViewModelFactory
 import com.c22_ce02.awmonitorapp.utils.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlin.concurrent.thread
 
 
 class LoginActivity : AppCompatActivity(R.layout.activity_login) {
@@ -27,7 +30,8 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
     private var email: String? = null
     private var password: String? = null
     private val checkButtonHandler = Handler(Looper.getMainLooper())
-
+    private val emailDummy = "dummyUser@gmail.com"
+    private val passwordDummy = "12345678"
 
     override fun onBackPressed() {
         /*agar tombol back tidak berfungsi*/
@@ -48,7 +52,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
             btnLogin.setOnClickListener {
                 editTextPassword.hideSoftKeyboard()
                 editTextEmail.hideSoftKeyboard()
-                showLoadingDialog()
                 it.startAnimation(AlphaAnimation(1f, .5f))
                 val handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
@@ -56,18 +59,36 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
                 }, DELAY_LOGIN)
             }
 
+            val d = Handler(Looper.getMainLooper())
+            d.postDelayed({
+                showLoadingDialog()
+            }, 2000)
+
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                login()
+            }, 4000)
+
+
             tvRegister.setOnClickListener {
                 it.startAnimation(AlphaAnimation(1f, .5f))
-                startActivity(
+/*                startActivity(
                     Intent(
                         this@LoginActivity,
                         RegisterActivity::class.java
                     )
                 )
-                finish()
+                finish()*/
             }
 
-            editTextEmail.doOnTextChanged { it, _, _, _ ->
+            editTextEmail.isEnabled = false
+            editTextPassword.isEnabled = false
+
+
+            editTextEmail.setText(emailDummy)
+            editTextPassword.setText(passwordDummy)
+
+/*            editTextEmail.doOnTextChanged { it, _, _, _ ->
                 email = it.toString()
                 checkAllFieldCorrect()
             }
@@ -75,7 +96,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
             editTextPassword.doOnTextChanged { it, _, _, _ ->
                 password = it.toString()
                 checkAllFieldCorrect()
-            }
+            }*/
         }
     }
 
@@ -93,30 +114,31 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
         }
 
     private fun login() {
-        email?.let { email ->
+        hideLoadingDialog()
+        val userPref = UserPreference(this@LoginActivity)
+        userPref.saveSession(
+            emailDummy,
+            passwordDummy,
+            onSave = { savedName, savedEmail ->
+                if (savedName != null && savedEmail != null) {
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            HomeActivity::class.java
+                        )
+                    )
+                    finish()
+                }
+            }
+        )
+        /*email?.let { email ->
             password?.let { pw ->
                 loginViewModel.login(
                     email,
                     pw,
                     onSuccess = { data ->
                         if (data != null) {
-                            hideLoadingDialog()
-                            val userPref = UserPreference(this@LoginActivity)
-                            userPref.saveSession(
-                                data.data.name,
-                                data.data.email,
-                                onSave = { savedName, savedEmail ->
-                                    if (savedName != null && savedEmail != null) {
-                                        startActivity(
-                                            Intent(
-                                                this@LoginActivity,
-                                                HomeActivity::class.java
-                                            )
-                                        )
-                                        finish()
-                                    }
-                                }
-                            )
+
                         }
                     },
                     onError = { errorMsg ->
@@ -126,7 +148,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
                         }
                     })
             }
-        }
+        }*/
     }
 
     companion object {
