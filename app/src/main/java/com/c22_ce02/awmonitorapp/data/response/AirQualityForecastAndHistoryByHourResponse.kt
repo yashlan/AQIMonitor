@@ -7,10 +7,10 @@ data class AirQualityForecastAndHistoryByHourResponse(
     val data: Data
 ) {
     data class Data(
+        @SerializedName("history")
+        val history: List<History>,
         @SerializedName("forecast")
         val forecast: List<Forecast>,
-        @SerializedName("history")
-        val history: List<History>
     )
 
     data class Forecast(

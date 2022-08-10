@@ -5,33 +5,47 @@ import com.c22_ce02.awmonitorapp.data.repository.WeatherForecastAndHistoryByHour
 import com.c22_ce02.awmonitorapp.data.response.WeatherHistoryAndForecastByHourResponse
 import retrofit2.*
 
-class WeatherForecastAndHistoryByHourViewModel(private val repository: WeatherForecastAndHistoryByHourRepository) :
-    ViewModel() {
+class WeatherForecastAndHistoryByHourViewModel : ViewModel() {
     fun getWeatherForecastAndHistoryByHour(
-        lat: Double,
-        lon: Double,
         onSuccess: (WeatherHistoryAndForecastByHourResponse.Data?) -> Unit,
-        onError: (String?) -> Unit
     ) {
-        val call = repository.getWeatherForecastAndHistoryByHour(lat, lon)
-        call.enqueue(object : Callback<WeatherHistoryAndForecastByHourResponse> {
-            override fun onResponse(
-                call: Call<WeatherHistoryAndForecastByHourResponse>,
-                response: Response<WeatherHistoryAndForecastByHourResponse>
-            ) {
-                if (response.isSuccessful) {
-                    onSuccess(response.body()?.data)
-                } else {
-                    onError("Terjadi Kesalahan")
-                }
-            }
+        val data = WeatherHistoryAndForecastByHourResponse.Data(
+            listOf(
+                WeatherHistoryAndForecastByHourResponse.History(
+                    humidity = 76.7,
+                    temperature = 35.4,
+                    windSpeed = 54.5,
+                ),
+                WeatherHistoryAndForecastByHourResponse.History(
+                    humidity = 78.7,
+                    temperature = 25.4,
+                    windSpeed = 24.5,
+                ),
+                WeatherHistoryAndForecastByHourResponse.History(
+                    humidity = 56.7,
+                    temperature = 33.4,
+                    windSpeed = 29.5,
+                ),
+            ),
+            listOf(
+                WeatherHistoryAndForecastByHourResponse.Forecast(
+                    humidity = 88.7,
+                    temperature = 27.4,
+                    windSpeed = 33.5,
+                ),
+                WeatherHistoryAndForecastByHourResponse.Forecast(
+                    humidity = 84.7,
+                    temperature = 21.4,
+                    windSpeed = 35.5,
+                ),
+                WeatherHistoryAndForecastByHourResponse.Forecast(
+                    humidity = 90.7,
+                    temperature = 40.4,
+                    windSpeed = 66.5,
+                ),
+            )
+        )
 
-            override fun onFailure(
-                call: Call<WeatherHistoryAndForecastByHourResponse>,
-                t: Throwable
-            ) {
-                onError(t.localizedMessage?.toString() ?: t.message.toString())
-            }
-        })
+        onSuccess.invoke(data)
     }
 }

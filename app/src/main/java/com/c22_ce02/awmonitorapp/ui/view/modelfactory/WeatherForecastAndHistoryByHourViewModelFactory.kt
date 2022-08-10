@@ -9,7 +9,7 @@ import com.c22_ce02.awmonitorapp.ui.view.model.WeatherForecastAndHistoryByHourVi
 class WeatherForecastAndHistoryByHourViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(WeatherForecastAndHistoryByHourViewModel::class.java)) {
-            WeatherForecastAndHistoryByHourViewModel(Injection.provideWeatherForecastAndHistoryByHourRepository()) as T
+            WeatherForecastAndHistoryByHourViewModel() as T
         } else {
             throw IllegalArgumentException("ViewModel of ${modelClass.simpleName} Not Found")
         }

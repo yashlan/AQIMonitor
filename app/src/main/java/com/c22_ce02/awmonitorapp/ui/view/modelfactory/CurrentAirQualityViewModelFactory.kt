@@ -9,7 +9,7 @@ import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
 class CurrentAirQualityViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(CurrentAirQualityViewModel::class.java)) {
-            CurrentAirQualityViewModel(Injection.provideCurrentAirQualityRepository()) as T
+            CurrentAirQualityViewModel() as T
         } else {
             throw IllegalArgumentException("ViewModel of ${modelClass.simpleName} Not Found")
         }

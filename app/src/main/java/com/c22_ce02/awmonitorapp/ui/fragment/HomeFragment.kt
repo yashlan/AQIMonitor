@@ -1,40 +1,25 @@
 package com.c22_ce02.awmonitorapp.ui.fragment
 
 import android.Manifest
-import android.content.Context.LOCATION_SERVICE
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
-import android.location.LocationManager.GPS_PROVIDER
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.view.View
-import android.view.animation.AlphaAnimation
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.c22_ce02.awmonitorapp.BuildConfig
 import com.c22_ce02.awmonitorapp.R
 import com.c22_ce02.awmonitorapp.adapter.AirQualityAndWeatherForecastByHourAdapter
 import com.c22_ce02.awmonitorapp.data.model.AirQualityAndWeatherHistoryForecastByHour
 import com.c22_ce02.awmonitorapp.data.model.AirQualityHistoryAndForecastByHour
 import com.c22_ce02.awmonitorapp.data.model.WeatherHistoryAndForecastByHour
 import com.c22_ce02.awmonitorapp.data.preference.CheckPreference
-import com.c22_ce02.awmonitorapp.data.preference.PostDataPreference
 import com.c22_ce02.awmonitorapp.data.response.CurrentAirQualityResponse
 import com.c22_ce02.awmonitorapp.data.response.CurrentWeatherConditionResponse
 import com.c22_ce02.awmonitorapp.databinding.FragmentHomeBinding
-import com.c22_ce02.awmonitorapp.ui.activity.DetailArticleActivity
 import com.c22_ce02.awmonitorapp.ui.view.model.AirQualityForecastAndHistoryByHourViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentAirQualityViewModel
 import com.c22_ce02.awmonitorapp.ui.view.model.CurrentWeatherConditionViewModel
@@ -45,17 +30,12 @@ import com.c22_ce02.awmonitorapp.ui.view.modelfactory.CurrentWeatherConditionVie
 import com.c22_ce02.awmonitorapp.ui.view.modelfactory.WeatherForecastAndHistoryByHourViewModelFactory
 import com.c22_ce02.awmonitorapp.utils.*
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
-import timber.log.Timber
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var isCurrentWeatherConditionLoaded = false
     private var isAirQualityHistoryAndForecastByHourLoaded = false
@@ -103,33 +83,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         CurrentAirQualityViewModelFactory()
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                loadAllData()
-            }
-            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                loadAllData()
-            }
-            else -> {
-                showSnackBar(
-                    binding.root,
-                    R.string.msg_permission_maps,
-                    R.string.yes,
-                    onClickOkAction = {
-                        allowRefresh = true
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val uri = Uri.fromParts("package", requireActivity().packageName, null)
-                        intent.data = uri
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                    }
-                )
-            }
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -143,82 +96,49 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
 
-        binding.swipeRefresh.setOnRefreshListener {
-            hideUI()
-            refreshFragment()
-            setDefaultWindowBackgroundResource()
-        }
+            binding.swipeRefresh.setOnRefreshListener {
+                hideUI()
+                refreshFragment()
+                setDefaultWindowBackgroundResource()
+            }
 
-        if (!isNetworkAvailable(requireContext(), showNotAvailableInfo = true)) {
-            hideUI()
-            binding.shimmerFragmentHome.hideShimmer()
-            return
-        }
+            resetAll()
+            {
+                hideUI()
+                callApiHandler = Handler(Looper.getMainLooper())
+                callApiHandler?.postDelayed({
+                    loadAllData()
+                }, DELAY_CALL_API)
+            }
 
-        locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
-        if (!locationManager.isProviderEnabled(GPS_PROVIDER)) {
-            hideUI()
-            binding.shimmerFragmentHome.hideShimmer()
-            showSnackBar(
-                binding.root,
-                R.string.msg_permission_gps,
-                R.string.yes,
-                onClickOkAction = {
-                    allowRefresh = true
-                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    startActivity(intent)
-                }
-            )
-            return
-        }
+            refreshUITimer = Timer()
 
-        resetAll()
-        {
-            hideUI()
-            callApiHandler = Handler(Looper.getMainLooper())
-            callApiHandler?.postDelayed({
-                loadAllData()
-            }, DELAY_CALL_API)
-        }
-
-        refreshUITimer = Timer()
-        refreshLocationTimer = Timer()
-
-        refreshUITimer?.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() {
-                    requireActivity().runOnUiThread {
-                        if (isAllDataLoaded()) {
-                            showUI()
-                            updateUI()
-                            postDataWeatherAndAirQuality()
-                            setupGuide()
-                            cancel()
+            refreshUITimer?.scheduleAtFixedRate(
+                object : TimerTask() {
+                    override fun run() {
+                        requireActivity().runOnUiThread {
+                            if (isAllDataLoaded()) {
+                                showUI()
+                                updateUI()
+                                setupGuide()
+                                cancel()
+                            }
                         }
                     }
-                }
-            }, 0, PERIOD_TIMER
-        )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) &&
-            isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION) &&
-            allowRefresh
-        ) {
-            loadAllData()
-            allowRefresh = false
-        } else {
-            if (allowRefresh) {
-                requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
-                allowRefresh = false
-            }
+                }, 0, PERIOD_TIMER
+            )
         }
     }
 
-    private fun currentAQi() : Int {
+    private fun isAllDataLoaded(): Boolean =
+        isCurrentAirQualityLoaded &&
+                isAirQualityHistoryAndForecastByHourLoaded &&
+                isWeatherHistoryAndForecastByHourLoaded &&
+                isCurrentWeatherConditionLoaded
+
+    private fun currentAQI(): Int {
         return getCurrentAQIISPU(
             pm10 = dataCurrentAirQuality.pm10,
             pm25 = dataCurrentAirQuality.pm25,
@@ -229,49 +149,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         )
     }
 
-    private fun postDataWeatherAndAirQuality() {
-        val postPref = PostDataPreference(requireContext())
-        val diff = Date().time - postPref.getLastPost()
-        val seconds = diff / 1000
-        val minutes = seconds / 60
-        val hours = minutes / 60
-
-        val canPostData = hours >= 1
-
-        if (!canPostData) return
-
-        getLocation(onGetLocation = { lat, lon ->
-            getCurrentLocationName(lat, lon, onGetLocationName = { locationName ->
-                PostData(this@HomeFragment).postCurrentWeatherAndAirData(
-                    location = locationName,
-                    date = dataCurrentWeather.obTime,
-                    aqi = currentAQi().toDouble(),
-                    o3 = dataCurrentAirQuality.o3,
-                    so2 = dataCurrentAirQuality.so2,
-                    no2 = dataCurrentAirQuality.no2,
-                    co = dataCurrentAirQuality.so2,
-                    pm10 = dataCurrentAirQuality.pm10,
-                    pm25 = dataCurrentAirQuality.pm25,
-                    temperature = dataCurrentWeather.temperature,
-                    humidity = dataCurrentWeather.humidity,
-                    windSpeed = dataCurrentWeather.windSpeed,
-                    onSuccessCallback = {
-                        postPref.setLastPost(Date().time)
-                    }
-                )
-            })
-        })
-    }
-
     private fun resetAll(onReset: () -> Unit) {
         listHistoryForecastAirAndWeather.clear()
-        listHistoryForecastAirAndWeather.removeAll(listHistoryForecastAirAndWeather)
+        listHistoryForecastAirAndWeather.removeAll(listHistoryForecastAirAndWeather.toSet())
 
         listForecastAndHistoryWeather.clear()
-        listForecastAndHistoryWeather.removeAll(listForecastAndHistoryWeather)
+        listForecastAndHistoryWeather.removeAll(listForecastAndHistoryWeather.toSet())
 
         listHistoryAndForecastAir.clear()
-        listHistoryAndForecastAir.removeAll(listHistoryAndForecastAir)
+        listHistoryAndForecastAir.removeAll(listHistoryAndForecastAir.toSet())
 
         if (listHistoryAndForecastAir.isEmpty() &&
             listForecastAndHistoryWeather.isEmpty() &&
@@ -280,12 +166,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
             onReset.invoke()
         }
     }
-
-    private fun isAllDataLoaded(): Boolean =
-        isCurrentAirQualityLoaded &&
-                isAirQualityHistoryAndForecastByHourLoaded &&
-                isWeatherHistoryAndForecastByHourLoaded &&
-                isCurrentWeatherConditionLoaded
 
     private fun refreshFragment() {
         refreshFragmentHandler = Handler(Looper.getMainLooper())
@@ -301,7 +181,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
     private fun updateUI() {
 
-        val currentAQI = currentAQi()
+        val currentAQI = currentAQI()
         val itemListAirInfo = binding.itemPanelHomeInfo.itemInfoListAirToday
 
         changeWindowBackgroundResource(currentAQI)
@@ -311,9 +191,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
 
             val dataW = dataCurrentWeather
 
-            getLocation(onGetLocation = { lat, lon ->
-                itemLocationAndDate.tvLocation.text = getCurrentLocationName(lat, lon)
-            })
+            itemLocationAndDate.tvLocation.text = "Dummy Location, Mars"
             itemLocationAndDate.tvDate.text = getCurrentDate()
             itemPanelHomeInfo.itemStatusAirMessage.root.setCardBackgroundColor(
                 getItemStatusAirMessageBgColor(currentAQI)
@@ -403,19 +281,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                 startIncrementTextAnimation(o3, tvO3)
                 iconStatusO3.setImageResource(getIconItem(o3))
                 tvStatusO3.text = getStatusName(o3)
-            }
-
-            itemPanelHomeInfo.itemStatusAirMessage.root.setOnClickListener {
-                val checkPreference = CheckPreference(requireContext())
-                val checkHelper = checkPreference.getCheckGuide()
-                if (dataCurrentAirQuality.aqi.toInt() > 100 && checkHelper.isUserFinishGuide) {
-                    it.startAnimation(AlphaAnimation(1f, .5f))
-                    val url =
-                        "https://aqimonitorblogs.blogspot.com/2022/06/10-cara-mengurangi-polusi-udara-yang.html"
-                    val i = Intent(requireContext(), DetailArticleActivity::class.java)
-                    i.putExtra(URL_EXTRA, url)
-                    startActivity(i)
-                }
             }
 
             for (i in 0 until TOTAL_LIST_FORECAST_AND_HISTORY_SIZE) {
@@ -547,170 +412,40 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
         return "$dayName, $dateNumber $monthName $yearNumber"
     }
 
-    private fun getCurrentLocationName(
-        lat: Double,
-        lon: Double,
-        onGetLocationName: ((String) -> Unit?)? = null
-    ): String {
-        val geocoder = Geocoder(requireContext(), Locale("id"))
-        val addresses = geocoder.getFromLocation(lat, lon, 1)
-        val result = if (addresses.size > 0) {
-            val adminArea =
-                if (addresses[0].adminArea != null) addresses[0].adminArea else "Tidak Diketahui"
-            val subLocality =
-                if (addresses[0].subLocality != null) addresses[0].subLocality else adminArea
-            val country = addresses[0].countryName
-            "$subLocality, $country"
-        } else {
-            "Tidak Diketahui"
-        }
-        onGetLocationName?.invoke(result)
-        return result
-    }
-
-    private fun getLocation(onGetLocation: (Double, Double) -> Unit) {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
-        } else {
-            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY,
-                object : CancellationToken() {
-                    override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
-                        return CancellationTokenSource().token
-                    }
-
-                    override fun isCancellationRequested(): Boolean {
-                        return false
-                    }
-                })
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        onGetLocation(location.latitude, location.longitude)
-                    } else {
-                        requestLocation()
-                        refreshLocationTimer?.scheduleAtFixedRate(object : TimerTask() {
-                            override fun run() {
-                                requireActivity().runOnUiThread {
-                                    if (isLocationChanged) {
-                                        onGetLocation(newLat, newLon)
-                                        showToast("lokasi berhasil ditemukan")
-                                        cancel()
-                                    }
-                                }
-                            }
-                        }, 0, PERIOD_TIMER)
-                    }
-                }
-                .addOnFailureListener {
-                    showToast(it.localizedMessage?.toString() ?: it.message.toString())
-                }
-        }
-    }
-
-    override fun onLocationChanged(location: Location) {
-        newLat = location.latitude
-        newLon = location.longitude
-        isLocationChanged = true
-        locationManager.removeUpdates(this)
-    }
-
-    private fun requestLocation() {
-        locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
-        if (locationManager.isProviderEnabled(GPS_PROVIDER)) {
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestPermissionLauncher.launch(REQUIRED_PERMISSIONS_MAPS)
-            } else {
-                locationManager.requestLocationUpdates(
-                    GPS_PROVIDER,
-                    10000L,
-                    1000f,
-                    this
-                )
-                showToast("Sedang Mencari Lokasi")
-            }
-        } else {
-            binding.shimmerFragmentHome.stopShimmer()
-            showSnackBar(
-                binding.root,
-                R.string.msg_permission_gps,
-                R.string.yes,
-                onClickOkAction = {
-                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    startActivity(intent)
-                }
-            )
-        }
-    }
-
-    private fun loadAllData() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        getLocation(onGetLocation = { lat, lon ->
-            currentWeatherConditionViewModel.getCurrentWeatherCondition(
-                lat,
-                lon,
-                onSuccess = {
-                    if (it != null) {
-                        dataCurrentWeather = it[0]
-                        getForecastAndHistoryData(lat, lon)
-                        isCurrentWeatherConditionLoaded = true
-                    }
-                },
-                onError = { errorMsg ->
-                    if (errorMsg != null) {
-                        if (BuildConfig.DEBUG) {
-                            Timber.e(errorMsg)
-                        }
-                    }
-                }
-            )
-
-            currentAirQualityViewModel.getCurrentAirQuality(
-                lat,
-                lon,
-                onSuccess = {
-                    if (it != null) {
-                        dataCurrentAirQuality = it.data[0]
-                        isCurrentAirQualityLoaded = true
-                    }
-                },
-                onError = { errorMsg ->
-                    if (errorMsg != null) {
-                        showToast(errorMsg)
-                    }
-                }
-            )
-        })
-    }
-
     private fun convertWindSpeedToKmh(speedMs: Int): Int = (speedMs * 3.6).toInt()
 
-    private fun getForecastAndHistoryData(lat: Double, lon: Double) {
-        airQualityForecastAndHistoryByHourViewModel.getAirQualityForecastAndHistoryByHour(
-            lat,
-            lon,
+    private fun loadAllData() {
+        currentWeatherConditionViewModel.getCurrentWeatherCondition(
             onSuccess = {
                 if (it != null) {
+                    dataCurrentWeather = it[0]
+                    isCurrentWeatherConditionLoaded = true
+                }
+            }
+        )
 
-                    val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale("id"))
-                    val formatter = SimpleDateFormat("ha", Locale("id"))
+        currentAirQualityViewModel.getCurrentAirQuality(
+            onSuccess = {
+                if (it != null) {
+                    dataCurrentAirQuality = it.data[0]
+                    isCurrentAirQualityLoaded = true
+                }
+            }
+        )
+
+        getForecastAndHistoryData()
+    }
+
+    private fun getForecastAndHistoryData() {
+
+        airQualityForecastAndHistoryByHourViewModel.getAirQualityForecastAndHistoryByHour(
+            onSuccess = {
+                if (it != null) {
                     var total = 0
                     it.history.forEach { historyData ->
-                        val hour =
-                            formatter.format(parser.parse(historyData.datetime)!!).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
-                                hour = hour,
+                                hour = historyData.datetime,
                                 iconAQISrc = getIconItem(historyData.aqi.toInt()),
                                 aqi = historyData.aqi.toInt(),
                                 pm10 = historyData.pm10.toInt(),
@@ -722,13 +457,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                             )
                         )
                         total++
-                        if (total > 2) {
-                            listHistoryAndForecastAir.reverse()
-                        }
                     }
 
-                    val currentAQI = currentAQi()
-                    val currentHour = formatter.format(Date()).lowercase()
+                    val currentAQI = currentAQI()
+                    val currentHour =
+                        SimpleDateFormat("ha", Locale("id")).format(Date()).lowercase()
                     listHistoryAndForecastAir.add(
                         AirQualityHistoryAndForecastByHour(
                             hour = currentHour,
@@ -746,11 +479,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     total++
 
                     it.forecast.forEach { forecastData ->
-                        val hour =
-                            formatter.format(parser.parse(forecastData.datetime)!!).lowercase()
                         listHistoryAndForecastAir.add(
                             AirQualityHistoryAndForecastByHour(
-                                hour = hour,
+                                hour = forecastData.datetime,
                                 iconAQISrc = getIconItem(forecastData.aqi.toInt()),
                                 aqi = forecastData.aqi.toInt(),
                                 pm10 = forecastData.pm10.toInt(),
@@ -767,16 +498,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                         listHistoryAndForecastAir.size == total
                 }
             },
-            onError = { errorMsg ->
-                if (errorMsg != null) {
-                    showToast(errorMsg)
-                }
-            }
         )
 
         weatherForecastAndHistoryByHourViewModel.getWeatherForecastAndHistoryByHour(
-            lat,
-            lon,
             onSuccess = {
                 if (it != null) {
                     var total = 0
@@ -789,9 +513,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                             )
                         )
                         total++
-                        if (total > 2) {
-                            listForecastAndHistoryWeather.reverse()
-                        }
                     }
 
                     listForecastAndHistoryWeather.add(
@@ -815,11 +536,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), LocationListener {
                     }
                     isWeatherHistoryAndForecastByHourLoaded =
                         listForecastAndHistoryWeather.size == total
-                }
-            },
-            onError = { errorMsg ->
-                if (errorMsg != null) {
-                    showToast(errorMsg)
                 }
             }
         )

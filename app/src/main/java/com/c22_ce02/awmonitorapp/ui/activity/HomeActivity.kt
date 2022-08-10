@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
@@ -44,7 +45,7 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         val uri = Uri.fromParts("package", packageName, null)
                         intent.data = uri
-                        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+                        intent.addFlags(FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_SINGLE_TOP)
                         startActivity(intent)
                     }
                 }
@@ -71,12 +72,12 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
         removeItemTintColor()
-        setupNotification()
+        //setupNotification()
 
-        if (isAllLocationGranted()) {
+/*        if (isAllLocationGranted()) {
             askIgnoreBatteryOptimization()
             askAccessBackgroundLocation()
-        }
+        }*/
 
     }
 

@@ -9,7 +9,7 @@ import com.c22_ce02.awmonitorapp.ui.view.model.CurrentWeatherConditionViewModel
 class CurrentWeatherConditionViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(CurrentWeatherConditionViewModel::class.java)) {
-            CurrentWeatherConditionViewModel(Injection.provideCurrentWeatherConditionRepository()) as T
+            CurrentWeatherConditionViewModel() as T
         } else {
             throw IllegalArgumentException("ViewModel of ${modelClass.simpleName} Not Found")
         }
