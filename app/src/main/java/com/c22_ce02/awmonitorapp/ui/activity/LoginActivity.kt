@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
     private var email: String? = null
     private var password: String? = null
     private val checkButtonHandler = Handler(Looper.getMainLooper())
+    private val nameDummy = "Dummy Name"
     private val emailDummy = "dummyUser@gmail.com"
     private val passwordDummy = "12345678"
 
@@ -117,8 +118,8 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
         hideLoadingDialog()
         val userPref = UserPreference(this@LoginActivity)
         userPref.saveSession(
-            emailDummy,
-            passwordDummy,
+            name = nameDummy,
+            email = emailDummy,
             onSave = { savedName, savedEmail ->
                 if (savedName != null && savedEmail != null) {
                     startActivity(
