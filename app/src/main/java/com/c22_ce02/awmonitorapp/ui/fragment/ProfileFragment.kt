@@ -43,6 +43,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 showBottomSheetChangeAvatar()
             }
 
+            val sheetInfo = BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialog)
+            sheetInfo.setContentView(R.layout.bottom_sheet_about_developer)
+
+            btnAbout.setOnClickListener {
+                if (!sheetInfo.isShowing) {
+                    sheetInfo.show()
+                }
+            }
+
             btnLogout.setOnClickListener {
                 createCustomAlertDialog(
                     title = "Konfirmasi",
